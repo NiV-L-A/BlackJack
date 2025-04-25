@@ -4,9 +4,9 @@
 
 
 
-void pesca(int mano[]){
-      srand(time(NULL));
-      int numElementi = 0;
+void pesca(int mano[]){//funzione per pescare una carta
+      srand(time(NULL));//seed della funzione rand
+      int numElementi = 0;//variabile contatore
 
       for (int i = 0; i < MAXcarte; i++) {//ciclo for per contare il numero di carte in mano
           if (mano[i] != 0) {
