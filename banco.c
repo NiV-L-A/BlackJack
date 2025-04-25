@@ -8,7 +8,7 @@ void pesca(int mano[]){
       srand(time(NULL));
       int numElementi = 0;
 
-      for (int i = 0; i < 22; i++) {//ciclo for per contare il numero di carte in mano
+      for (int i = 0; i < MAXcarte; i++) {//ciclo for per contare il numero di carte in mano
           if (mano[i] != 0) {
               numElementi++;
           }

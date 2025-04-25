@@ -3,8 +3,8 @@
 #include "main.h"
 
 int main(){//nel main mettiamo solo le call alle funzioni.
-   static int manoBanco[22];
-    int manoGiocatore[22];
+   static int manoBanco[MAXcarte];
+    int manoGiocatore[MAXcarte];
 
     pesca(manoBanco);
     pesca(manoBanco);
@@ -13,7 +13,7 @@ int main(){//nel main mettiamo solo le call alle funzioni.
 
 
 
-    for (int i = 0; i < 22; i++) {
+    for (int i = 0; i < MAXcarte; i++) {
         if (manoBanco[i] != 0) {
             printf("%d\n", manoBanco[i]);
         }

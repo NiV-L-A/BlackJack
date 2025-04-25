@@ -1,4 +1,8 @@
-#pragma once//serve per le robe costanti
+//variabili globali
+#pragma once//serve per le robe costanti e globali
+#define MAXcarte 22
+
+
 const unsigned short mazzo[52] = {//mazzo statico con tutte le carte
     // Asso, 2, 3, ... 10, J, Q, K
     1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 111, 121,
