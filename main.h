@@ -9,7 +9,7 @@ const unsigned short mazzo[52] = {//mazzo statico con tutte le carte
 
 
 //dichiarate le funzioni qua sotto
-
+void pesca(int mano[]);//funzione pesca in banco
 
 
 

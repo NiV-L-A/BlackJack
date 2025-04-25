@@ -2,21 +2,26 @@
 #include <time.h>
 #include "main.h"
 
-int manoBanco[] = {0};
+
 
 void pesca(int mano[]){
       srand(time(NULL));
+      int numElementi = 0;
 
-      for(int i = 0; i < sizeof(mano) / sizeof(mano[0]) + 1; i++){
-          short temp = rand() + 1 % 52;
-
-             if(mano[i] == mazzo[temp]){
-               continue;
-             }
-
+      for (int i = 0; i < 22; i++) {//ciclo for per contare il numero di carte in mano
+          if (mano[i] != 0) {
+              numElementi++;
+          }
       }
 
+      for(int j = 0; j < numElementi + 1; j++){//ciclo for con la logica per pescare
+          short temp = rand() % 52;
 
+             if(mano[j] == mazzo[temp]){//check se la carta scelta da rand e` gia` presente
+               continue;
+             }
+            mano[j] = mazzo[temp];
+      }
 
 }
 
