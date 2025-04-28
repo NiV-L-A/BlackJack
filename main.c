@@ -1,21 +1,24 @@
 #include <stdio.h>
 #include "banco.c"
+#include "giocatore.c"
 #include "main.h"
 
 int main(){//nel main mettiamo solo le call alle funzioni.
     static int manoBanco[MAXcarte];//mettere static davanti ad una variabile garantisce che i valori non assegnati siano deterministici anziche` numeri a caso presi da un punto a caso della memoria
     static int manoGiocatore[MAXcarte];
+    int scommessa = 10;
+    int portafoglio = 100;
+    //TODO: rendere globali gli array delle mani e le variabili che tengono traccia di scommessa e portafoglio del giocatore
 
-    pesca(manoBanco);
-    pesca(manoBanco);
-    pesca(manoBanco);
-    pesca(manoBanco);
+    //DEBUG init mano
+    pesca(manoGiocatore);
+    pesca(manoGiocatore);
 
+    //DEBUG sezione
+    printf("prima di raddoppia %d\n", scommessa);
+    printMano(manoGiocatore);
+    raddoppia(manoGiocatore, &scommessa);
 
-
-    for (int i = 0; i < MAXcarte; i++) {//funzione per printare la mano per debuggare
-        if (manoBanco[i] != 0) {
-            printf("%d\n", manoBanco[i]);
-        }
-    }
+    printf("dopo di raddoppia %d\n", scommessa);
+    printMano(manoGiocatore);
 }

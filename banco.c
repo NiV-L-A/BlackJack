@@ -4,6 +4,14 @@
 
 
 
+
+void raddoppia(int mano[], int *scommessa) {//funzione per la giocata "raddoppio"
+
+    pesca(mano);//invocazione alla pesca per pescare una carta
+
+    *scommessa *= 2;//raddoppio scommessa
+}
+
 void pesca(int mano[]){//funzione per pescare una carta
       srand(time(NULL));//seed della funzione rand
       int numElementi = 0;//variabile contatore

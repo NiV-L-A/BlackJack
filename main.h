@@ -14,10 +14,12 @@ const unsigned short mazzo[52] = {//mazzo statico con tutte le carte
 
 //dichiarate le funzioni qua sotto
 void pesca(int mano[]);//funzione pesca in banco
+void raddoppia(int mano[], int *scommessa);//funzione raddoppia in banco
 
 
 
-
+//FUNZIONI DEBUG
+void printMano(int mano[]);//printare la mano passata
 
 
 
