@@ -12,14 +12,19 @@ int main(){//nel main mettiamo solo le call alle funzioni.
 
     //DEBUG init mano
     banco_init();
-    for(int i = 0; i < 9; i++)
-    {
-        printf("%d: \n",i);
-        pesca(manoGiocatore);
-    }
-
+    // for(int i = 0; i < 9; i++)
+    // {
+    //     printf("%d: \n",i);
+    //     pesca(manoGiocatore);
+    // }
+    manoGiocatore[0] = 22;
+    manoGiocatore[1] = 22;
+    dividi(manoGiocatore,scommessa);
 
     printMano(manoGiocatore);
+    printMano(manoGiocatoreDivisa);
+
+    printf("\nscommessa: %d -- scommessa splittata: %d",scommessa,puntataDivisa);
 
 
     //DEBUG sezione

@@ -1,6 +1,8 @@
 //variabili globali
 #pragma once//serve per le robe costanti e globali
 #define MAXcarte 22 //valore massimo di carte che il gicatore puo` avere in mano
+int manoGiocatoreDivisa[MAXcarte];
+int puntataDivisa;
 
 
 const unsigned short mazzo[52] = {//mazzo statico con tutte le carte
@@ -15,6 +17,7 @@ const unsigned short mazzo[52] = {//mazzo statico con tutte le carte
 //dichiarate le funzioni qua sotto
 void pesca(int mano[]);//funzione pesca in banco
 void raddoppia(int mano[], int *scommessa);//funzione raddoppia in banco
+void dividi(int mano[],int puntata);//funzione split in giocatore
 
 
 
