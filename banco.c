@@ -4,6 +4,7 @@
 
 void banco_init()
 {
+    //seed della funzione rand
     srand(time(NULL));
 }
 
@@ -16,31 +17,31 @@ void raddoppia(int mano[], int *scommessa) {//funzione per la giocata "raddoppio
 }
 
 void pesca(int mano[]){//funzione per pescare una carta
-      //seed della funzione rand
-      int numElementi = 0;//variabile contatore
       int pescaRiuscita = 0;
       static short controlloRipetizioni[52];
 
-      //si e` deciso di mettere questo ciclo for per individuare il primo spazio libero.
-      //cosi` facendo non e` necessario andarlo a trovare nel ciclo for successivo, risparmiando chiamate inutili a rand
-      for (int i = 0; i < MAXcarte; i++) {
-          if (mano[i] != 0) {
-              numElementi++;
-          }
-      }
       do
       {
-          for(int j = numElementi + 1; j < MAXcarte; j++){//
+          for(int i = 0; i < MAXcarte; i++){
+              if (mano[i] != 0) {
+                  // Posizione nella mano già occupata
+                  continue;
+              }
+
+              // Posizione libera
+              // Genera carta
               short temp = rand() % 52;
               printf("temp: %d \n", temp);
               controlloRipetizioni[temp]++;
-              if(controlloRipetizioni[temp] > 5 && mano[j] != temp){//check se la carta scelta da rand e` gia` presente
+              if(controlloRipetizioni[temp] > 5 && mano[i] != temp){//check se la carta scelta da rand e` gia` presente
                   continue;
               }
-              mano[j] = mazzo[temp];
-              pescaRiuscita++;
+
+              // Carta libera, inseriscila nella mano alla posizione libera
+              mano[i] = mazzo[temp];
+              pescaRiuscita = 1;
               break;
           }
-      }while(pescaRiuscita == 0);
+      } while(pescaRiuscita == 0);
 }
 
