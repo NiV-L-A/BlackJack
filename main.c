@@ -11,14 +11,24 @@ int main(){//nel main mettiamo solo le call alle funzioni.
     //TODO: rendere globali gli array delle mani e le variabili che tengono traccia di scommessa e portafoglio del giocatore
 
     //DEBUG init mano
+    banco_init();
     pesca(manoGiocatore);
     pesca(manoGiocatore);
+    pesca(manoGiocatore);
+    pesca(manoGiocatore);
+    pesca(manoGiocatore);
+    pesca(manoGiocatore);
+
+
+
+    printMano(manoGiocatore);
+
 
     //DEBUG sezione
-    printf("prima di raddoppia %d\n", scommessa);
-    printMano(manoGiocatore);
-    raddoppia(manoGiocatore, &scommessa);
+    //printf("prima di raddoppia %d\n", scommessa);
+   // printMano(manoGiocatore);
+   // raddoppia(manoGiocatore, &scommessa);
 
-    printf("dopo di raddoppia %d\n", scommessa);
-    printMano(manoGiocatore);
+    //printf("dopo di raddoppia %d\n", scommessa);
+    //printMano(manoGiocatore);
 }
