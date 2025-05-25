@@ -21,14 +21,16 @@ void pesca(int mano[]){//funzione per pescare una carta
       int pescaRiuscita = 0;
       static short controlloRipetizioni[52];
 
-      for (int i = 0; i < MAXcarte; i++) {//ciclo for per contare il numero di carte in mano
+      //si e` deciso di mettere questo ciclo for per individuare il primo spazio libero.
+      //cosi` facendo non e` necessario andarlo a trovare nel ciclo for successivo, risparmiando chiamate inutili a rand
+      for (int i = 0; i < MAXcarte; i++) {
           if (mano[i] != 0) {
               numElementi++;
           }
       }
       do
       {
-          for(int j = numElementi + 1; j < MAXcarte; j++){//ciclo for con la logica per pescare
+          for(int j = numElementi + 1; j < MAXcarte; j++){//
               short temp = rand() % 52;
               printf("temp: %d \n", temp);
               controlloRipetizioni[temp]++;

@@ -12,13 +12,11 @@ int main(){//nel main mettiamo solo le call alle funzioni.
 
     //DEBUG init mano
     banco_init();
-    pesca(manoGiocatore);
-    pesca(manoGiocatore);
-    pesca(manoGiocatore);
-    pesca(manoGiocatore);
-    pesca(manoGiocatore);
-    pesca(manoGiocatore);
-
+    for(int i = 0; i < 9; i++)
+    {
+        printf("%d: \n",i);
+        pesca(manoGiocatore);
+    }
 
 
     printMano(manoGiocatore);
