@@ -5,7 +5,7 @@ Una implementazione grafica e completamente locale del gioco d'azzardo **BlackJa
 - Sistema di login
 - Possibilità di creare più account locali 
 - Storico partite contenente dettagli su quale utente abbia giocato, il resoconto della partita, la quantità di crediti scommessa ed il modo in cui la vittoria/sconfitta abbia influenzato il bilancio
-- Statistiche individuali per utente contenente il numero di partite giocate, il tasso di vittoria e il bilancio attuale
+- Statistiche individuali per utente contenenti il numero di partite giocate, il tasso di vittoria e il bilancio attuale
 - Sistema di "top-up" virtuale per aggiungere crediti al proprio bilancio
 - Interfaccia completamente grafica!
 - Può runnare su un tostapane!
@@ -14,7 +14,7 @@ Una implementazione grafica e completamente locale del gioco d'azzardo **BlackJa
 
 ## Istruzioni su come buildare il progetto
 Al momento è compatibile <ins>solo con Linux</ins>.   
-È **possibile** modificare il codice per compilare una versione funzionante anche su **Windows** ma è al di fuori dallo scopo del progetto (**per ora**!!).
+È **possibile** modificare il codice per compilare una versione funzionante anche su **Windows**, ma ciò è al di fuori dallo scopo del progetto (**per ora**!!).
 
  <details>
    <summary><strong>Istruzioni per Ubuntu/Debian e derivati:</strong></summary> 
