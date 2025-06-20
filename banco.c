@@ -32,29 +32,70 @@ Il dealer mostra la sua carta e stabilisce se chiamare o stare
 Chi ha la mano più alta senza superare il 21, vince
 Se vince con il blackjack, la vincita viene moltiplicata per 1.5 (aka +50%)
 */
-char controllaVittoria() {
-    return 'S';
-    return 'P';
-    return 'V';
-    return 'B';
+char ControllaVittoria(int ManoGiocatore[], int ManoBanco[]) {
+
+    unsigned short TotGiocatore = 0;
+    unsigned short TotBanco = 0;
+
+    for (int i = 0; i < MAXcarte; i++){
+        if (ManoGiocatore[i] < 5 && ManoBanco[i] != 0){
+            TotGiocatore += 1;
+        }
+        if (ManoGiocatore[i] != 0){
+            TotGiocatore += (ManoGiocatore[i] / 10);
+        }
+
+    }
+    for (int i = 0; i < MAXcarte; i++){
+        if (ManoBanco[i] < 5 && ManoBanco[i] != 0){
+            TotBanco += 1;
+        }
+        if (ManoBanco[i] != 0){
+            TotBanco += (ManoBanco[i] / 10);
+        }
+    }
+
+
+
+    if (TotGiocatore > 21 && TotBanco <= 21) {//Se il giocatore sballa ma il banco no, SCONFITTA
+        return 'S';
+    }
+    if (TotBanco > TotGiocatore && TotGiocatore <= 21 && TotBanco <= 21) {//Se la mano del banco e` piu` grande di quella del giocatore e nessuno ha sballato SCONFITTA
+        return 'S';
+    }
+    if (ManoGiocatore[0] < 5 || (ManoGiocatore[0] / 10) == 10 && ManoGiocatore[1] < 5 || (ManoGiocatore[1] / 10) == 10 && ManoGiocatore[0] != ManoGiocatore[1]) {//Se il giocatore ha blackjack VITTORIA
+        return 'B';
+    }
+    if (TotBanco > 21 && TotGiocatore <= 21) {//Se il banco sballa ma il giocatore no, VITTORIA
+        return 'V';
+    }
+    if (TotGiocatore > TotBanco && TotGiocatore <= 21 && TotBanco <= 21) {//Se la mano del giocatore e` piu` grande di quella del banco e nessuno sballa, VITTORIA
+        return 'V';
+    }
+    if (TotBanco > 21 && TotGiocatore > 21) {//Se entrambi sballano, PAREGGIO
+        return 'P';
+    }
+    if (TotGiocatore == TotBanco) {//Se la mano di entrambi ha lo stesso valore, PAREGGIO
+        return 'P';
+    }
+
+    return '-';
 }
 
-void banco_init()
-{
-    //seed della funzione rand
+void BancoInit() {//seed della funzione rand
     srand(time(NULL));
 }
 
-void raddoppia(int mano[], int *scommessa) {//funzione per la giocata "raddoppio"
+void Raddoppia(int mano[], int *scommessa) {//funzione per la giocata "raddoppio"
 
-    pesca(mano);//invocazione alla pesca per pescare una carta
+    Pesca(mano);//invocazione alla pesca per pescare una carta
 
     *scommessa *= 2;//raddoppio scommessa
 }
 
-void pesca(int mano[]){//funzione per pescare una carta
+void Pesca(int mano[]){//funzione per pescare una carta
       int pescaRiuscita = 0;
-      static short controlloRipetizioni[52];
+      static short ControlloRipetizioni[52];
 
       do
       {
@@ -64,12 +105,12 @@ void pesca(int mano[]){//funzione per pescare una carta
                   continue;
               }
 
-              // Posizione libera
+
               // Genera carta
               short temp = rand() % 52;
               printf("temp: %d \n", temp);
-              controlloRipetizioni[temp]++;
-              if(controlloRipetizioni[temp] > 5 && mano[i] != temp){//check se la carta scelta da rand e` gia` presente
+              ControlloRipetizioni[temp]++;
+              if(ControlloRipetizioni[temp] > 5 && mano[i] != temp){//check se la carta scelta da rand e` gia` presente
                   continue;
               }
 

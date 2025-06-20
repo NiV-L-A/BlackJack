@@ -1,16 +1,14 @@
 #include <stdio.h>
 #include "main.h"
 
-void dividi(int mano[],int puntata)
-{
-    mano[1] = 0;
-    manoGiocatoreDivisa[0] = mano[0];
+void Dividi(int Mano[]) {
+    Mano[1] = 0;
+    ManoGiocatoreDivisa[0] = Mano[0];
 
-    puntataDivisa = puntata;
+    PuntataDivisa = Puntata;
 
-    pesca(mano);
-    pesca(manoGiocatoreDivisa);
-
+    Pesca(Mano);
+    Pesca(ManoGiocatoreDivisa);
 }
 
 

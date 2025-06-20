@@ -1,13 +1,39 @@
-//variabili globali
+//-------------------------------------------------OGGETTI GLOBALI------------------------------------------------------
 #pragma once//serve per le robe costanti e globali
-#define MAXcarte 22 //valore massimo di carte che il gicatore puo` avere in mano
-int manoGiocatoreDivisa[MAXcarte];
-int puntataDivisa;
 
+//===================DEFINIZIONI===================
+#define MAXcarte 22 //valore massimo di carte che il gicatore puo` avere in mano
+#define LunghezzaMassimaStringa 21
+#define LunghezzaMassimaRiga 256
+#define NomeFileStoricoPartite "file/storicoPartite"
+#define NomeFileUtenti "file/utenti"
+
+//===================TYPEDEF======================
+typedef struct {//Definisce il tipo Utente
+    int id;
+    char nome[LunghezzaMassimaStringa];
+    char password[LunghezzaMassimaStringa];
+    int bilancio;
+    float percentualeVittoria;
+    int partiteGiocate;
+} UtenteT;
+
+typedef struct {//Definisce il tipo StoricoPartita
+    char NomeUtente[LunghezzaMassimaStringa];
+    char Risultato[2]; // S = Sconfitta, P = Pareggio, V = Vittoria, B = Vittoria con Blackjack
+    int BilancioDiUscita;
+} StoricoPartitaT;
+
+//===================VARIABILI====================
+int Puntata = 0;
+int NumeroPartite = 0;
+int ManoGiocatoreDivisa[MAXcarte];
+int PuntataDivisa;
+
+//===================ARRAY========================
 // TODO: rendere globali le seguenti variabili:
 // - Numero di righe nel file storico partite
-// - L'array di utenti letti dal file
-// - L'indice dell'utente loggato
+
 
 //mazzo statico con tutte le carte
 //si comincia da 1 e non da 0 perche` 0 e` il valore default di un elemento non assegnato dell'array mano
@@ -19,10 +45,34 @@ const unsigned short mazzo[52] = {
     4, 24, 34, 44, 54, 64, 74, 84, 94, 104, 114, 124, 134
 };
 
-//dichiarate le funzioni qua sotto
-void pesca(int mano[]);//funzione pesca in banco
-void raddoppia(int mano[], int *scommessa);//funzione raddoppia in banco
-void dividi(int mano[],int puntata);//funzione split in giocatore
+UtenteT UtenteLoggato;
+
+//-------------------------------------------------DICHIARAZIONE FUNZIONI-----------------------------------------------
+
+//===================banco.c======================================================
+void BancoInit();//funzione di inizializzazione del banco
+void Pesca(int mano[]);//funzione pesca in banco
+void Raddoppia(int mano[], int *scommessa);//funzione raddoppia
+char ControllaVittoria(int ManoGiocatore[], int ManoBanco[]);//Funzione controllo vittoria
+
+//===================giocatore.c==================================================
+void Dividi(int mano[]);//funzione split in giocatore
+
+//===================GestioneUtenti.c=============================================
+char* RimuoviNewLine(char line[]);
+char* RimuoviSpazi(char* str);
+void PulisciStringa(char* str);
+void ScriviUtente(FILE* file, UtenteT utente);
+int RegistraUtente(UtenteT Utente);
+int ModificaUtenteAlFile(UtenteT utente);
+UtenteT* GetUtentiDalFile(int* NumeroUtenti);
+
+//===================GestioneStoricoPartite.c=====================================
+StoricoPartitaT* GetStoricoPartiteDalFile(char NomeUtente[]);
+void ScriviPartita(FILE* file, StoricoPartitaT partita);
+int AggiungiPartitaAlFile(StoricoPartitaT partita);
+
+
 
 
 
