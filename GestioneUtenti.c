@@ -1,4 +1,6 @@
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "main.h"
 
 
@@ -110,7 +112,7 @@ int RegistraUtente(UtenteT utente){//Appende un utente alla fine del file
 void LoggaUtente(char Nome[], char Password[], UtenteT* UtentiFile, int Conta) {//Funzione che popola lo struct globale "Utente loggato" con tutti i dettagli dell'utente trovato
     for (int i = 0; i < Conta; i++){
         if (strcmp(UtentiFile[i].nome, Nome) == 0 && strcmp(UtentiFile[i].password, Password) == 0) {
-            UtenteLoggato = UtentiFile[i];
+            *UtenteLoggato = UtentiFile[i];
             break;
         }
     }

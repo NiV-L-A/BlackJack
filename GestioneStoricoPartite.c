@@ -1,8 +1,10 @@
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "main.h"
 
 //Legge il file e popola un array della classe StoricoPartite in base all'utente loggato e restituisce il Numero di partite
-StoricoPartitaT* GetStoricoPartiteDalFile(char NomeUtente[]) {
+StoricoPartitaT* PopolaStoricoPartiteDalFile() {
 
     FILE *file = fopen(NomeFileStoricoPartite, "r");
     if (!file) {
@@ -34,18 +36,18 @@ StoricoPartitaT* GetStoricoPartiteDalFile(char NomeUtente[]) {
         Partite = partita;
         sscanf(line, "%20[^,],%1[^,],%10d", &Partite[i].NomeUtente, Partite[i].Risultato, &Partite[i].BilancioDiUscita);
         PulisciStringa(Partite[i].NomeUtente);
-        if (strcmp(Partite[i].NomeUtente, NomeUtente) == 0) {
+        if (strcmp(Partite[i].NomeUtente, UtenteLoggato->nome) == 0) {
             i++;
         }
     }
 
     fclose(file);
-    NumeroPartite = i;
+    NumeroRighi = i;
     return Partite;
 }
 
 void ScriviPartita(FILE* file, StoricoPartitaT partita) {//Aggiunge una partita al file
-    fprintf(file, "%20s,%1s,%10d\n", partita.NomeUtente, partita.Risultato, partita.BilancioDiUscita);
+    fprintf(file, "%20s,%c,%10d\n", partita.NomeUtente, partita.Risultato, partita.BilancioDiUscita);
 }
 
 int AggiungiPartitaAlFile(StoricoPartitaT partita) {

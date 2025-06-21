@@ -1,15 +1,20 @@
 #include <stdio.h>
-#include "banco.c"
-#include "giocatore.c"
-#include "GestioneUtenti.c"
-#include "GestioneStoricoPartite.c"
+#include <gtk/gtk.h>
+#include <sys/types.h>
+#include <signal.h>
+#include <stdlib.h>
 #include "main.h"
 
+
 // nel main mettiamo solo le call alle funzioni.
-int main(){
+int main(int argc, char *argv[]){
     static int ManoBanco[MAXcarte];//mettere static davanti ad una variabile garantisce che i valori non assegnati siano deterministici anziche` numeri a caso presi da un punto a caso della memoria
     static int ManoGiocatore[MAXcarte];
 
+    BancoInit();
+
+
+    return InitProgramma(argc, argv);
     /*
     per quanto riguarda il calcolo del winrate, bisogna scorrere tutti quanti gli elementi dell'array storico partite
     nel dato risultato (arr.Risultato) e fare una conta con due variabili. una tiene conto delle vittorie
