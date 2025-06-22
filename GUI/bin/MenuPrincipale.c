@@ -36,13 +36,15 @@ GtkWidget* LblTassoVittoria;
 GtkWidget* LblBilancio;
 //================================BOTTONI=========================
 GtkWidget* BtnGioca;
-GtkWidget* BtnAccedi;
+GtkWidget* BtnAccediRegistrati;
 GtkWidget* BtnStorico;
 GtkWidget* BtnBilancio;
 GtkWidget* BtnEsci;
 GtkWidget* BtnEsci2;
 GtkWidget* BtnGioca;
 GtkWidget* BtnMenuPausa;
+GtkWidget* BtnAccedi;
+GtkWidget* BtnRegistrati;
 // GtkWidget* BtnPunta50;
 // GtkWidget* BtnPunta100;
 // GtkWidget* BtnPunta250;
@@ -85,6 +87,7 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     gtk_builder_connect_signals(Builder, NULL);
 
 //-----------------------------------------------SEZIONE COLLEGAMENTO OGGETTI-------------------------------------------
+//Qui vado ad estrarre dal builder gli elementi che andro` a manipolare nel codice
 //====================TOP LEVEL==================
     ControlloScena = GTK_WIDGET(gtk_builder_get_object(Builder, "controlloScena"));
     CntMenuPrincipale = GTK_WIDGET(gtk_builder_get_object(Builder, "cntMenuPrincipale"));
@@ -114,7 +117,7 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     LblBilancio = GTK_WIDGET(gtk_builder_get_object(Builder, "lblBilancio"));
 //=====================BOTTONI===================
     BtnGioca = GTK_WIDGET(gtk_builder_get_object(Builder, "pg1BtnGioca"));
-    BtnAccedi = GTK_WIDGET(gtk_builder_get_object(Builder, "pg1BtnAccedi"));
+    BtnAccediRegistrati = GTK_WIDGET(gtk_builder_get_object(Builder, "pg1BtnAccedi"));
     BtnStorico = GTK_WIDGET(gtk_builder_get_object(Builder, "pg1TBtnStorico"));
     BtnBilancio = GTK_WIDGET(gtk_builder_get_object(Builder, "pg1BtnBilancio"));
     BtnEsci = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnEsci"));
@@ -132,6 +135,8 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     BtnAggiungi200 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnP200"));
     BtnAggiungi500 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnP500"));
     BtnAggiungi1000 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnP1000"));
+    BtnAccedi = GTK_WIDGET(gtk_builder_get_object(Builder, "pg3BtnAccedi"));
+    BtnRegistrati = GTK_WIDGET(gtk_builder_get_object(Builder, "pg3BtnRegistrati"));
 //=====================MISC======================
     TxtStoricoPartite = GTK_WIDGET(gtk_builder_get_object(Builder, "txtStoricoPartite"));
     EntNomeUtente1 = GTK_WIDGET(gtk_builder_get_object(Builder, "entNomeUtente1"));
@@ -149,7 +154,7 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     ColoreBG.green = 0.50196;
     ColoreBG.blue = 0.16471;
     ColoreBG.alpha = 1.0;
-    gtk_widget_override_background_color(Finestra, GTK_STATE_FLAG_NORMAL, &ColoreBG);
+    gtk_widget_override_background_color(Finestra, GTK_STATE_FLAG_NORMAL, &ColoreBG);//Con questa setto il colore del bg ai dati inseriti in ColoreBG
 
 //===================INVOCAZIONE===============
     gtk_widget_show(Finestra);//Mostra la finestra
@@ -159,50 +164,63 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     return EXIT_SUCCESS;//Condizione di uscita necessaria per chiudere il programma una volta chiusa l'ui
 }
 //---------------------------------------------FUNZIONI CALLBACK--------------------------------------------------------
+//Qui vengono gestiti i segnali di ogni widget e vi si assegna un metodo.
 //===================BOTTONI===================
-void on_pg1TBtnStorico_toggled(GtkToggleButton* tb){
-    if (UtenteLoggato != NULL) {
+//Funzione che gestisce il caricamento a schermo dello storico partite
+void on_pg1TBtnStorico_toggled(GtkToggleButton* tb) {//Se L'utente e` loggato ed il bottone e` in stato "schiacciato", mostra lo storico partite
+    if (UtenteLoggato != NULL) {//Altrimenti, porta l'utente sulla pagina di registrazione/accesso
         gtk_toggle_button_get_active(tb) ? gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntStoricoPartite) : gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntVuotoStoricoPartite);
     }
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
 }
-void on_pg1BtnBilancio_clicked(GtkButton* b){
-    if (UtenteLoggato != NULL) {
+//Funzione che gestisce il cambio scena alla pagina di "top-up" del bilancio cliccato il tasto sul menu principale
+void on_pg1BtnBilancio_clicked(GtkButton* b) {//Se l'utente e` loggato, cambia scena alla pagina di gestione del bilancio
+    if (UtenteLoggato != NULL) {//Altrimenti, porta l'utente sulla pagina di registrazione/accesso
         gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntGestioneBilancio);
     }
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
 }
+//Funzione che gestisce il cambio scena alla pagina di registrazione/accesso premuto il bottone "accedi" nel menu principale
 void on_pg1BtnAccedi_clicked(GtkButton* b) {
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
 }
+//Funzine che gestisce il cambio scena facendo tornare indietro al menu principale dalla pagina di gestione bilancio
 void on_pg2BtnEsci_clicked(GtkButton* b) {
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
 }
+//Funzione che gestisce il cambio scena facendo tornare indietro al menu principale dalla pagina di registrazione/accesso
 void on_pg3BtnEsci_clicked(GtkButton* b) {
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
 }
-void on_pg1BtnGioca_clicked(GtkButton* b){
-    if (UtenteLoggato != NULL){
+//Funzione che gestisce il cambio scena al playfield ed inizializza la partita
+void on_pg1BtnGioca_clicked(GtkButton* b){//Se l'utente e` loggato, invoca "InitPartita" e cambia scena al tavolo di gioco
+    if (UtenteLoggato != NULL){//Altrimenti, porta l'utente sulla pagina di registrazione/accesso
         gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntTavoloDaGioco);
     }
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
 }
+//Funzione che gestisce il cambio scena al menu di pausa durante una partita
 void on_pg4BtnPausa_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPausa);
 }
+//Funzione che gestisce l'opzione "Riprendi" del menu pausa, facendo ritornare il giocatore alla partita
 void on_pg5BtnRiprendi_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntTavoloDaGioco);
 }
+//Funzione che gestisce l'opzione "Torna al menu", cambiando la finestra delle opzioni del menu pausa con una di conferma, informando l'utente che non sia possibile riprendere una partita abbandonata
 void on_pg5BtnTornaAlMenu_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntMenuConferma1);
 }
-void on_pg5BtnAnnulla1_clicked(GtkButton* b){
+//Funzione che gestisce l'opzione "No" nella finestra di conferma per tornare al menu principale
+void on_pg5BtnAnnulla1_clicked(GtkButton* b){//In caso venga scelta, riporta l'utente al menu pausa
     gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntOpzioniPausa);
 }
-void on_pg5BtnConferma1_clicked(GtkButton* b){
+//Funzione che gestisce l'opzione "Si" nella finestra di conferma per tornare al menu principale
+void on_pg5BtnConferma1_clicked(GtkButton* b){//In caso venga scelta, riporta l'utente all menu principale, liberando la memoria occupata da quella partita
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
 }
-void on_pg5BtnChiudiGioco_clicked(GtkButton* b){
+//Funzione che gestisce l'opzione "Chiudi il gioco" del menu di pausa, cambiando la finestra delle opzioni del menu pausa con una di conferma, informando l'utente che non sia possibile riprendere una partita abbandonata.
+void on_pg5BtnChiudiGioco_clicked(GtkButton* b){//In caso venga scelta, libera la memoria occupata da quella partita, aggiorna le statistiche contenute nel
     gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntMenuConferma2);
 }
 void on_pg5BtnAnnulla2_clicked(GtkButton* b){

@@ -542,6 +542,7 @@ vittoria: </property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
                         <property name="halign">center</property>
+                        <signal name="clicked" handler="on_pg3BtnAccedi_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -640,6 +641,7 @@ vittoria: </property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
                         <property name="halign">center</property>
+                        <signal name="clicked" handler="on_pg3BtnRegistrati_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
