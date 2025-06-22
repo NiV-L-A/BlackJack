@@ -97,8 +97,8 @@ int ModificaUtenteAlFile(UtenteT utente) {//Modifica i dati di un utente nel fil
     return 0;
 }
 
-//Appende un utente alla fine del file
-int RegistraUtente(UtenteT utente){
+
+int RegistraUtente(UtenteT utente){//Appende un utente alla fine del file
     FILE* file = fopen(NomeFileUtenti, "a");
     if (!file) {
         return 0;
@@ -109,14 +109,16 @@ int RegistraUtente(UtenteT utente){
     return 1;
 }
 
-void LoggaUtente(char Nome[], char Password[], UtenteT* UtentiFile, int Conta) {//Funzione che popola lo struct globale "Utente loggato" con tutti i dettagli dell'utente trovato
+//Funzione che popola lo struct globale "Utente loggato" con tutti i dettagli dell'utente trovato
+int LoggaUtente(char Nome[], char Password[], UtenteT* UtentiFile, int Conta) {
     for (int i = 0; i < Conta; i++){
         if (strcmp(UtentiFile[i].nome, Nome) == 0 && strcmp(UtentiFile[i].password, Password) == 0) {
             *UtenteLoggato = UtentiFile[i];
-            break;
+            return 1;
         }
     }
     fprintf(stderr, "Utente con nome %s non trovato\n",Nome);
+    return 0;
 }
 
 

@@ -304,23 +304,33 @@ void on_pg3BtnAccedi_clicked(GtkButton* b) {
         return;
     }
 
+    fprintf(stderr, "1\n");
     char* nomeUtente = gtk_entry_get_text(EntNomeUtente1);
     if (validaStringa(nomeUtente) == 0) {
+        fprintf(stderr, "2\n");
         // TODO: Far apparire un messaggio: "Nome utente inserito non valido"
         return;
     }
+
     char* password = gtk_entry_get_text(EntPassword1);
+    fprintf(stderr, "3\n");
+
     if (validaStringa(password) == 0) {
+        fprintf(stderr, "4\n");
         // TODO: Far apparire un messaggio: "Password inserita non valida"
         return;
     }
 
+    fprintf(stderr, "5\n");
     if (LoggaUtente(nomeUtente, password, utentiFile, conta) == 0) {
+        fprintf(stderr, "6\n");
         // TODO: Far apparire un messaggio: "Combinazione utente/password non trovato"
         return;
     }
 
+    fprintf(stderr, "7\n");
     // Se siamo arrivati qui, l'utente è loggato
+    fprintf(stderr, "Loggato\n");
 }
 
 void on_pg3BtnRegistrati_clicked(GtkButton* b) {
