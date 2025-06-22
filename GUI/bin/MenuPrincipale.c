@@ -287,8 +287,68 @@ void on_entPassword2_changed(GtkEntry* e) {
     MemorizzaDatiAccesso(e);
 }
 
+// Pagina di login
+int validaStringa(char* str) {
+    if (*str == ' ') {
+        return 0;
+    }
+    return 1;
+}
 
+void on_pg3BtnAccedi_clicked(GtkButton* b) {
+    int conta = 0;
+    UtenteT* utentiFile = GetUtentiDalFile(&conta);
 
+    // Se utentiFile è NULL e conta è 0, allora non siamo riusciti a leggere gli utenti
+    if (utentiFile == NULL && conta == 0) {
+        return;
+    }
+
+    char* nomeUtente = gtk_entry_get_text(EntNomeUtente1);
+    if (validaStringa(nomeUtente) == 0) {
+        // TODO: Far apparire un messaggio: "Nome utente inserito non valido"
+        return;
+    }
+    char* password = gtk_entry_get_text(EntPassword1);
+    if (validaStringa(password) == 0) {
+        // TODO: Far apparire un messaggio: "Password inserita non valida"
+        return;
+    }
+
+    if (LoggaUtente(nomeUtente, password, utentiFile, conta) == 0) {
+        // TODO: Far apparire un messaggio: "Combinazione utente/password non trovato"
+        return;
+    }
+
+    // Se siamo arrivati qui, l'utente è loggato
+}
+
+void on_pg3BtnRegistrati_clicked(GtkButton* b) {
+    char* nomeUtente = gtk_entry_get_text(EntNomeUtente2);
+    if (validaStringa(nomeUtente) == 0) {
+        // TODO: Far apparire un messaggio: "Nome utente inserito non valido"
+        return;
+    }
+    char* password = gtk_entry_get_text(EntPassword2);
+    if (validaStringa(password) == 0) {
+        // TODO: Far apparire un messaggio: "Password inserita non valida"
+        return;
+    }
+
+    UtenteT utente;
+    utente.id = rand() % 1000;
+    snprintf(utente.nome, sizeof(utente.nome), nomeUtente);
+    snprintf(utente.password, sizeof(utente.password), password);
+    utente.bilancio = 500;
+    utente.percentualeVittoria = rand() % 100;
+    utente.partiteGiocate = rand() % 100;
+
+    if (RegistraUtente(utente) == 0) {
+        return;
+    }
+
+    // L'utente è stato registrato
+}
 
 
 

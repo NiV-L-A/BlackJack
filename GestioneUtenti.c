@@ -97,8 +97,8 @@ int ModificaUtenteAlFile(UtenteT utente) {//Modifica i dati di un utente nel fil
     return 0;
 }
 
-
-int RegistraUtente(UtenteT utente){//Appende un utente alla fine del file
+//Appende un utente alla fine del file
+int RegistraUtente(UtenteT utente){
     FILE* file = fopen(NomeFileUtenti, "a");
     if (!file) {
         return 0;
