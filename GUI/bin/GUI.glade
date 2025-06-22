@@ -24,6 +24,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
+                <signal name="clicked" handler="on_pg1BtnGioca_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="x">545</property>
@@ -138,6 +139,7 @@
                   <attribute name="font-desc" value="Sans Bold 20"/>
                   <attribute name="foreground" value="#ffffffffffff"/>
                 </attributes>
+                <signal name="map" handler="on_lblNomeUtente1_map" swapped="no"/>
               </object>
               <packing>
                 <property name="x">137</property>
@@ -216,6 +218,7 @@ vittoria: </property>
                   <attribute name="font-desc" value="Sans Bold 16"/>
                   <attribute name="foreground" value="#e0e01b1b2424"/>
                 </attributes>
+                <signal name="map" handler="on_lblPartiteGiocate_map" swapped="no"/>
               </object>
               <packing>
                 <property name="x">293</property>
@@ -232,6 +235,7 @@ vittoria: </property>
                   <attribute name="font-desc" value="Sans Bold 16"/>
                   <attribute name="foreground" value="#e0e01b1b2424"/>
                 </attributes>
+                <signal name="map" handler="on_lblTassoVittoria_map" swapped="no"/>
               </object>
               <packing>
                 <property name="x">293</property>
@@ -243,11 +247,12 @@ vittoria: </property>
                 <property name="width-request">100</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">200</property>
+                <property name="label" translatable="yes">0</property>
                 <attributes>
                   <attribute name="font-desc" value="Sans Bold 16"/>
                   <attribute name="foreground" value="#e0e01b1b2424"/>
                 </attributes>
+                <signal name="map" handler="on_lblBilancio_map" swapped="no"/>
               </object>
               <packing>
                 <property name="x">293</property>
@@ -330,7 +335,7 @@ vittoria: </property>
                 <property name="width-request">100</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">200</property>
+                <property name="label" translatable="yes">0</property>
                 <attributes>
                   <attribute name="font-desc" value="Sans Bold 20"/>
                   <attribute name="foreground" value="#e0e01b1b2424"/>
@@ -349,6 +354,7 @@ vittoria: </property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
+                <signal name="clicked" handler="on_pg2BtnP100_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="x">345</property>
@@ -363,6 +369,7 @@ vittoria: </property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
+                <signal name="clicked" handler="on_pg2BtnP200_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="x">485</property>
@@ -377,6 +384,7 @@ vittoria: </property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
+                <signal name="clicked" handler="on_pg2BtnP500_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="x">615</property>
@@ -391,6 +399,7 @@ vittoria: </property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
+                <signal name="clicked" handler="on_pg2BtnP1000_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="x">755</property>
@@ -647,7 +656,7 @@ vittoria: </property>
                 </child>
               </object>
               <packing>
-                <property name="x">399</property>
+                <property name="x">400</property>
                 <property name="y">254</property>
               </packing>
             </child>
@@ -696,6 +705,640 @@ vittoria: </property>
             <property name="name">page2</property>
             <property name="title" translatable="yes">page0</property>
             <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFixed" id="cntTavoloGioco">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkBox" id="cntManoGiocatore">
+                <property name="width-request">888</property>
+                <property name="height-request">196</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="x">313</property>
+                <property name="y">604</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="cntManoBanco">
+                <property name="width-request">431</property>
+                <property name="height-request">196</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="x">422</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="pg4BtnPausa">
+                <property name="width-request">50</property>
+                <property name="height-request">50</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <signal name="clicked" handler="on_pg4BtnPausa_clicked" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="imgBottonePausa">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="stock">gtk-media-pause</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="x">1115</property>
+                <property name="y">18</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="imgAvatar3">
+                <property name="width-request">120</property>
+                <property name="height-request">120</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="pixbuf">../SpriteMenu/Avatar.png</property>
+              </object>
+              <packing>
+                <property name="x">89</property>
+                <property name="y">424</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblNomeUtente3">
+                <property name="width-request">69</property>
+                <property name="height-request">34</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Guest</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Bold 18"/>
+                  <attribute name="foreground" value="#ffffffffffff"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="x">100</property>
+                <property name="y">550</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblTestoStatico11">
+                <property name="width-request">81</property>
+                <property name="height-request">26</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Bilancio:</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Bold 14"/>
+                  <attribute name="foreground" value="#ffffffffffff"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="x">12</property>
+                <property name="y">605</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblTestoStatico12">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Puntato:</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Bold 14"/>
+                  <attribute name="foreground" value="#ffffffffffff"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="x">12</property>
+                <property name="y">656</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblBilancio3">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">200</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Bold 14"/>
+                  <attribute name="foreground" value="#eded33333b3b"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="x">190</property>
+                <property name="y">605</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblPuntata">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">0</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Bold 14"/>
+                  <attribute name="foreground" value="#eded33333b3b"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="x">190</property>
+                <property name="y">656</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStack" id="stkOpzioniPuntata">
+                <property name="width-request">313</property>
+                <property name="height-request">55</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="transition-type">slide-up-down</property>
+                <child>
+                  <object class="GtkBox" id="cntVuotoOpzioniPuntata">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page0</property>
+                    <property name="title" translatable="yes">page0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="cntBottoniOpzioniPuntata">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="homogeneous">True</property>
+                    <child>
+                      <object class="GtkButton" id="pg4BtnP50">
+                        <property name="label" translatable="yes">50</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pg4BtnP100">
+                        <property name="label" translatable="yes">100</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pg4BtnP250">
+                        <property name="label" translatable="yes">250</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pg4BtnP500">
+                        <property name="label" translatable="yes">500</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page1</property>
+                    <property name="title" translatable="yes">page1</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="y">745</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblTestoStatico13">
+                <property name="width-request">55</property>
+                <property name="height-request">26</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Punta</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Bold 14"/>
+                  <attribute name="foreground" value="#ffffffffffff"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="x">109</property>
+                <property name="y">708</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStack" id="stkOpzioniGiocatore">
+                <property name="width-request">444</property>
+                <property name="height-request">62</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="transition-type">slide-left-right</property>
+                <child>
+                  <object class="GtkBox" id="cntVuotoOpzioniGiocatore">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page0</property>
+                    <property name="title" translatable="yes">page0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="cntBottoniOpzioniGiocatore">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="homogeneous">True</property>
+                    <child>
+                      <object class="GtkButton" id="pg4BtnDividi">
+                        <property name="label" translatable="yes">Dividi</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pg4BtnRimani">
+                        <property name="label" translatable="yes">Rimani</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pg4BtnRaddoppia">
+                        <property name="label" translatable="yes">Raddoppia</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pg4BtnPesca">
+                        <property name="label" translatable="yes">Pesca</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page1</property>
+                    <property name="title" translatable="yes">page1</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="x">756</property>
+                <property name="y">517</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">page0</property>
+            <property name="title" translatable="yes">page0</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFixed" id="cntMenuPausa">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkStack" id="stkMenuPausa">
+                <property name="width-request">412</property>
+                <property name="height-request">360</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="transition-type">crossfade</property>
+                <child>
+                  <object class="GtkBox" id="cntOpzioniPausa">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">79</property>
+                    <child>
+                      <object class="GtkButton" id="pg5BtnRiprendi">
+                        <property name="label" translatable="yes">Riprendi</property>
+                        <property name="width-request">180</property>
+                        <property name="height-request">60</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="halign">center</property>
+                        <signal name="clicked" handler="on_pg5BtnRiprendi_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pg5BtnTornaAlMenu">
+                        <property name="label" translatable="yes">Torna al menu</property>
+                        <property name="width-request">180</property>
+                        <property name="height-request">60</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="halign">center</property>
+                        <signal name="clicked" handler="on_pg5BtnTornaAlMenu_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pg5BtnChiudiGioco">
+                        <property name="label" translatable="yes">Chiudi il gioco</property>
+                        <property name="width-request">180</property>
+                        <property name="height-request">60</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="halign">center</property>
+                        <signal name="clicked" handler="on_pg5BtnChiudiGioco_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page0</property>
+                    <property name="title" translatable="yes">page0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLayout" id="cntMenuConferma1">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkLabel" id="lblTestoStatico15">
+                        <property name="width-request">100</property>
+                        <property name="height-request">68</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Sicuro?
+</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold 18"/>
+                          <attribute name="foreground" value="#ffffffffffff"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">152</property>
+                        <property name="y">60</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="lblTestoStatico16">
+                        <property name="width-request">351</property>
+                        <property name="height-request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Non potrai riprendere
+          la partita.</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold 16"/>
+                          <attribute name="foreground" value="#eded33333b3b"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">25</property>
+                        <property name="y">120</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pg5BtnConferma1">
+                        <property name="label" translatable="yes">Si</property>
+                        <property name="width-request">80</property>
+                        <property name="height-request">60</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_pg5BtnConferma1_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="x">70</property>
+                        <property name="y">242</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pg5BtnAnnulla1">
+                        <property name="label" translatable="yes">No</property>
+                        <property name="width-request">80</property>
+                        <property name="height-request">60</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_pg5BtnAnnulla1_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="x">255</property>
+                        <property name="y">242</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page1</property>
+                    <property name="title" translatable="yes">page1</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLayout" id="cntMenuConferma2">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkLabel" id="lblTestoStatico18">
+                        <property name="width-request">100</property>
+                        <property name="height-request">68</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Sicuro?
+</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold 18"/>
+                          <attribute name="foreground" value="#ffffffffffff"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">152</property>
+                        <property name="y">60</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="lblTestoStatico19">
+                        <property name="width-request">351</property>
+                        <property name="height-request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Non potrai riprendere
+          la partita.</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold 16"/>
+                          <attribute name="foreground" value="#eded33333b3b"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">25</property>
+                        <property name="y">120</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pg5BtnConferma2">
+                        <property name="label" translatable="yes">Si</property>
+                        <property name="width-request">80</property>
+                        <property name="height-request">60</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_pg5BtnConferma2_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="x">70</property>
+                        <property name="y">242</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pg5BtnAnnulla2">
+                        <property name="label" translatable="yes">No</property>
+                        <property name="width-request">80</property>
+                        <property name="height-request">60</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_pg5BtnAnnulla2_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="x">255</property>
+                        <property name="y">242</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page2</property>
+                    <property name="title" translatable="yes">page2</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="x">400</property>
+                <property name="y">274</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblTestoStatico14">
+                <property name="width-request">207</property>
+                <property name="height-request">51</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">In Pausa...</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Bold 28"/>
+                  <attribute name="foreground" value="#ffff78780000"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="x">498</property>
+                <property name="y">160</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">page1</property>
+            <property name="title" translatable="yes">page1</property>
+            <property name="position">4</property>
           </packing>
         </child>
       </object>

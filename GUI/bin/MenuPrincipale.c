@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <string.h>
 #include "main.h"
 
 //-----------------------------------------------SEZIONE PUNTATORI ELEMENTI---------------------------------------------
@@ -14,6 +15,20 @@ GtkWidget* CntStoricoPartite;
 GtkWidget* CntVuotoStoricoPartite;
 GtkWidget* CntGestioneBilancio;
 GtkWidget* CntMenuAccesso;
+GtkWidget* CntTavoloDaGioco;
+GtkWidget* CntManoGiocatore;
+GtkWidget* CntManoBanco;
+GtkWidget* StkOpzioniPuntata;
+GtkWidget* CntVuotoOpzioniPuntata;
+GtkWidget* CntBtnOpzioniPuntata;
+GtkWidget* StkOpzioniGiocatore;
+GtkWidget* CntVuotoOpzioniGiocatore;
+GtkWidget* CntBtnOpzioniGiocatore;
+GtkWidget* CntMenuPausa;
+GtkWidget* StkMenuPausa;
+GtkWidget* CntOpzioniPausa;
+GtkWidget* CntMenuConferma1;
+GtkWidget* CntMenuConferma2;
 //================================LABEL===========================
 GtkWidget* LblNomeUtente;
 GtkWidget* LblPartiteGiocate;
@@ -26,6 +41,28 @@ GtkWidget* BtnStorico;
 GtkWidget* BtnBilancio;
 GtkWidget* BtnEsci;
 GtkWidget* BtnEsci2;
+GtkWidget* BtnGioca;
+GtkWidget* BtnMenuPausa;
+// GtkWidget* BtnPunta50;
+// GtkWidget* BtnPunta100;
+// GtkWidget* BtnPunta250;
+// GtkWidget* BtnPunta500;
+// GtkWidget* BtnSceltaDividi;
+// GtkWidget* BtnSceltaRimani;
+// GtkWidget* BtnSceltaRaddoppia;
+// GtkWidget* BtnSceltaPesca;
+GtkWidget* BtnAggiungi100;
+GtkWidget* BtnAggiungi200;
+GtkWidget* BtnAggiungi500;
+GtkWidget* BtnAggiungi1000;
+GtkWidget* BtnPausaRiprendi;
+GtkWidget* BtnPausaTornaAlMenu;
+GtkWidget* BtnPausaChiudiGioco;
+GtkWidget* BtnPausaAnnulla1;
+GtkWidget* BtnPausaConferma1;
+GtkWidget* BtnPausaAnnulla2;
+GtkWidget* BtnPausaConferma2;
+
 //================================MISC============================
 GtkWidget* TxtStoricoPartite;
 GtkWidget* EntNomeUtente1;
@@ -56,6 +93,20 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     CntVuotoStoricoPartite = GTK_WIDGET(gtk_builder_get_object(Builder, "cntVuotoStoricoPartite"));
     CntGestioneBilancio = GTK_WIDGET(gtk_builder_get_object(Builder, "cntGestioneBilancio"));
     CntMenuAccesso = GTK_WIDGET(gtk_builder_get_object(Builder, "cntMenuAccesso"));
+    CntTavoloDaGioco = GTK_WIDGET(gtk_builder_get_object(Builder, "cntTavoloGioco"));
+    CntManoGiocatore = GTK_WIDGET(gtk_builder_get_object(Builder, "cntManoGiocatore"));
+    CntManoBanco = GTK_WIDGET(gtk_builder_get_object(Builder, "cntManoBanco"));
+    StkOpzioniPuntata = GTK_WIDGET(gtk_builder_get_object(Builder, "stkOpzioniPuntata"));
+    CntVuotoOpzioniPuntata = GTK_WIDGET(gtk_builder_get_object(Builder, "cntVuotoOpzioniPuntata"));
+    CntBtnOpzioniPuntata = GTK_WIDGET(gtk_builder_get_object(Builder, "cntBottoniOpzioniPuntata"));
+    StkOpzioniGiocatore = GTK_WIDGET(gtk_builder_get_object(Builder, "stkOpzioniGiocatore"));
+    CntVuotoOpzioniGiocatore = GTK_WIDGET(gtk_builder_get_object(Builder, "cntVuotoOpzioniGiocatore"));
+    CntBtnOpzioniGiocatore = GTK_WIDGET(gtk_builder_get_object(Builder, "cntBottoniOpzioniGiocatore"));
+    CntMenuPausa = GTK_WIDGET(gtk_builder_get_object(Builder, "cntMenuPausa"));
+    StkMenuPausa = GTK_WIDGET(gtk_builder_get_object(Builder, "stkMenuPausa"));
+    CntOpzioniPausa = GTK_WIDGET(gtk_builder_get_object(Builder, "cntOpzioniPausa"));
+    CntMenuConferma1 = GTK_WIDGET(gtk_builder_get_object(Builder, "cntMenuConferma1"));
+    CntMenuConferma2 = GTK_WIDGET(gtk_builder_get_object(Builder, "cntMenuConferma2"));
 //=====================LABEL=====================
     LblNomeUtente = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNomeUtente1"));
     LblPartiteGiocate = GTK_WIDGET(gtk_builder_get_object(Builder, "lblPartiteGiocate"));
@@ -68,6 +119,19 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     BtnBilancio = GTK_WIDGET(gtk_builder_get_object(Builder, "pg1BtnBilancio"));
     BtnEsci = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnEsci"));
     BtnEsci2 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg3BtnEsci"));
+    BtnGioca = GTK_WIDGET(gtk_builder_get_object(Builder, "pg1BtnGioca"));
+    BtnMenuPausa = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnPausa"));
+    BtnPausaRiprendi = GTK_WIDGET(gtk_builder_get_object(Builder, "pg5BtnRiprendi"));
+    BtnPausaTornaAlMenu = GTK_WIDGET(gtk_builder_get_object(Builder, "pg5BtnTornaAlMenu"));
+    BtnPausaChiudiGioco = GTK_WIDGET(gtk_builder_get_object(Builder, "pg5BtnChiudiGioco"));
+    BtnPausaAnnulla1 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg5BtnAnnulla1"));
+    BtnPausaConferma1 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg5BtnConferma1"));
+    BtnPausaAnnulla2 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg5BtnAnnulla2"));
+    BtnPausaConferma2 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg5BtnConferma2"));
+    BtnAggiungi100 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnP100"));
+    BtnAggiungi200 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnP200"));
+    BtnAggiungi500 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnP500"));
+    BtnAggiungi1000 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnP1000"));
 //=====================MISC======================
     TxtStoricoPartite = GTK_WIDGET(gtk_builder_get_object(Builder, "txtStoricoPartite"));
     EntNomeUtente1 = GTK_WIDGET(gtk_builder_get_object(Builder, "entNomeUtente1"));
@@ -96,11 +160,17 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
 }
 //---------------------------------------------FUNZIONI CALLBACK--------------------------------------------------------
 //===================BOTTONI===================
-void on_pg1TBtnStorico_toggled(GtkToggleButton* tb) {
-    gtk_toggle_button_get_active(tb) ? gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntStoricoPartite) : gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntVuotoStoricoPartite);
+void on_pg1TBtnStorico_toggled(GtkToggleButton* tb){
+    if (UtenteLoggato != NULL) {
+        gtk_toggle_button_get_active(tb) ? gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntStoricoPartite) : gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntVuotoStoricoPartite);
+    }
+    gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
 }
-void on_pg1BtnBilancio_clicked(GtkButton* b) {
-    gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntGestioneBilancio);
+void on_pg1BtnBilancio_clicked(GtkButton* b){
+    if (UtenteLoggato != NULL) {
+        gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntGestioneBilancio);
+    }
+    gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
 }
 void on_pg1BtnAccedi_clicked(GtkButton* b) {
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
@@ -110,6 +180,75 @@ void on_pg2BtnEsci_clicked(GtkButton* b) {
 }
 void on_pg3BtnEsci_clicked(GtkButton* b) {
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
+}
+void on_pg1BtnGioca_clicked(GtkButton* b){
+    if (UtenteLoggato != NULL){
+        gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntTavoloDaGioco);
+    }
+    gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
+}
+void on_pg4BtnPausa_clicked(GtkButton* b){
+    gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPausa);
+}
+void on_pg5BtnRiprendi_clicked(GtkButton* b){
+    gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntTavoloDaGioco);
+}
+void on_pg5BtnTornaAlMenu_clicked(GtkButton* b){
+    gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntMenuConferma1);
+}
+void on_pg5BtnAnnulla1_clicked(GtkButton* b){
+    gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntOpzioniPausa);
+}
+void on_pg5BtnConferma1_clicked(GtkButton* b){
+    gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
+}
+void on_pg5BtnChiudiGioco_clicked(GtkButton* b){
+    gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntMenuConferma2);
+}
+void on_pg5BtnAnnulla2_clicked(GtkButton* b){
+    gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntOpzioniPausa);
+}
+void on_pg5BtnConferma2_clicked(GtkButton* b){
+    gtk_main_quit();
+}
+void on_pg2BtnP100_clicked(GtkButton* b){
+    UtenteLoggato->bilancio += 100;
+}
+void on_pg2BtnP200_clicked(GtkButton* b){
+    UtenteLoggato->bilancio += 200;
+}
+void on_pg2BtnP500_clicked(GtkButton* b){
+    UtenteLoggato->bilancio += 500;
+}
+void on_pg2BtnP1000_clicked(GtkButton* b){
+    UtenteLoggato->bilancio += 1000;
+}
+//===================LABEL=====================
+void on_lblNomeUtente1_map(GtkLabel* lb){
+    if (UtenteLoggato != NULL){
+        gtk_label_set_text(lb, UtenteLoggato->nome);
+    }
+}
+void on_lblPartiteGiocate_map(GtkLabel* lb){
+    if (UtenteLoggato != NULL){
+        char temp[BufferSnprintf];
+        snprintf(temp, BufferSnprintf,"%d", UtenteLoggato->partiteGiocate);
+        gtk_label_set_text(lb, temp);
+    }
+}
+void on_lblTassoVittoria_map(GtkLabel* lb){
+    if (UtenteLoggato != NULL){
+        char temp[BufferSnprintf];
+        snprintf(temp, BufferSnprintf, "%f", UtenteLoggato->percentualeVittoria);
+        gtk_label_set_text(lb, temp);
+    }
+}
+void on_lblBilancio_map(GtkLabel* lb){
+    if (UtenteLoggato != NULL){
+        char temp[BufferSnprintf];
+        snprintf(temp, BufferSnprintf,"%d", UtenteLoggato->bilancio);
+        gtk_label_set_text(lb, temp);
+    }
 }
 //===================MISC======================
 void MemorizzaDatiAccesso(GtkEntry *e){

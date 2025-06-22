@@ -7,6 +7,7 @@
 #define MAXcarte 22 //valore massimo di carte che il gicatore puo` avere in mano
 #define LunghezzaMassimaStringa 21
 #define LunghezzaMassimaRiga 256
+#define BufferSnprintf 200
 #define NomeFileStoricoPartite "file/storicoPartite"
 #define NomeFileUtenti "file/utenti"
 
