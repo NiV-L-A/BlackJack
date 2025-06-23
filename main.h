@@ -8,8 +8,8 @@
 #define LunghezzaMassimaStringa 21
 #define LunghezzaMassimaRiga 256
 #define BufferSnprintf 200
-#define NomeFileStoricoPartite "file/storicoPartite"
-#define NomeFileUtenti "file/utenti"
+#define NomeFileStoricoPartite "File/storicoPartite"
+#define NomeFileUtenti "File/utenti"
 
 //===================TYPEDEF======================================================
 typedef struct {//Definisce il tipo Utente
@@ -59,6 +59,7 @@ void ScriviUtente(FILE* file, UtenteT utente);
 int RegistraUtente(UtenteT Utente);
 int ModificaUtenteAlFile(UtenteT utente);
 UtenteT* GetUtentiDalFile(int* NumeroUtenti);
+int LoggaUtente(char Nome[], char Password[], UtenteT* UtentiFile, int Conta);
 
 //===================GestioneStoricoPartite.c=====================================
 StoricoPartitaT* PopolaStoricoPartiteDalFile();

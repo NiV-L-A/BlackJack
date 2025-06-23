@@ -32,6 +32,7 @@ UtenteT* GetUtentiDalFile(int* NumeroUtenti) {//Legge il file e popola un array 
     if (!file) {
         // Il file non esiste oppure non possiamo aprirlo.
 
+
         // Proviamo a creare il file
         FILE *file = fopen(NomeFileUtenti, "a");
         if (!file) {
@@ -113,6 +114,7 @@ int RegistraUtente(UtenteT utente){//Appende un utente alla fine del file
 int LoggaUtente(char Nome[], char Password[], UtenteT* UtentiFile, int Conta) {
     for (int i = 0; i < Conta; i++){
         if (strcmp(UtentiFile[i].nome, Nome) == 0 && strcmp(UtentiFile[i].password, Password) == 0) {
+            printf("%d",i);
             *UtenteLoggato = UtentiFile[i];
             return 1;
         }

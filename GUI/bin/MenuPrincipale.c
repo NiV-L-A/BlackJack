@@ -19,6 +19,8 @@ GtkWidget* CntTavoloDaGioco;
 GtkWidget* CntManoGiocatore;
 GtkWidget* CntManoBanco;
 GtkWidget* StkOpzioniPuntata;
+GtkWidget* StkOpzioniAccesso;
+GtkWidget* CntAccesso;
 GtkWidget* CntVuotoOpzioniPuntata;
 GtkWidget* CntBtnOpzioniPuntata;
 GtkWidget* StkOpzioniGiocatore;
@@ -34,6 +36,7 @@ GtkWidget* LblNomeUtente;
 GtkWidget* LblPartiteGiocate;
 GtkWidget* LblTassoVittoria;
 GtkWidget* LblBilancio;
+GtkWidget* LblErroreAccesso;
 //================================BOTTONI=========================
 GtkWidget* BtnGioca;
 GtkWidget* BtnAccediRegistrati;
@@ -110,11 +113,14 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     CntOpzioniPausa = GTK_WIDGET(gtk_builder_get_object(Builder, "cntOpzioniPausa"));
     CntMenuConferma1 = GTK_WIDGET(gtk_builder_get_object(Builder, "cntMenuConferma1"));
     CntMenuConferma2 = GTK_WIDGET(gtk_builder_get_object(Builder, "cntMenuConferma2"));
+    StkOpzioniAccesso = GTK_WIDGET(gtk_builder_get_object(Builder, "stkOpzioniAccesso"));
+    CntAccesso = GTK_WIDGET(gtk_builder_get_object(Builder, "cntAccesso"));
 //=====================LABEL=====================
     LblNomeUtente = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNomeUtente1"));
     LblPartiteGiocate = GTK_WIDGET(gtk_builder_get_object(Builder, "lblPartiteGiocate"));
     LblTassoVittoria = GTK_WIDGET(gtk_builder_get_object(Builder, "lblTassoVittoria"));
     LblBilancio = GTK_WIDGET(gtk_builder_get_object(Builder, "lblBilancio"));
+    LblErroreAccesso = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNotificaErrore"));
 //=====================BOTTONI===================
     BtnGioca = GTK_WIDGET(gtk_builder_get_object(Builder, "pg1BtnGioca"));
     BtnAccediRegistrati = GTK_WIDGET(gtk_builder_get_object(Builder, "pg1BtnAccedi"));
@@ -171,6 +177,7 @@ void on_pg1TBtnStorico_toggled(GtkToggleButton* tb) {//Se L'utente e` loggato ed
     if (UtenteLoggato != NULL) {//Altrimenti, porta l'utente sulla pagina di registrazione/accesso
         gtk_toggle_button_get_active(tb) ? gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntStoricoPartite) : gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntVuotoStoricoPartite);
     }
+    gtk_toggle_button_set_active(tb,0);
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
 }
 //Funzione che gestisce il cambio scena alla pagina di "top-up" del bilancio cliccato il tasto sul menu principale
@@ -289,7 +296,7 @@ void on_entPassword2_changed(GtkEntry* e) {
 
 // Pagina di login
 int validaStringa(char* str) {
-    if (*str == ' ') {
+    if (*str == ' ' || *str == '\0') {
         return 0;
     }
     return 1;
@@ -305,26 +312,26 @@ void on_pg3BtnAccedi_clicked(GtkButton* b) {
     }
 
     fprintf(stderr, "1\n");
-    char* nomeUtente = gtk_entry_get_text(EntNomeUtente1);
+    char* nomeUtente = gtk_entry_get_text(GTK_ENTRY(EntNomeUtente1));
     if (validaStringa(nomeUtente) == 0) {
         fprintf(stderr, "2\n");
-        // TODO: Far apparire un messaggio: "Nome utente inserito non valido"
+        gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tNome utente invalido!\n \t\t Riprovare");
         return;
     }
 
-    char* password = gtk_entry_get_text(EntPassword1);
+    char* password = gtk_entry_get_text(GTK_ENTRY(EntPassword1));
     fprintf(stderr, "3\n");
 
     if (validaStringa(password) == 0) {
         fprintf(stderr, "4\n");
-        // TODO: Far apparire un messaggio: "Password inserita non valida"
+        gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tPassword invalida!\n \t\t Riprovare");
         return;
     }
 
     fprintf(stderr, "5\n");
     if (LoggaUtente(nomeUtente, password, utentiFile, conta) == 0) {
         fprintf(stderr, "6\n");
-        // TODO: Far apparire un messaggio: "Combinazione utente/password non trovato"
+        gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tUtente inesistente!\n \t\t Riprovare");
         return;
     }
 
@@ -334,14 +341,14 @@ void on_pg3BtnAccedi_clicked(GtkButton* b) {
 }
 
 void on_pg3BtnRegistrati_clicked(GtkButton* b) {
-    char* nomeUtente = gtk_entry_get_text(EntNomeUtente2);
+    char* nomeUtente = gtk_entry_get_text(GTK_ENTRY(EntNomeUtente2));
     if (validaStringa(nomeUtente) == 0) {
-        // TODO: Far apparire un messaggio: "Nome utente inserito non valido"
+        gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tNome utente invalido!\n \t\t Riprovare");
         return;
     }
-    char* password = gtk_entry_get_text(EntPassword2);
+    char* password = gtk_entry_get_text(GTK_ENTRY(EntPassword2));
     if (validaStringa(password) == 0) {
-        // TODO: Far apparire un messaggio: "Password inserita non valida"
+        gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tPassword invalida!\n \t\t Riprovare");
         return;
     }
 
@@ -350,14 +357,16 @@ void on_pg3BtnRegistrati_clicked(GtkButton* b) {
     snprintf(utente.nome, sizeof(utente.nome), nomeUtente);
     snprintf(utente.password, sizeof(utente.password), password);
     utente.bilancio = 500;
-    utente.percentualeVittoria = rand() % 100;
-    utente.partiteGiocate = rand() % 100;
+    utente.percentualeVittoria = 0;
+    utente.partiteGiocate = 0;
 
     if (RegistraUtente(utente) == 0) {
         return;
     }
 
     // L'utente è stato registrato
+    gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tUtente registrato! \n\t\t Accedere");
+    gtk_stack_set_visible_child(GTK_STACK(StkOpzioniAccesso), CntAccesso);
 }
 
 
