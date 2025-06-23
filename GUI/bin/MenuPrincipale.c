@@ -303,6 +303,10 @@ int validaStringa(char* str) {
 }
 
 void on_pg3BtnAccedi_clicked(GtkButton* b) {
+#ifdef DEBUG
+    fprintf(stderr, "\n-------------\n");
+    fprintf(stderr, "on_pg3BtnAccedi_clicked\n");
+#endif
     int conta = 0;
     UtenteT* utentiFile = GetUtentiDalFile(&conta);
 
@@ -311,33 +315,34 @@ void on_pg3BtnAccedi_clicked(GtkButton* b) {
         return;
     }
 
-    fprintf(stderr, "1\n");
     char* nomeUtente = gtk_entry_get_text(GTK_ENTRY(EntNomeUtente1));
     if (validaStringa(nomeUtente) == 0) {
-        fprintf(stderr, "2\n");
         gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tNome utente invalido!\n \t\t Riprovare");
         return;
     }
 
     char* password = gtk_entry_get_text(GTK_ENTRY(EntPassword1));
-    fprintf(stderr, "3\n");
-
     if (validaStringa(password) == 0) {
-        fprintf(stderr, "4\n");
         gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tPassword invalida!\n \t\t Riprovare");
         return;
     }
 
-    fprintf(stderr, "5\n");
     if (LoggaUtente(nomeUtente, password, utentiFile, conta) == 0) {
-        fprintf(stderr, "6\n");
         gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tUtente inesistente!\n \t\t Riprovare");
         return;
     }
 
-    fprintf(stderr, "7\n");
     // Se siamo arrivati qui, l'utente è loggato
-    fprintf(stderr, "Loggato\n");
+    gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tUtente autenticato!");
+#ifdef DEBUG
+    fprintf(stderr, "UtenteLoggato:\n");
+    fprintf(stderr, "\tid: %d\n", UtenteLoggato->id);
+    fprintf(stderr, "\tnome: %s\n", UtenteLoggato->nome);
+    fprintf(stderr, "\tpassword: %s\n", UtenteLoggato->password);
+    fprintf(stderr, "\tbilancio: %d\n", UtenteLoggato->bilancio);
+    fprintf(stderr, "\tpercentualeVittoria: %.0f\n", UtenteLoggato->percentualeVittoria);
+    fprintf(stderr, "\tpartiteGiocate: %d\n", UtenteLoggato->partiteGiocate);
+#endif
 }
 
 void on_pg3BtnRegistrati_clicked(GtkButton* b) {
@@ -367,6 +372,10 @@ void on_pg3BtnRegistrati_clicked(GtkButton* b) {
     // L'utente è stato registrato
     gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tUtente registrato! \n\t\t Accedere");
     gtk_stack_set_visible_child(GTK_STACK(StkOpzioniAccesso), CntAccesso);
+
+#ifdef DEBUG
+    fprintf(stderr, "\n-------------\n");
+#endif
 }
 
 

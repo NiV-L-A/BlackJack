@@ -28,16 +28,20 @@ void PulisciStringa(char* str) {//Rimuove gli spazi e sposta la nuova stringa do
 
 
 UtenteT* GetUtentiDalFile(int* NumeroUtenti) {//Legge il file e popola un array della classe Utente e restituisce la lunghezza dell'array
+#ifdef DEBUG
+    fprintf(stderr, "\n-------------\n");
+    fprintf(stderr, "GetUtentiDalFile\n");
+#endif
     FILE *file = fopen(NomeFileUtenti, "r");
     if (!file) {
         // Il file non esiste oppure non possiamo aprirlo.
-
-
         // Proviamo a creare il file
         FILE *file = fopen(NomeFileUtenti, "a");
         if (!file) {
             // Non abbiamo i permessi
-            fprintf(stderr, "Errore apertura file\n");
+#ifdef DEBUG
+            fprintf(stderr, "Errore apertura file %s\n", NomeFileUtenti);
+#endif
             return NULL;
         }
     }
@@ -47,10 +51,13 @@ UtenteT* GetUtentiDalFile(int* NumeroUtenti) {//Legge il file e popola un array 
     int i = 0;
     char line[LunghezzaMassimaRiga];
     while (fgets(line, sizeof(line), file)) {
-        //RimuoviNewLine(line);
+        RimuoviNewLine(line);
         UtenteT* Utente = realloc(Utenti, (i + 1) * sizeof(UtenteT));
         if (!Utente) {
             // Allocazione memoria non riuscita
+#ifdef DEBUG
+            fprintf(stderr, "Allocazione memoria non riuscita\n");
+#endif
             free(Utenti);
             fclose(file);
             return NULL;
@@ -58,13 +65,28 @@ UtenteT* GetUtentiDalFile(int* NumeroUtenti) {//Legge il file e popola un array 
 
         Utenti = Utente;
         sscanf(line, "%5d,%20[^,],%20[^,],%10d,%f,%10d", &Utenti[i].id, Utenti[i].nome, Utenti[i].password, &Utenti[i].bilancio, &Utenti[i].percentualeVittoria, &Utenti[i].partiteGiocate);
+        //snprintf(line, LunghezzaMassimaRiga, "%5d,%20[^,],%20[^,],%10d,%f,%10d", &Utenti[i].id, Utenti[i].nome, Utenti[i].password, &Utenti[i].bilancio, &Utenti[i].percentualeVittoria, Utenti[i].partiteGiocate);
+        //sscanf(line, "%5d,%20[^,],%20[^,],%10d,%f,%10d", &Utenti[i].id, Utenti[i].nome, Utenti[i].password, &Utenti[i].bilancio, &Utenti[i].percentualeVittoria, Utenti[i].partiteGiocate);
         PulisciStringa(Utenti[i].nome);
         PulisciStringa(Utenti[i].password);
+#ifdef DEBUG
+        fprintf(stderr, "i: %d\n", i);
+        fprintf(stderr, "\tid: %d\n", Utenti[i].id);
+        fprintf(stderr, "\tnome: %s\n", Utenti[i].nome);
+        fprintf(stderr, "\tpassword: %s\n", Utenti[i].password);
+        fprintf(stderr, "\tbilancio: %d\n", Utenti[i].bilancio);
+        fprintf(stderr, "\tpercentualeVittoria: %.0f\n", Utenti[i].percentualeVittoria);
+        fprintf(stderr, "\tpartiteGiocate: %d\n", Utenti[i].partiteGiocate);
+        fprintf(stderr, "\n");
+#endif DEBUG
         i++;
     }
 
     fclose(file);
     *NumeroUtenti = i;
+#ifdef DEBUG
+    fprintf(stderr, "\n-------------\n");
+#endif DEBUG
     return Utenti;
 }
 
@@ -100,6 +122,10 @@ int ModificaUtenteAlFile(UtenteT utente) {//Modifica i dati di un utente nel fil
 
 
 int RegistraUtente(UtenteT utente){//Appende un utente alla fine del file
+#ifdef DEBUG
+    fprintf(stderr, "\n-------------\n");
+    fprintf(stderr, "RegistraUtente %s\n", utente.nome);
+#endif
     FILE* file = fopen(NomeFileUtenti, "a");
     if (!file) {
         return 0;
@@ -107,19 +133,39 @@ int RegistraUtente(UtenteT utente){//Appende un utente alla fine del file
 
     ScriviUtente(file, utente);
     fclose(file);
+#ifdef DEBUG
+    fprintf(stderr, "\n-------------\n");
+#endif
     return 1;
 }
 
 //Funzione che popola lo struct globale "Utente loggato" con tutti i dettagli dell'utente trovato
 int LoggaUtente(char Nome[], char Password[], UtenteT* UtentiFile, int Conta) {
+#ifdef DEBUG
+    fprintf(stderr, "\n-------------\n");
+    fprintf(stderr, "LoggaUtente\n");
+#endif
     for (int i = 0; i < Conta; i++){
+#ifdef DEBUG
+        fprintf(stderr, "id: %d\n", UtentiFile[i].id);
+        fprintf(stderr, "nome: %s\n", UtentiFile[i].nome);
+        fprintf(stderr, "password: %s\n", UtentiFile[i].password);
+        fprintf(stderr, "bilancio: %d\n", UtentiFile[i].bilancio);
+        fprintf(stderr, "percentualeVittoria: %.0f\n", UtentiFile[i].percentualeVittoria);
+        fprintf(stderr, "partiteGiocate: %d\n", UtentiFile[i].partiteGiocate);
+        fprintf(stderr, "\n");
+#endif
         if (strcmp(UtentiFile[i].nome, Nome) == 0 && strcmp(UtentiFile[i].password, Password) == 0) {
-            printf("%d",i);
-            *UtenteLoggato = UtentiFile[i];
+#ifdef DEBUG
+            fprintf(stderr, "TROVATO: %d\n", UtentiFile[i].id);
+#endif
+            UtenteLoggato = &UtentiFile[i];
             return 1;
         }
     }
+#ifdef DEBUG
     fprintf(stderr, "Utente con nome %s non trovato\n",Nome);
+#endif
     return 0;
 }
 

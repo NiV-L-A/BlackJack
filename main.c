@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include "main.h"
 
-
 // nel main mettiamo solo le call alle funzioni.
 int main(int argc, char *argv[]){
     static int ManoBanco[MAXcarte];//mettere static davanti ad una variabile garantisce che i valori non assegnati siano deterministici anziche` numeri a caso presi da un punto a caso della memoria

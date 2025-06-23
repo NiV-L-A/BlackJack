@@ -10,6 +10,7 @@
 #define BufferSnprintf 200
 #define NomeFileStoricoPartite "File/storicoPartite"
 #define NomeFileUtenti "File/utenti"
+#define DEBUG
 
 //===================TYPEDEF======================================================
 typedef struct {//Definisce il tipo Utente
