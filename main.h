@@ -1,16 +1,21 @@
 //-------------------------------------------------OGGETTI GLOBALI------------------------------------------------------
+//                      Tutte le variabili e gli array globali si trovano in Globali.c
+//----------------------------------------------------------------------------------------------------------------------
 #pragma once//serve per le robe costanti e globali
 #include <stdio.h>
-#include <stddef.h>
 
 //===================DEFINIZIONI==================================================
-#define MAXcarte 22 //valore massimo di carte che il gicatore puo` avere in mano
+#define MAXcarteGiocatore 8 //valore massimo di carte che il gicatore puo` avere in mano
+#define MAXcarteBanco 6
+#define MAXmazziBanco 6
+#define SlotVuoto 0
+#define RimuoviSeme / 10
+#define DimensioneMazzo 52
 #define LunghezzaMassimaStringa 21
 #define LunghezzaMassimaRiga 256
 #define BufferSnprintf 200
-#define NomeFileStoricoPartite "File/storicoPartite"
-#define NomeFileUtenti "File/utenti"
-#define DEBUG
+#define NomeFileStoricoPartite "File/StoricoPartite"
+#define NomeFileUtenti "File/Utenti"
 
 //===================TYPEDEF======================================================
 typedef struct {//Definisce il tipo Utente
@@ -31,27 +36,32 @@ typedef struct {//Definisce il tipo StoricoPartita
 //===================VARIABILI GLOBALI (DICHIARAZIONI)========================
 extern int Puntata;
 extern int NumeroRighi;
-extern int ManoGiocatoreDivisa[MAXcarte];
-extern int PuntataDivisa;
+extern short NumeroMazziGiocatore;
 extern UtenteT* UtenteLoggato;
 
-//===================ARRAY========================================================
+//===================ARRAY GLOBALI (DICHIARAZIONI)============================
 //mazzo statico con tutte le carte
 //si comincia da 1 e non da 0 perche` 0 e` il valore default di un elemento non assegnato dell'array mano
-extern const unsigned short mazzo[52];
+extern const unsigned short Mazzo[DimensioneMazzo];
+extern unsigned short ControlloRipetizioni[DimensioneMazzo];
+extern unsigned short ManoGiocatore[MAXcarteGiocatore];
+extern unsigned short ManoBanco[MAXcarteBanco];
+
 
 //-------------------------------------------------DICHIARAZIONE FUNZIONI-----------------------------------------------
-
-//===================banco.c======================================================
-void BancoInit();//Funzione che seedda rand per il banco
-void Pesca(int mano[]);//Funzione che pesca una o piu` carte
-void Raddoppia(int mano[], int *scommessa);//Funzione che implementa il 'double'
-char ControllaVittoria(int ManoGiocatore[], int ManoBanco[]);//Funzione controllo vittoria
+//Accanto ad ogni funzione vi e` una spiegazione rapida del suo funzionamento. Usando il "jump-to" dell'IDE potete
+//              andare direttamente dove e` stata dichiarata, trovando una spiegazione piu` estesa.
+//----------------------------------------------------------------------------------------------------------------------
 int InitProgramma(int argc, char *argv[]);
-//===================giocatore.c==================================================
-void Dividi(int mano[]);//Funzione che implementa lo 'split'
+//===================Banco.c======================================================
+void RandInit();//Funzione che seedda rand
+char ControllaVittoria();//Funzione controllo vittoria
+int CalcolaPunti(unsigned short Mano[], unsigned short Dimensione);
+int PescaBanco(short CarteDaPescare);
+//===================Giocatore.c==================================================
 void AggiornamentoStatistiche(StoricoPartitaT* ArrPartite);//Funzione per aggiornare le statistiche dell'utente
-
+int PescaGiocatore(unsigned short CarteDaPescare);
+void Raddoppia();
 //===================GestioneUtenti.c=============================================
 char* RimuoviNewLine(char line[]);
 char* RimuoviSpazi(char* str);
@@ -61,14 +71,20 @@ int RegistraUtente(UtenteT Utente);
 int ModificaUtenteAlFile(UtenteT utente);
 UtenteT* GetUtentiDalFile(int* NumeroUtenti);
 int LoggaUtente(char Nome[], char Password[], UtenteT* UtentiFile, int Conta);
-
+int validaStringa(char* str);
 //===================GestioneStoricoPartite.c=====================================
 StoricoPartitaT* PopolaStoricoPartiteDalFile();
 void ScriviPartita(FILE* file, StoricoPartitaT partita);
 int AggiungiPartitaAlFile(StoricoPartitaT partita);
+void ResettaValoriGlobali();
+//===================GestioneGraficaPartita.c=====================================
+void RenderizzaCarta(GtkImage *immagine, int idCarta);
+void AggiornaManoGiocatore();
+void AggiornaManoBanco();
+void AggiornaAmbiMani();
+void InitRenderingCarte(GtkBuilder *Builder);
+void AggiornaStatistichePartita();
 
-//FUNZIONI DEBUG
-void printMano(int mano[]);//printare la mano passata
 
 #ifndef MAIN_H
 #define MAIN_H

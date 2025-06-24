@@ -1,16 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <gtk/gtk.h>
 #include <string.h>
 #include "main.h"
-
-void Dividi(int ManoGiocatore[]) {
-    ManoGiocatore[1] = 0;
-    ManoGiocatoreDivisa[0] = ManoGiocatore[0];
-
-    PuntataDivisa = Puntata;
-
-    Pesca(ManoGiocatore);
-    Pesca(ManoGiocatoreDivisa);
-}
 
 //Calcola il tasso di vittoria dell'utente
 void AggiornamentoStatistiche(StoricoPartitaT* ArrPartite) {
@@ -32,37 +24,51 @@ void AggiornamentoStatistiche(StoricoPartitaT* ArrPartite) {
     }
     UtenteLoggato->percentualeVittoria = (Vittorie / (Vittorie + Sconfitte)) * 100;
 }
+//Funzione che gestisce la pesca per il giocatore
+int PescaGiocatore(unsigned short CarteDaPescare) {//Prende come argument il numero di carte da pescare
+    unsigned short CartePescate = 0;//Ogni volta che pesca una carta con successo incrementa CartePescate fino a quando non equivale al numero richiesto
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//FUNZIONI DEBUG
-
-void printMano(int mano[]){//funzione per printare la mano per debuggare
-    for (int i = 0; i < MAXcarte; i++) {
-        if (mano[i] != 0) {
-            printf("%d\n", mano[i]);
+    while (CartePescate < CarteDaPescare) {
+        short IndiceSlotLibero = -1;//Scorre la mano fino a trovare uno slot libero, se ci riesce esce dal loop
+        for (short i = 0; i < MAXcarteGiocatore; i++) {
+            if (ManoGiocatore[i] == SlotVuoto) {
+                IndiceSlotLibero = i;
+                break;
+            }
         }
+
+        if (IndiceSlotLibero == -1) {//Altrimenti la mano e` piena, quindi ritorno un errore
+            return 0;
+        }
+
+        //Sezione che prova a pescare una carta all'infinito
+        unsigned short CartaPescata;
+        while (1) {
+            unsigned short IndiceMazzo = rand() % DimensioneMazzo;
+
+            if (ControlloRipetizioni[IndiceMazzo] < NumeroMazziGiocatore) {//Controllo ripetizioni nonche' impostazione della difficolta`
+                ControlloRipetizioni[IndiceMazzo]++;
+                CartaPescata = Mazzo[IndiceMazzo];
+                break;
+            }
+        }
+
+        if (CartaPescata RimuoviSeme == 1 && CalcolaPunti(ManoGiocatore, MAXcarteGiocatore) + 11 < 21) {
+            CartaPescata += 130;
+        }
+
+        //Pesca la carta
+        ManoGiocatore[IndiceSlotLibero] = CartaPescata;
+        CartePescate++;
     }
+    return 1;
 }
+void Raddoppia() {//funzione per la giocata "raddoppio"
+    if (UtenteLoggato->bilancio - (Puntata * 2) >= 0){
+        PescaGiocatore(1);
+    }
+    gtk_label_set_text(GTK_LABEL(LblNotificaBilancio), "Non hai abbastanza crediti!");
+}
+
 
 

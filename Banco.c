@@ -1,31 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <gtk/gtk.h>
+
 #include "main.h"
 
-char ControllaVittoria(int ManoGiocatore[], int ManoBanco[]) {
+char ControllaVittoria() {
 
-    unsigned short TotGiocatore = 0;
-    unsigned short TotBanco = 0;
-
-    for (int i = 0; i < MAXcarte; i++){//Somma delle carte della mano Giocatore
-        if (ManoGiocatore[i] < 5 && ManoGiocatore[i] != 0){
-            TotGiocatore += 1;
-        }else if (ManoGiocatore[i] != 0 && ManoGiocatore[i] < 105){
-            TotGiocatore += (ManoGiocatore[i] / 10);
-        }else if (ManoGiocatore[i] != 0 && ManoGiocatore[i] > 105){
-            TotGiocatore += 10;
-        }
-    }
-    for (int i = 0; i < MAXcarte; i++){//Somma delle carte della mano Banco
-        if (ManoBanco[i] < 5 && ManoBanco[i] != 0){
-            TotBanco += 1;
-        }else if (ManoBanco[i] != 0 && ManoBanco[i] < 105){
-            TotBanco += (ManoBanco[i] / 10);
-        }else if (ManoBanco[i] != 0 && ManoBanco[i] > 105){
-            TotBanco += 10;
-        }
-    }
+    unsigned short TotGiocatore = CalcolaPunti(ManoGiocatore, MAXcarteGiocatore);
+    unsigned short TotBanco = CalcolaPunti(ManoBanco, MAXcarteBanco);
 
     UtenteLoggato->partiteGiocate++;//Incrementa il contatore partitegiocate dato che la funzione va chiamata a prescindere ogni volta alla fine di una partita
 
@@ -62,43 +45,73 @@ char ControllaVittoria(int ManoGiocatore[], int ManoBanco[]) {
     return '-';//qui solo per zittire il compilatore
 }
 
-void BancoInit() {//seed della funzione rand
+void RandInit() {//seed della funzione rand
     srand(time(NULL));
 }
 
-void Raddoppia(int mano[], int *scommessa) {//funzione per la giocata "raddoppio"
+int CalcolaPunti(unsigned short Mano[], unsigned short Dimensione) {
 
-    Pesca(mano);//invocazione alla pesca per pescare una carta
+    unsigned short TotalePunti = 0;
+    unsigned short IndiceVuoto = 0;
+    unsigned short ValoreCartaAttuale = 0;
 
-    *scommessa *= 2;//raddoppio scommessa
+    for (short i = 0; i < Dimensione; i++){
+        if (Mano[i] == SlotVuoto){
+            IndiceVuoto = i;
+        }
+    }
+
+    for (short i = IndiceVuoto - 1; i != 0; i--){
+        ValoreCartaAttuale = Mano[i] RimuoviSeme;
+        if (ValoreCartaAttuale > 10 %% ValoreCartaAttuale < 14) {
+            TotalePunti += 10;
+        }else if (ValoreCartaAttuale == 14) {
+            TotalePunti += 11;
+        }
+        TotalePunti += ValoreCartaAttuale;
+    }
+    return TotalePunti;
 }
 
-void Pesca(int mano[]){//funzione per pescare una carta
-      int pescaRiuscita = 0;
-      static short ControlloRipetizioni[52];
+int PescaBanco(short CarteDaPescare) {
+    short CartePescate = 0;//Ogni volta che pesca una carta con successo incrementa CartePescate fino a quando non equivale al numero richiesto
 
-      do
-      {
-          for(int i = 0; i < MAXcarte; i++){
-              if (mano[i] != 0) {
-                  // Posizione nella mano già occupata
-                  continue;
-              }
+    while (CartePescate < CarteDaPescare) {
+        int IndiceSlotLibero = -1;//Scorre la mano fino a trovare uno slot libero, se ci riesce esce dal loop
+        for (int i = 0; i < MAXcarteBanco; i++) {
+            if (ManoBanco[i] == SlotVuoto) {
+                IndiceSlotLibero = i;
+                break;
+            }
+        }
 
+        if (IndiceSlotLibero == -1) {//Se non c'e` uno slot libero, non pescare
+            return 0;
+        }
+        //Se c'e` uno slot vuoto ma il totale dei punti e` gia` maggiore o uguale a 17, non pescare
+        if (CalcolaPunti(ManoBanco, MAXcarteBanco) >= 17) {
+            return 0;
+        }
 
-              // Genera carta
-              short temp = rand() % 52;
-              printf("temp: %d \n", temp);
-              ControlloRipetizioni[temp]++;
-              if(ControlloRipetizioni[temp] > 5 && mano[i] != temp){//check se la carta scelta da rand e` gia` presente
-                  continue;
-              }
+        //Loop che prova a pescare una carta all'infinito
+        short CartaPescata;
+        while (1) {
+            unsigned short IndiceMazzo = rand() % DimensioneMazzo;
 
-              // Carta libera, inseriscila nella mano alla posizione libera
-              mano[i] = mazzo[temp];
-              pescaRiuscita = 1;
-              break;
-          }
-      } while(pescaRiuscita == 0);
+            if (ControlloRipetizioni[IndiceMazzo] < MAXmazziBanco) {//Controllo ripetizioni
+                ControlloRipetizioni[IndiceMazzo]++;
+                CartaPescata = Mazzo[IndiceMazzo];
+                break;
+            }
+        }
+        //Se la carta e` un asso e con i punti attuali non andrebbe a sballare, assegnali il valore di 11
+        if (CartaPescata RimuoviSeme == 1 && CalcolaPunti(ManoBanco, MAXcarteBanco) <= 10) {
+            CartaPescata += 130;
+        }
+
+        //Pesca la carta
+        ManoBanco[IndiceSlotLibero] = CartaPescata;
+        CartePescate++;
+    }
+    return 1;
 }
-

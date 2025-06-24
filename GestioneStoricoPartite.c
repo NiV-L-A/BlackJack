@@ -62,3 +62,14 @@ int AggiungiPartitaAlFile(StoricoPartitaT partita) {
     fclose(file);
     return 1;
 }
+//Funzione generale per resettare i valori delle variabili globali alla fine di una partita
+void ResettaValoriGlobali() {
+    //Variabili
+    Puntata = 0;
+    NumeroRighi = 0;
+    //Array
+    memset(ManoGiocatore, 0, sizeof(ManoGiocatore));
+    memset(ManoBanco, 0, sizeof(ManoBanco));
+    memset(ControlloRipetizioni, 0, sizeof(ControlloRipetizioni));
+
+}

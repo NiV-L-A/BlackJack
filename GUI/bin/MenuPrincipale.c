@@ -31,12 +31,24 @@ GtkWidget* StkMenuPausa;
 GtkWidget* CntOpzioniPausa;
 GtkWidget* CntMenuConferma1;
 GtkWidget* CntMenuConferma2;
+GtkWidget* CntSecondaPesca;
 //================================LABEL===========================
 GtkWidget* LblNomeUtente;
 GtkWidget* LblPartiteGiocate;
 GtkWidget* LblTassoVittoria;
 GtkWidget* LblBilancio;
 GtkWidget* LblErroreAccesso;
+GtkWidget* LblNomeUtente2;
+GtkWidget* LblNomeUtente3;
+GtkWidget* LblBilancio2;
+GtkWidget* LblBilancio3;
+GtkWidget* LblErrorePartita;
+GtkWidget* LblErroreAggiungiCrediti;
+GtkWidget* LblPuntata;
+GtkWidget* LblValoreManoGiocatore;
+GtkWidget* LblValoreManoBanco;
+GtkWidget* LblPartitaVinta;
+GtkWidget* LblPartitaPersa;
 //================================BOTTONI=========================
 GtkWidget* BtnGioca;
 GtkWidget* BtnAccediRegistrati;
@@ -48,14 +60,13 @@ GtkWidget* BtnGioca;
 GtkWidget* BtnMenuPausa;
 GtkWidget* BtnAccedi;
 GtkWidget* BtnRegistrati;
-// GtkWidget* BtnPunta50;
-// GtkWidget* BtnPunta100;
-// GtkWidget* BtnPunta250;
-// GtkWidget* BtnPunta500;
-// GtkWidget* BtnSceltaDividi;
-// GtkWidget* BtnSceltaRimani;
-// GtkWidget* BtnSceltaRaddoppia;
-// GtkWidget* BtnSceltaPesca;
+GtkWidget* BtnPunta50;
+GtkWidget* BtnPunta100;
+GtkWidget* BtnPunta250;
+GtkWidget* BtnPunta500;
+GtkWidget* BtnSceltaRimani;
+GtkWidget* BtnSceltaRaddoppia;
+GtkWidget* BtnSceltaPesca;
 GtkWidget* BtnAggiungi100;
 GtkWidget* BtnAggiungi200;
 GtkWidget* BtnAggiungi500;
@@ -74,6 +85,9 @@ GtkWidget* EntNomeUtente1;
 GtkWidget* EntPassword1;
 GtkWidget* EntNomeUtente2;
 GtkWidget* EntPassword2;
+//================================IMMAGINI========================
+GtkImage* ImgCartaBanco1, *ImgCartaBanco2, *ImgCartaBanco3, *ImgCartaBanco4, *ImgCartaBanco5, *ImgCartaBanco6;
+GtkImage* ImgCartaGiocatore1, *ImgCartaGiocatore2, *ImgCartaGiocatore3, *ImgCartaGiocatore4, *ImgCartaGiocatore5, *ImgCartaGiocatore6, *ImgCartaGiocatore7, *ImgCartaGiocatore8;
 //================================BUILDER=========================
 GtkBuilder* Builder;
 
@@ -115,12 +129,24 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     CntMenuConferma2 = GTK_WIDGET(gtk_builder_get_object(Builder, "cntMenuConferma2"));
     StkOpzioniAccesso = GTK_WIDGET(gtk_builder_get_object(Builder, "stkOpzioniAccesso"));
     CntAccesso = GTK_WIDGET(gtk_builder_get_object(Builder, "cntAccesso"));
+    CntSecondaPesca = GTK_WIDGET(gtk_builder_get_object(Builder, "cntSecondaPesca"));
 //=====================LABEL=====================
     LblNomeUtente = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNomeUtente1"));
     LblPartiteGiocate = GTK_WIDGET(gtk_builder_get_object(Builder, "lblPartiteGiocate"));
     LblTassoVittoria = GTK_WIDGET(gtk_builder_get_object(Builder, "lblTassoVittoria"));
     LblBilancio = GTK_WIDGET(gtk_builder_get_object(Builder, "lblBilancio"));
     LblErroreAccesso = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNotificaErrore"));
+    LblBilancio2 = GTK_WIDGET(gtk_builder_get_object(Builder, "lblBilancio2"));
+    LblBilancio3 = GTK_WIDGET(gtk_builder_get_object(Builder, "lblBilancio3"));
+    LblNomeUtente2 = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNomeUtente2"));
+    LblNomeUtente3 = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNomeUtente3"));
+    LblErrorePartita = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNotificaPartita"));
+    LblErroreAggiungiCrediti = GTK_WIDGET(gtk_builder_get_object(Builder,"lblNotificaAggiungiCrediti"));
+    LblPuntata = GTK_WIDGET(gtk_builder_get_object(Builder, "lblPuntata"));
+    LblValoreManoGiocatore = GTK_WIDGET(gtk_builder_get_object(Builder, "lblValoreManoGiocatore"));
+    LblValoreManoBanco = GTK_WIDGET(gtk_builder_get_object(Builder, "lblValoreManoBanco"));
+    LblPartitaVinta = GTK_WIDGET(gtk_builder_get_object(Builder, "lblPartitaVinta"));
+    LblPartitaPersa = GTK_WIDGET(gtk_builder_get_object(Builder, "lblPartitaPersa"));
 //=====================BOTTONI===================
     BtnGioca = GTK_WIDGET(gtk_builder_get_object(Builder, "pg1BtnGioca"));
     BtnAccediRegistrati = GTK_WIDGET(gtk_builder_get_object(Builder, "pg1BtnAccedi"));
@@ -137,12 +163,35 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     BtnPausaConferma1 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg5BtnConferma1"));
     BtnPausaAnnulla2 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg5BtnAnnulla2"));
     BtnPausaConferma2 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg5BtnConferma2"));
-    BtnAggiungi100 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnP100"));
-    BtnAggiungi200 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnP200"));
-    BtnAggiungi500 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnP500"));
-    BtnAggiungi1000 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnP1000"));
+    BtnAggiungi100 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnAgg100"));
+    BtnAggiungi200 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnAgg200"));
+    BtnAggiungi500 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnAgg500"));
+    BtnAggiungi1000 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg2BtnAgg1000"));
     BtnAccedi = GTK_WIDGET(gtk_builder_get_object(Builder, "pg3BtnAccedi"));
     BtnRegistrati = GTK_WIDGET(gtk_builder_get_object(Builder, "pg3BtnRegistrati"));
+    BtnPunta50 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnP50"));
+    BtnPunta100 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnP100"));
+    BtnPunta250 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnP250"));
+    BtnPunta500 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnP500"));
+    BtnSceltaPesca = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnPesca"));
+    BtnSceltaRaddoppia = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnRaddoppia"));
+    BtnSceltaRimani = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnRimani"));
+//=====================IMMAGINI==================
+    ImgCartaBanco1 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaBanco1"));
+    ImgCartaBanco2 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaBanco2"));
+    ImgCartaBanco3 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaBanco3"));
+    ImgCartaBanco4 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaBanco4"));
+    ImgCartaBanco5 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaBanco5"));
+    ImgCartaBanco6 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaBanco6"));
+    ImgCartaGiocatore1 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaGiocatore1"));
+    ImgCartaGiocatore2 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaGiocatore2"));
+    ImgCartaGiocatore3 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaGiocatore3"));
+    ImgCartaGiocatore4 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaGiocatore4"));
+    ImgCartaGiocatore5 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaGiocatore5"));
+    ImgCartaGiocatore6 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaGiocatore6"));
+    ImgCartaGiocatore7 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaGiocatore7"));
+    ImgCartaGiocatore8 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaGiocatore8"));
+
 //=====================MISC======================
     TxtStoricoPartite = GTK_WIDGET(gtk_builder_get_object(Builder, "txtStoricoPartite"));
     EntNomeUtente1 = GTK_WIDGET(gtk_builder_get_object(Builder, "entNomeUtente1"));
@@ -176,6 +225,7 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
 void on_pg1TBtnStorico_toggled(GtkToggleButton* tb) {//Se L'utente e` loggato ed il bottone e` in stato "schiacciato", mostra lo storico partite
     if (UtenteLoggato != NULL) {//Altrimenti, porta l'utente sulla pagina di registrazione/accesso
         gtk_toggle_button_get_active(tb) ? gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntStoricoPartite) : gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntVuotoStoricoPartite);
+        return;
     }
     gtk_toggle_button_set_active(tb,0);
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
@@ -184,6 +234,7 @@ void on_pg1TBtnStorico_toggled(GtkToggleButton* tb) {//Se L'utente e` loggato ed
 void on_pg1BtnBilancio_clicked(GtkButton* b) {//Se l'utente e` loggato, cambia scena alla pagina di gestione del bilancio
     if (UtenteLoggato != NULL) {//Altrimenti, porta l'utente sulla pagina di registrazione/accesso
         gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntGestioneBilancio);
+        return;
     }
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
 }
@@ -200,9 +251,15 @@ void on_pg3BtnEsci_clicked(GtkButton* b) {
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
 }
 //Funzione che gestisce il cambio scena al playfield ed inizializza la partita
-void on_pg1BtnGioca_clicked(GtkButton* b){//Se l'utente e` loggato, invoca "InitPartita" e cambia scena al tavolo di gioco
-    if (UtenteLoggato != NULL){//Altrimenti, porta l'utente sulla pagina di registrazione/accesso
-        gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntTavoloDaGioco);
+void on_pg1BtnGioca_clicked(GtkButton* b){//Se l'utente e` loggato, controlla se abbia abbastanza crediti per fare almeno una puntata minima
+    if (UtenteLoggato != NULL){//Se esso e` loggato ed ha abbastanza crediti, viene inizializzata la partita
+        if (UtenteLoggato->bilancio >= 50){//Se non ha abbastanza crediti, viene portato sulla pagina di gestione del bilancio e promptato di aggiungerne un po'
+            gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntTavoloDaGioco);//Se invece non e' loggato, viene portato alla pagina di accesso/registrazione
+            return;
+        }
+        gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntGestioneBilancio);
+        gtk_label_set_text(GTK_LABEL(LblErroreAggiungiCrediti), "Non hai abbastanza crediti per giocare! \n\t\tAggiungine un po'!");
+        return;
     }
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
 }
@@ -236,18 +293,86 @@ void on_pg5BtnAnnulla2_clicked(GtkButton* b){
 void on_pg5BtnConferma2_clicked(GtkButton* b){
     gtk_main_quit();
 }
-void on_pg2BtnP100_clicked(GtkButton* b){
+void on_pg2BtnAgg100_clicked(GtkButton* b){
     UtenteLoggato->bilancio += 100;
+    char temp[BufferSnprintf];
+    snprintf(temp, BufferSnprintf, "%d", UtenteLoggato->bilancio);
+    gtk_label_set_text(GTK_LABEL(LblBilancio2), temp);
 }
-void on_pg2BtnP200_clicked(GtkButton* b){
+void on_pg2BtnAgg200_clicked(GtkButton* b){
     UtenteLoggato->bilancio += 200;
+    char temp[BufferSnprintf];
+    snprintf(temp, BufferSnprintf, "%d", UtenteLoggato->bilancio);
+    gtk_label_set_text(GTK_LABEL(LblBilancio2), temp);
 }
-void on_pg2BtnP500_clicked(GtkButton* b){
+void on_pg2BtnAgg500_clicked(GtkButton* b){
     UtenteLoggato->bilancio += 500;
+    char temp[BufferSnprintf];
+    snprintf(temp, BufferSnprintf, "%d", UtenteLoggato->bilancio);
+    gtk_label_set_text(GTK_LABEL(LblBilancio2), temp);
 }
-void on_pg2BtnP1000_clicked(GtkButton* b){
+void on_pg2BtnAgg1000_clicked(GtkButton* b){
     UtenteLoggato->bilancio += 1000;
+    char temp[BufferSnprintf];
+    snprintf(temp, BufferSnprintf, "%d", UtenteLoggato->bilancio);
+    gtk_label_set_text(GTK_LABEL(LblBilancio2), temp);
 }
+//Queste funzioni gestiscono i bottoni che permettono di fare una puntata durante la partita
+void on_pg4BtnP50_clicked(GtkButton* b){//Se il bilancio dell'utente - la somma puntata e` maggiore o uguale a 0, punta quella somma e aggiorna la statistica "bilancio"
+    if (UtenteLoggato->bilancio - 50 >= 0) {//Altrimenti mostra un errore informando l'utente che non abbia abbastanza crediti
+        Puntata += 50;
+        UtenteLoggato->bilancio -= 50;
+
+        return;
+    }
+    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
+}
+void on_pg4BtnP100_clicked(GtkButton* b) {
+
+    if (UtenteLoggato->bilancio - 100 >= 0){
+        Puntata += 100;
+        UtenteLoggato->bilancio -= 100;
+        AggiornaStatistichePartita();
+        return;
+    }
+    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
+}
+void on_pg4BtnP250_clicked(GtkButton* b) {
+
+    if (UtenteLoggato->bilancio - 250 >= 0){
+        Puntata += 250;
+        UtenteLoggato->bilancio -= 250;
+        AggiornaStatistichePartita();
+        return;
+    }
+    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
+}
+void on_pg4BtnP500_clicked(GtkButton* b){
+
+    if (UtenteLoggato->bilancio - 500 >= 0){
+        Puntata += 500;
+        UtenteLoggato->bilancio -= 500;
+        AggiornaStatistichePartita();
+        return;
+    }
+    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
+}
+//Le seguenti funzioni gestiscono cio` che accade quando il giocatore fa una scelta
+void on_pg4BtnRimani_clicked(GtkButton* b){//Il giocatore ha deciso di rimanere
+    printf("stand");//Invoca funzione rimani
+}
+void on_pg4BtnRaddoppia_clicked(GtkButton* b){//Il giocatore ha deciso di raddoppiare//Invoca funzione raddoppia e controlla se sia possibile farlo
+    if (Raddoppia()){//Se si, procedi ad aggiornare le statistiche in tempo reale, altrimenti notifica l'utente con un errore
+        AggiornaStatistichePartita();
+        return;
+    }
+    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
+}
+
+
+
+
+
 //===================LABEL=====================
 void on_lblNomeUtente1_map(GtkLabel* lb){
     if (UtenteLoggato != NULL){
@@ -264,7 +389,7 @@ void on_lblPartiteGiocate_map(GtkLabel* lb){
 void on_lblTassoVittoria_map(GtkLabel* lb){
     if (UtenteLoggato != NULL){
         char temp[BufferSnprintf];
-        snprintf(temp, BufferSnprintf, "%f", UtenteLoggato->percentualeVittoria);
+        snprintf(temp, BufferSnprintf, "%.2f%%", UtenteLoggato->percentualeVittoria);
         gtk_label_set_text(lb, temp);
     }
 }
@@ -275,6 +400,23 @@ void on_lblBilancio_map(GtkLabel* lb){
         gtk_label_set_text(lb, temp);
     }
 }
+void on_lblBilancio2_map(GtkLabel* lb){
+    char temp[BufferSnprintf];
+    snprintf(temp, BufferSnprintf, "%d",UtenteLoggato->bilancio);
+    gtk_label_set_text(lb, temp);
+}
+void on_lblBilancio3_map(GtkLabel* lb){
+    char temp[BufferSnprintf];
+    snprintf(temp, BufferSnprintf, "%d",UtenteLoggato->bilancio);
+    gtk_label_set_text(lb, temp);
+}
+void on_lblNomeUtente2_map(GtkLabel* lb){
+    gtk_label_set_text(lb, UtenteLoggato->nome);
+}
+void on_lblNomeUtente3_map(GtkLabel* lb){
+    gtk_label_set_text(lb, UtenteLoggato->nome);
+}
+
 //===================MISC======================
 void MemorizzaDatiAccesso(GtkEntry *e){
     char Buffer[21];
@@ -294,19 +436,7 @@ void on_entPassword2_changed(GtkEntry* e) {
     MemorizzaDatiAccesso(e);
 }
 
-// Pagina di login
-int validaStringa(char* str) {
-    if (*str == ' ' || *str == '\0') {
-        return 0;
-    }
-    return 1;
-}
-
 void on_pg3BtnAccedi_clicked(GtkButton* b) {
-#ifdef DEBUG
-    fprintf(stderr, "\n-------------\n");
-    fprintf(stderr, "on_pg3BtnAccedi_clicked\n");
-#endif
     int conta = 0;
     UtenteT* utentiFile = GetUtentiDalFile(&conta);
 
@@ -333,16 +463,7 @@ void on_pg3BtnAccedi_clicked(GtkButton* b) {
     }
 
     // Se siamo arrivati qui, l'utente è loggato
-    gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tUtente autenticato!");
-#ifdef DEBUG
-    fprintf(stderr, "UtenteLoggato:\n");
-    fprintf(stderr, "\tid: %d\n", UtenteLoggato->id);
-    fprintf(stderr, "\tnome: %s\n", UtenteLoggato->nome);
-    fprintf(stderr, "\tpassword: %s\n", UtenteLoggato->password);
-    fprintf(stderr, "\tbilancio: %d\n", UtenteLoggato->bilancio);
-    fprintf(stderr, "\tpercentualeVittoria: %.0f\n", UtenteLoggato->percentualeVittoria);
-    fprintf(stderr, "\tpartiteGiocate: %d\n", UtenteLoggato->partiteGiocate);
-#endif
+    gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
 }
 
 void on_pg3BtnRegistrati_clicked(GtkButton* b) {
@@ -373,9 +494,6 @@ void on_pg3BtnRegistrati_clicked(GtkButton* b) {
     gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tUtente registrato! \n\t\t Accedere");
     gtk_stack_set_visible_child(GTK_STACK(StkOpzioniAccesso), CntAccesso);
 
-#ifdef DEBUG
-    fprintf(stderr, "\n-------------\n");
-#endif
 }
 
 
