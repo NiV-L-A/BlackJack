@@ -42,7 +42,7 @@ int PescaGiocatore(unsigned short CarteDaPescare) {//Prende come argument il num
         }
 
         //Sezione che prova a pescare una carta all'infinito
-        unsigned short CartaPescata;
+        unsigned short CartaPescata = 0;
         while (1) {
             unsigned short IndiceMazzo = rand() % DimensioneMazzo;
 
@@ -53,9 +53,7 @@ int PescaGiocatore(unsigned short CarteDaPescare) {//Prende come argument il num
             }
         }
 
-        if (CartaPescata RimuoviSeme == 1 && CalcolaPunti(ManoGiocatore, MAXcarteGiocatore) + 11 < 21) {
-            CartaPescata += 130;
-        }
+        LogicaAssi(ManoGiocatore, MAXcarteGiocatore);
 
         //Pesca la carta
         ManoGiocatore[IndiceSlotLibero] = CartaPescata;
@@ -63,11 +61,14 @@ int PescaGiocatore(unsigned short CarteDaPescare) {//Prende come argument il num
     }
     return 1;
 }
-void Raddoppia() {//funzione per la giocata "raddoppio"
+int Raddoppia() {//funzione per la giocata "raddoppio"
     if (UtenteLoggato->bilancio - (Puntata * 2) >= 0){
         PescaGiocatore(1);
+        UtenteLoggato->bilancio -= Puntata;
+        Puntata *= 2;
+        return 1;
     }
-    gtk_label_set_text(GTK_LABEL(LblNotificaBilancio), "Non hai abbastanza crediti!");
+    return 0;
 }
 
 

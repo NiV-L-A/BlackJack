@@ -29,19 +29,19 @@ GtkWidget* CntBtnOpzioniGiocatore;
 GtkWidget* CntMenuPausa;
 GtkWidget* StkMenuPausa;
 GtkWidget* CntOpzioniPausa;
-GtkWidget* CntMenuConferma1;
-GtkWidget* CntMenuConferma2;
+GtkWidget* CntMenuConfermaHome;
+GtkWidget* CntMenuConfermaQuit;
 GtkWidget* CntSecondaPesca;
 //================================LABEL===========================
-GtkWidget* LblNomeUtente;
+GtkWidget* LblNomeUtenteMenuPrincipale;
 GtkWidget* LblPartiteGiocate;
 GtkWidget* LblTassoVittoria;
-GtkWidget* LblBilancio;
-GtkWidget* LblErroreAccesso;
-GtkWidget* LblNomeUtente2;
-GtkWidget* LblNomeUtente3;
-GtkWidget* LblBilancio2;
-GtkWidget* LblBilancio3;
+GtkWidget* LblBilancioMenuPrincipale;
+GtkWidget* LblNotificaErroreAccesso;
+GtkWidget* LblNomeUtenteGestioneBilancio;
+GtkWidget* LblNomeUtentePartita;
+GtkWidget* LblBilancioGestioneBilancio;
+GtkWidget* LblBilancioPartita;
 GtkWidget* LblErrorePartita;
 GtkWidget* LblErroreAggiungiCrediti;
 GtkWidget* LblPuntata;
@@ -78,7 +78,9 @@ GtkWidget* BtnPausaAnnulla1;
 GtkWidget* BtnPausaConferma1;
 GtkWidget* BtnPausaAnnulla2;
 GtkWidget* BtnPausaConferma2;
-
+GtkWidget* BtnFinisciTurno;
+GtkWidget* BtnSecondaPesca;
+GtkWidget* BtnFinePartitaEsci;
 //================================MISC============================
 GtkWidget* TxtStoricoPartite;
 GtkWidget* EntNomeUtente1;
@@ -125,21 +127,21 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     CntMenuPausa = GTK_WIDGET(gtk_builder_get_object(Builder, "cntMenuPausa"));
     StkMenuPausa = GTK_WIDGET(gtk_builder_get_object(Builder, "stkMenuPausa"));
     CntOpzioniPausa = GTK_WIDGET(gtk_builder_get_object(Builder, "cntOpzioniPausa"));
-    CntMenuConferma1 = GTK_WIDGET(gtk_builder_get_object(Builder, "cntMenuConferma1"));
-    CntMenuConferma2 = GTK_WIDGET(gtk_builder_get_object(Builder, "cntMenuConferma2"));
+    CntMenuConfermaHome = GTK_WIDGET(gtk_builder_get_object(Builder, "cntMenuConferma1"));
+    CntMenuConfermaQuit = GTK_WIDGET(gtk_builder_get_object(Builder, "cntMenuConferma2"));
     StkOpzioniAccesso = GTK_WIDGET(gtk_builder_get_object(Builder, "stkOpzioniAccesso"));
     CntAccesso = GTK_WIDGET(gtk_builder_get_object(Builder, "cntAccesso"));
     CntSecondaPesca = GTK_WIDGET(gtk_builder_get_object(Builder, "cntSecondaPesca"));
 //=====================LABEL=====================
-    LblNomeUtente = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNomeUtente1"));
+    LblNomeUtenteMenuPrincipale = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNomeUtente1"));
     LblPartiteGiocate = GTK_WIDGET(gtk_builder_get_object(Builder, "lblPartiteGiocate"));
     LblTassoVittoria = GTK_WIDGET(gtk_builder_get_object(Builder, "lblTassoVittoria"));
-    LblBilancio = GTK_WIDGET(gtk_builder_get_object(Builder, "lblBilancio"));
-    LblErroreAccesso = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNotificaErrore"));
-    LblBilancio2 = GTK_WIDGET(gtk_builder_get_object(Builder, "lblBilancio2"));
-    LblBilancio3 = GTK_WIDGET(gtk_builder_get_object(Builder, "lblBilancio3"));
-    LblNomeUtente2 = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNomeUtente2"));
-    LblNomeUtente3 = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNomeUtente3"));
+    LblBilancioMenuPrincipale = GTK_WIDGET(gtk_builder_get_object(Builder, "lblBilancio"));
+    LblNotificaErroreAccesso = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNotificaErrore"));
+    LblBilancioGestioneBilancio = GTK_WIDGET(gtk_builder_get_object(Builder, "lblBilancio2"));
+    LblBilancioPartita = GTK_WIDGET(gtk_builder_get_object(Builder, "lblBilancio3"));
+    LblNomeUtenteGestioneBilancio = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNomeUtente2"));
+    LblNomeUtentePartita = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNomeUtente3"));
     LblErrorePartita = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNotificaPartita"));
     LblErroreAggiungiCrediti = GTK_WIDGET(gtk_builder_get_object(Builder,"lblNotificaAggiungiCrediti"));
     LblPuntata = GTK_WIDGET(gtk_builder_get_object(Builder, "lblPuntata"));
@@ -174,8 +176,11 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     BtnPunta250 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnP250"));
     BtnPunta500 = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnP500"));
     BtnSceltaPesca = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnPesca"));
+    BtnSecondaPesca = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnPesca2"));
     BtnSceltaRaddoppia = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnRaddoppia"));
     BtnSceltaRimani = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnRimani"));
+    BtnFinisciTurno = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnFinisciTurno"));
+    BtnFinePartitaEsci = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnEsci"));
 //=====================IMMAGINI==================
     ImgCartaBanco1 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaBanco1"));
     ImgCartaBanco2 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaBanco2"));
@@ -211,12 +216,13 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     ColoreBG.alpha = 1.0;
     gtk_widget_override_background_color(Finestra, GTK_STATE_FLAG_NORMAL, &ColoreBG);//Con questa setto il colore del bg ai dati inseriti in ColoreBG
 
-//===================INVOCAZIONE===============
+//---------------------------------------------INVOCAZIONI FILE---------------------------------------------------------
     gtk_widget_show(Finestra);//Mostra la finestra
 
     gtk_main();//Avvia il processo main che rimarra` nel background a controllare gli input ricevuti
 
     return EXIT_SUCCESS;//Condizione di uscita necessaria per chiudere il programma una volta chiusa l'ui
+
 }
 //---------------------------------------------FUNZIONI CALLBACK--------------------------------------------------------
 //Qui vengono gestiti i segnali di ogni widget e vi si assegna un metodo.
@@ -250,19 +256,7 @@ void on_pg2BtnEsci_clicked(GtkButton* b) {
 void on_pg3BtnEsci_clicked(GtkButton* b) {
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
 }
-//Funzione che gestisce il cambio scena al playfield ed inizializza la partita
-void on_pg1BtnGioca_clicked(GtkButton* b){//Se l'utente e` loggato, controlla se abbia abbastanza crediti per fare almeno una puntata minima
-    if (UtenteLoggato != NULL){//Se esso e` loggato ed ha abbastanza crediti, viene inizializzata la partita
-        if (UtenteLoggato->bilancio >= 50){//Se non ha abbastanza crediti, viene portato sulla pagina di gestione del bilancio e promptato di aggiungerne un po'
-            gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntTavoloDaGioco);//Se invece non e' loggato, viene portato alla pagina di accesso/registrazione
-            return;
-        }
-        gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntGestioneBilancio);
-        gtk_label_set_text(GTK_LABEL(LblErroreAggiungiCrediti), "Non hai abbastanza crediti per giocare! \n\t\tAggiungine un po'!");
-        return;
-    }
-    gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
-}
+
 //Funzione che gestisce il cambio scena al menu di pausa durante una partita
 void on_pg4BtnPausa_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPausa);
@@ -273,7 +267,7 @@ void on_pg5BtnRiprendi_clicked(GtkButton* b){
 }
 //Funzione che gestisce l'opzione "Torna al menu", cambiando la finestra delle opzioni del menu pausa con una di conferma, informando l'utente che non sia possibile riprendere una partita abbandonata
 void on_pg5BtnTornaAlMenu_clicked(GtkButton* b){
-    gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntMenuConferma1);
+    gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntMenuConfermaHome);
 }
 //Funzione che gestisce l'opzione "No" nella finestra di conferma per tornare al menu principale
 void on_pg5BtnAnnulla1_clicked(GtkButton* b){//In caso venga scelta, riporta l'utente al menu pausa
@@ -282,10 +276,13 @@ void on_pg5BtnAnnulla1_clicked(GtkButton* b){//In caso venga scelta, riporta l'u
 //Funzione che gestisce l'opzione "Si" nella finestra di conferma per tornare al menu principale
 void on_pg5BtnConferma1_clicked(GtkButton* b){//In caso venga scelta, riporta l'utente all menu principale, liberando la memoria occupata da quella partita
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
+    gtk_widget_hide(BtnFinePartitaEsci);
+    gtk_label_set_text(GTK_LABEL(LblPartitaPersa), NULL);
+    gtk_label_set_text(GTK_LABEL(LblPartitaVinta), NULL);
 }
 //Funzione che gestisce l'opzione "Chiudi il gioco" del menu di pausa, cambiando la finestra delle opzioni del menu pausa con una di conferma, informando l'utente che non sia possibile riprendere una partita abbandonata.
 void on_pg5BtnChiudiGioco_clicked(GtkButton* b){//In caso venga scelta, libera la memoria occupata da quella partita, aggiorna le statistiche contenute nel
-    gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntMenuConferma2);
+    gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntMenuConfermaQuit);
 }
 void on_pg5BtnAnnulla2_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntOpzioniPausa);
@@ -297,80 +294,28 @@ void on_pg2BtnAgg100_clicked(GtkButton* b){
     UtenteLoggato->bilancio += 100;
     char temp[BufferSnprintf];
     snprintf(temp, BufferSnprintf, "%d", UtenteLoggato->bilancio);
-    gtk_label_set_text(GTK_LABEL(LblBilancio2), temp);
+    gtk_label_set_text(GTK_LABEL(LblBilancioGestioneBilancio), temp);
 }
 void on_pg2BtnAgg200_clicked(GtkButton* b){
     UtenteLoggato->bilancio += 200;
     char temp[BufferSnprintf];
     snprintf(temp, BufferSnprintf, "%d", UtenteLoggato->bilancio);
-    gtk_label_set_text(GTK_LABEL(LblBilancio2), temp);
+    gtk_label_set_text(GTK_LABEL(LblBilancioGestioneBilancio), temp);
 }
 void on_pg2BtnAgg500_clicked(GtkButton* b){
     UtenteLoggato->bilancio += 500;
     char temp[BufferSnprintf];
     snprintf(temp, BufferSnprintf, "%d", UtenteLoggato->bilancio);
-    gtk_label_set_text(GTK_LABEL(LblBilancio2), temp);
+    gtk_label_set_text(GTK_LABEL(LblBilancioGestioneBilancio), temp);
 }
 void on_pg2BtnAgg1000_clicked(GtkButton* b){
     UtenteLoggato->bilancio += 1000;
     char temp[BufferSnprintf];
     snprintf(temp, BufferSnprintf, "%d", UtenteLoggato->bilancio);
-    gtk_label_set_text(GTK_LABEL(LblBilancio2), temp);
+    gtk_label_set_text(GTK_LABEL(LblBilancioGestioneBilancio), temp);
 }
-//Queste funzioni gestiscono i bottoni che permettono di fare una puntata durante la partita
-void on_pg4BtnP50_clicked(GtkButton* b){//Se il bilancio dell'utente - la somma puntata e` maggiore o uguale a 0, punta quella somma e aggiorna la statistica "bilancio"
-    if (UtenteLoggato->bilancio - 50 >= 0) {//Altrimenti mostra un errore informando l'utente che non abbia abbastanza crediti
-        Puntata += 50;
-        UtenteLoggato->bilancio -= 50;
 
-        return;
-    }
-    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
-}
-void on_pg4BtnP100_clicked(GtkButton* b) {
-
-    if (UtenteLoggato->bilancio - 100 >= 0){
-        Puntata += 100;
-        UtenteLoggato->bilancio -= 100;
-        AggiornaStatistichePartita();
-        return;
-    }
-    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
-}
-void on_pg4BtnP250_clicked(GtkButton* b) {
-
-    if (UtenteLoggato->bilancio - 250 >= 0){
-        Puntata += 250;
-        UtenteLoggato->bilancio -= 250;
-        AggiornaStatistichePartita();
-        return;
-    }
-    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
-}
-void on_pg4BtnP500_clicked(GtkButton* b){
-
-    if (UtenteLoggato->bilancio - 500 >= 0){
-        Puntata += 500;
-        UtenteLoggato->bilancio -= 500;
-        AggiornaStatistichePartita();
-        return;
-    }
-    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
-}
 //Le seguenti funzioni gestiscono cio` che accade quando il giocatore fa una scelta
-void on_pg4BtnRimani_clicked(GtkButton* b){//Il giocatore ha deciso di rimanere
-    printf("stand");//Invoca funzione rimani
-}
-void on_pg4BtnRaddoppia_clicked(GtkButton* b){//Il giocatore ha deciso di raddoppiare//Invoca funzione raddoppia e controlla se sia possibile farlo
-    if (Raddoppia()){//Se si, procedi ad aggiornare le statistiche in tempo reale, altrimenti notifica l'utente con un errore
-        AggiornaStatistichePartita();
-        return;
-    }
-    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
-}
-
-
-
 
 
 //===================LABEL=====================
@@ -447,18 +392,18 @@ void on_pg3BtnAccedi_clicked(GtkButton* b) {
 
     char* nomeUtente = gtk_entry_get_text(GTK_ENTRY(EntNomeUtente1));
     if (validaStringa(nomeUtente) == 0) {
-        gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tNome utente invalido!\n \t\t Riprovare");
+        gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), "\tNome utente invalido!\n \t\t Riprovare");
         return;
     }
 
     char* password = gtk_entry_get_text(GTK_ENTRY(EntPassword1));
     if (validaStringa(password) == 0) {
-        gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tPassword invalida!\n \t\t Riprovare");
+        gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), "\tPassword invalida!\n \t\t Riprovare");
         return;
     }
 
     if (LoggaUtente(nomeUtente, password, utentiFile, conta) == 0) {
-        gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tUtente inesistente!\n \t\t Riprovare");
+        gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), "\tUtente inesistente!\n \t\t Riprovare");
         return;
     }
 
@@ -469,12 +414,12 @@ void on_pg3BtnAccedi_clicked(GtkButton* b) {
 void on_pg3BtnRegistrati_clicked(GtkButton* b) {
     char* nomeUtente = gtk_entry_get_text(GTK_ENTRY(EntNomeUtente2));
     if (validaStringa(nomeUtente) == 0) {
-        gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tNome utente invalido!\n \t\t Riprovare");
+        gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), "\tNome utente invalido!\n \t\t Riprovare");
         return;
     }
     char* password = gtk_entry_get_text(GTK_ENTRY(EntPassword2));
     if (validaStringa(password) == 0) {
-        gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tPassword invalida!\n \t\t Riprovare");
+        gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), "\tPassword invalida!\n \t\t Riprovare");
         return;
     }
 
@@ -491,19 +436,170 @@ void on_pg3BtnRegistrati_clicked(GtkButton* b) {
     }
 
     // L'utente è stato registrato
-    gtk_label_set_text(GTK_LABEL(LblErroreAccesso), "\tUtente registrato! \n\t\t Accedere");
+    gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), "\tUtente registrato! \n\t\t Accedere");
     gtk_stack_set_visible_child(GTK_STACK(StkOpzioniAccesso), CntAccesso);
 
 }
+//Funzione generale che aggiorna le statistiche visibili durante la partita
+void AggiornaStatistichePartita() {
+    char Temp[BufferSnprintf];
+    //Bilancio e puntata
+    snprintf(Temp, BufferSnprintf, "%d",UtenteLoggato->bilancio);
+    gtk_label_set_text(GTK_LABEL(LblBilancioPartita), Temp);
+    Temp[0] = '\0';
+    snprintf(Temp, BufferSnprintf, "%d", Puntata);
+    gtk_label_set_text(GTK_LABEL(LblPuntata), Temp);
+    Temp[0] = '\0';
 
+    if (NumeroMazziGiocatore == 3) {//Controllo per accertare che la difficolta' sia impostata su "facile"
+        snprintf(Temp, BufferSnprintf, "Valore mano: %d",CalcolaPunti(ManoGiocatore, MAXcarteGiocatore));
+        Temp[0] = '\0';
+        snprintf(Temp, BufferSnprintf, "Valore mano: %d",CalcolaPunti(ManoBanco, MAXcarteBanco));
+    }
+}
+//-------------------------------------------------SEZIONE GESTIONE PARTITA---------------------------------------------
 
+void on_ConfermaScommessa_clicked(GtkButton* b){
+    gtk_stack_set_visible_child(GTK_STACK(StkOpzioniPuntata), CntVuotoOpzioniPuntata);
+    gtk_widget_hide(BtnFinisciTurno);
 
+    PescaGiocatore(2);
+    PescaBanco(2);
+    AggiornaAmbiMani();
+    AggiornaStatistichePartita();
 
+    gtk_stack_set_visible_child(GTK_STACK(StkOpzioniGiocatore), CntBtnOpzioniGiocatore);
+}
+//Funzione che gestisce il cambio scena al playfield ed inizializza la partita
+void on_pg1BtnGioca_clicked(GtkButton* b){//Se l'utente e` loggato, controlla se abbia abbastanza crediti per fare almeno una puntata minima
+    if (UtenteLoggato != NULL){//Se esso e` loggato ed ha abbastanza crediti, viene inizializzata la partita
+        if (UtenteLoggato->bilancio >= 50){//Se non ha abbastanza crediti, viene portato sulla pagina di gestione del bilancio e promptato di aggiungerne un po'
+            gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntTavoloDaGioco);
+            gtk_stack_set_visible_child(GTK_STACK(StkOpzioniPuntata), CntBtnOpzioniPuntata);
+            gtk_widget_show(BtnFinisciTurno);
+            ResettaValoriGlobali();
+            InitArrImmagini(ImgCartaBanco1,ImgCartaBanco2,ImgCartaBanco3, ImgCartaBanco4, ImgCartaBanco5, ImgCartaBanco6, ImgCartaGiocatore1, ImgCartaGiocatore2, ImgCartaGiocatore3, ImgCartaGiocatore4, ImgCartaGiocatore5, ImgCartaGiocatore6, ImgCartaGiocatore7, ImgCartaGiocatore8);
+            AggiornaAmbiMani();
+            gtk_button_set_label(GTK_BUTTON(BtnFinisciTurno), "Conferma Puntata");
+            g_signal_connect(BtnFinisciTurno, "clicked", G_CALLBACK(on_ConfermaScommessa_clicked), NULL);
+            return;
+        }
+        gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntGestioneBilancio);
+        gtk_label_set_text(GTK_LABEL(LblErroreAggiungiCrediti), "Non hai abbastanza crediti per giocare! \n\t\tAggiungine un po'!");
+        return;
+    }
+    gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
+}
 
+void TurnoBanco() {
+    //scropricarta();
+    gtk_stack_set_visible_child(GTK_STACK(StkOpzioniGiocatore), CntVuotoOpzioniGiocatore);
+    while (PescaBanco(1)) {
+       AggiornaManoBanco();
+    }
 
+    char StringaFormattata[BufferSnprintf];
+    switch (ControllaVittoria()) {
+    case 'B'://Blackjack
+        snprintf(StringaFormattata, BufferSnprintf, "Hai vinto la partita con un BlackJack \n\t guadagnando  %.0f crediti!", Puntata * 2.5);
+        gtk_label_set_text(GTK_LABEL(LblPartitaVinta), StringaFormattata);
+        //salvaPartitaSuFile();
+        break;
+    case 'V'://Vittoria semplice
+        snprintf(StringaFormattata, BufferSnprintf, "Hai vinto la partita guadagnando \n\t\t %d crediti!", Puntata*2);
+        gtk_label_set_text(GTK_LABEL(LblPartitaVinta), StringaFormattata);
+        //salvaPartitaSuFile();
+        break;
+    case 'P':
+        gtk_label_set_text(GTK_LABEL(LblPartitaVinta), "Hai pareggiato la partita! \n\t Non ci sono conseguenze!");
+        //salvaPartitaSuFile();
+        break;
+    case 'S':
+        snprintf(StringaFormattata, BufferSnprintf, "Hai perso la partita rimettendoci \n\t\t %d crediti!", Puntata);
+        gtk_label_set_text(GTK_LABEL(LblPartitaPersa), StringaFormattata);
+        //salvaPartitaSuFile();
+        break;
+    }
+    gtk_label_set_text(GTK_LABEL(LblErrorePartita), NULL);
+    gtk_widget_show(BtnFinePartitaEsci);
+}
 
+void on_FinisciTurno_clicked(GtkButton* b) {
+    gtk_widget_hide(BtnFinisciTurno);
+    LogicaAssi(ManoGiocatore, MAXcarteGiocatore);
+    TurnoBanco();
+}
+//Handler opzioni giocatore
+void on_pg4BtnRaddoppia_clicked(GtkButton* b) {//Il giocatore ha deciso di raddoppiare//Invoca funzione raddoppia e controlla se sia possibile farlo
+    if (Raddoppia()) {
+        AggiornaStatistichePartita();
+        AggiornaManoGiocatore();
+        TurnoBanco();
+    }else {
+        gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
+    }
+}
 
+void on_pg4BtnPesca_clicked(GtkButton* b) {
+    gtk_label_set_text(GTK_LABEL(LblErrorePartita), NULL);
+    PescaGiocatore(1);
+    AggiornaManoGiocatore();
+    AggiornaStatistichePartita();
+    gtk_stack_set_visible_child(GTK_STACK(StkOpzioniGiocatore), CntSecondaPesca);
+    gtk_button_set_label(GTK_BUTTON(BtnFinisciTurno), "Finisci turno");
+    g_signal_connect(BtnFinisciTurno, "clicked", G_CALLBACK(on_FinisciTurno_clicked), NULL);
+    gtk_widget_show(BtnFinisciTurno);
+}
+void on_pg4BtnPesca2_clicked(GtkButton* b) {
+    if (PescaGiocatore(1)) {
+        AggiornaManoGiocatore();
+        AggiornaStatistichePartita();
+    } else {
+        gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Hai raggiunto il limite di carte!");
+        gtk_widget_hide(BtnFinisciTurno);
+        TurnoBanco();
+    }
+}
+//Queste funzioni gestiscono i bottoni che permettono di fare una puntata durante la partita
+void on_pg4BtnP50_clicked(GtkButton* b){//Se il bilancio dell'utente - la somma puntata e` maggiore o uguale a 0, punta quella somma e aggiorna la statistica "bilancio"
+    if (UtenteLoggato->bilancio - 50 >= 0) {//Altrimenti mostra un errore informando l'utente che non abbia abbastanza crediti
+        Puntata += 50;
+        UtenteLoggato->bilancio -= 50;
+        AggiornaStatistichePartita();
+        return;
+    }
+    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
+}
+void on_pg4BtnP100_clicked(GtkButton* b) {
 
+    if (UtenteLoggato->bilancio - 100 >= 0){
+        Puntata += 100;
+        UtenteLoggato->bilancio -= 100;
+        AggiornaStatistichePartita();
+        return;
+    }
+    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
+}
+void on_pg4BtnP250_clicked(GtkButton* b) {
+
+    if (UtenteLoggato->bilancio - 250 >= 0){
+        Puntata += 250;
+        UtenteLoggato->bilancio -= 250;
+        AggiornaStatistichePartita();
+        return;
+    }
+    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
+}
+void on_pg4BtnP500_clicked(GtkButton* b){
+
+    if (UtenteLoggato->bilancio - 500 >= 0){
+        Puntata += 500;
+        UtenteLoggato->bilancio -= 500;
+        AggiornaStatistichePartita();
+        return;
+    }
+    gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
+}
 
 
 

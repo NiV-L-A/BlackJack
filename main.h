@@ -3,6 +3,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 #pragma once//serve per le robe costanti e globali
 #include <stdio.h>
+#include <gtk/gtk.h>
 
 //===================DEFINIZIONI==================================================
 #define MAXcarteGiocatore 8 //valore massimo di carte che il gicatore puo` avere in mano
@@ -37,6 +38,8 @@ typedef struct {//Definisce il tipo StoricoPartita
 extern int Puntata;
 extern int NumeroRighi;
 extern short NumeroMazziGiocatore;
+extern short SceltaUtente;
+extern short Turno;
 extern UtenteT* UtenteLoggato;
 
 //===================ARRAY GLOBALI (DICHIARAZIONI)============================
@@ -52,7 +55,11 @@ extern unsigned short ManoBanco[MAXcarteBanco];
 //Accanto ad ogni funzione vi e` una spiegazione rapida del suo funzionamento. Usando il "jump-to" dell'IDE potete
 //              andare direttamente dove e` stata dichiarata, trovando una spiegazione piu` estesa.
 //----------------------------------------------------------------------------------------------------------------------
+//===================Funzioni grafiche============================================
 int InitProgramma(int argc, char *argv[]);
+void AvvioPartita(GtkWidget* StkOpzioniPuntata,GtkWidget* CntBtnOpzioniPuntata, GtkWidget* StkOpzioniGiocatore, GtkWidget* CntBtnOpzioniGiocatore, GtkWidget* CntVuotoOpzioniGiocatore, GtkWidget* CntSecondaPesca, GtkWidget* LblNotifica, GtkWidget* LblPartitaVinta, GtkWidget* LblPartitaPersa, GtkWidget* CntVuotoOpzioniPuntata,GtkWidget* ControlloScena, GtkWidget* CntMenuPrincipale, GtkWidget* CntTavoloDaGioco);
+void InitArrImmagini(GtkImage* ImgCartaBanco1,GtkImage* ImgCartaBanco2,GtkImage* ImgCartaBanco3,GtkImage* ImgCartaBanco4,GtkImage* ImgCartaBanco5,GtkImage* ImgCartaBanco6,GtkImage* ImgCartaGiocatore1,GtkImage* ImgCartaGiocatore2,GtkImage* ImgCartaGiocatore3,GtkImage* ImgCartaGiocatore4,GtkImage* ImgCartaGiocatore5,GtkImage* ImgCartaGiocatore6,GtkImage* ImgCartaGiocatore7,GtkImage* ImgCartaGiocatore8);
+void AggiornaStatistichePartita();
 //===================Banco.c======================================================
 void RandInit();//Funzione che seedda rand
 char ControllaVittoria();//Funzione controllo vittoria
@@ -61,7 +68,8 @@ int PescaBanco(short CarteDaPescare);
 //===================Giocatore.c==================================================
 void AggiornamentoStatistiche(StoricoPartitaT* ArrPartite);//Funzione per aggiornare le statistiche dell'utente
 int PescaGiocatore(unsigned short CarteDaPescare);
-void Raddoppia();
+int Raddoppia();
+void LogicaAssi(unsigned short Mano[], unsigned short Dimensione);
 //===================GestioneUtenti.c=============================================
 char* RimuoviNewLine(char line[]);
 char* RimuoviSpazi(char* str);
@@ -78,12 +86,12 @@ void ScriviPartita(FILE* file, StoricoPartitaT partita);
 int AggiungiPartitaAlFile(StoricoPartitaT partita);
 void ResettaValoriGlobali();
 //===================GestioneGraficaPartita.c=====================================
-void RenderizzaCarta(GtkImage *immagine, int idCarta);
+void RenderizzaCarta(GtkImage *immagine, unsigned short idCarta);
 void AggiornaManoGiocatore();
 void AggiornaManoBanco();
 void AggiornaAmbiMani();
 void InitRenderingCarte(GtkBuilder *Builder);
-void AggiornaStatistichePartita();
+
 
 
 #ifndef MAIN_H

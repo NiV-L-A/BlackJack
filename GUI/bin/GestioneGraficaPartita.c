@@ -6,17 +6,40 @@
 GtkImage* ArrImmaginiGiocatore[MAXcarteGiocatore];
 GtkImage* ArrImmaginiBanco[MAXcarteBanco];
 
+//Funzione che inizializza gli array contenenti i puntantori ai widget immagine da manipolare
+void InitArrImmagini(GtkImage* ImgCartaBanco1,GtkImage* ImgCartaBanco2,GtkImage* ImgCartaBanco3,GtkImage* ImgCartaBanco4,GtkImage* ImgCartaBanco5,GtkImage* ImgCartaBanco6,GtkImage* ImgCartaGiocatore1,GtkImage* ImgCartaGiocatore2,GtkImage* ImgCartaGiocatore3,GtkImage* ImgCartaGiocatore4,GtkImage* ImgCartaGiocatore5,GtkImage* ImgCartaGiocatore6,GtkImage* ImgCartaGiocatore7,GtkImage* ImgCartaGiocatore8) {
+    //Carte giocatore
+    ArrImmaginiGiocatore[0] = ImgCartaGiocatore1;
+    ArrImmaginiGiocatore[1] = ImgCartaGiocatore2;
+    ArrImmaginiGiocatore[2] = ImgCartaGiocatore3;
+    ArrImmaginiGiocatore[3] = ImgCartaGiocatore4;
+    ArrImmaginiGiocatore[4] = ImgCartaGiocatore5;
+    ArrImmaginiGiocatore[5] = ImgCartaGiocatore6;
+    ArrImmaginiGiocatore[6] = ImgCartaGiocatore7;
+    ArrImmaginiGiocatore[7] = ImgCartaGiocatore8;
+    //Carte banco
+    ArrImmaginiBanco[0] = ImgCartaBanco1;
+    ArrImmaginiBanco[1] = ImgCartaBanco2;
+    ArrImmaginiBanco[2] = ImgCartaBanco3;
+    ArrImmaginiBanco[3] = ImgCartaBanco4;
+    ArrImmaginiBanco[4] = ImgCartaBanco5;
+    ArrImmaginiBanco[5] = ImgCartaBanco6;
+}
 
 //Funzione generica che si occupa di fare il draw di una singola immagine
-void RenderizzaCarta(GtkImage *immagine, int idCarta) {//Se lo slot nell'array mano e` vuoto, rimuove la sprite da quello slot nel programma
-    if (idCarta == SlotVuoto) {
-        gtk_image_clear(immagine);
-    } else {
-        //Setta il la sprite con il percorso in cui trovarla
-        char PercorsoSprite[256];
-        snprintf(PercorsoSprite, sizeof(PercorsoSprite), "GUI/SpriteCarte/%d.png", idCarta);
-        gtk_image_set_from_file(immagine, PercorsoSprite);
+void RenderizzaCarta(GtkImage *immagine, unsigned short idCarta) {//Se lo slot nell'array mano e` vuoto, rimuove la sprite da quello slot nel programma
+    if (idCarta > 134){
+        idCarta -= 130;
     }
+    if (idCarta == SlotVuoto) {
+        gtk_image_set_from_file(immagine, "GUI/SpriteMenu/ImmagineVuota.png");
+        return;
+    }
+    //Setta il la sprite con il percorso in cui trovarla
+    char PercorsoSprite[256];
+    snprintf(PercorsoSprite, sizeof(PercorsoSprite), "GUI/SpriteCarte/%d.png", idCarta);
+    gtk_image_set_from_file(immagine, PercorsoSprite);
+
 }
 
 //Funzioni principali per aggiornare individualmente la mano del giocatore o del dealer
@@ -48,23 +71,5 @@ void InitRenderingCarte(GtkBuilder *Builder) {
     for (int i = 0; i < MAXcarteBanco; i++) {//Sezione che prende quelle del banco
         snprintf(NomeWidget, sizeof(NomeWidget), "imgCartaBanco%d", i + 1);
         ArrImmaginiBanco[i] = GTK_IMAGE(gtk_builder_get_object(Builder, NomeWidget));
-    }
-}
-
-//Funzione generale che aggiorna le statistiche visibili durante la partita
-void AggiornaStatistichePartita() {
-    char Temp[BufferSnprintf];
-    //Bilancio e puntata
-    snprintf(Temp, BufferSnprintf, "%d",UtenteLoggato->bilancio);
-    gtk_label_set_text(GTK_LABEL(LblBilancio3), Temp);
-    Temp[0] = '\0';
-    snprintf(Temp, BufferSnprintf, "%d", Puntata);
-    gtk_label_set_text(GTK_LABEL(LblPuntata), Temp);
-    Temp[0] = '\0';
-
-    if (NumeroMazziGiocatore == 3) {//Controllo per accertare che la difficolta' sia impostata su "facile"
-        snprintf(Temp, BufferSnprintf, "Valore mano: %d",CalcolaPunti(ManoGiocatore, MAXcarteGiocatore));
-        Temp[0] = '\0';
-        snprintf(Temp, BufferSnprintf, "Valore mano: %d",CalcolaPunti(ManoBanco, MAXcarteBanco));
     }
 }

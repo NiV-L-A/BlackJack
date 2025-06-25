@@ -109,6 +109,90 @@
                     <property name="position">1</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkBox" id="cntOpzioniDiff">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">78</property>
+                    <child>
+                      <object class="GtkLabel" id="lblTestoStatico20">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">DIFFICOLTA`</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold 20"/>
+                          <attribute name="foreground" value="#f6f6f5f5f4f4"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="rdDiffDifficile">
+                        <property name="label" translatable="yes">Difficile - (9 mazzi)</property>
+                        <property name="width-request">180</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="halign">center</property>
+                        <property name="active">True</property>
+                        <property name="draw-indicator">True</property>
+                        <property name="group">rdDiffNormale</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="rdDiffNormale">
+                        <property name="label" translatable="yes">Normale - (6 mazzi)</property>
+                        <property name="width-request">180</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="halign">center</property>
+                        <property name="active">True</property>
+                        <property name="draw-indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="rdDiffFacile">
+                        <property name="label" translatable="yes">Facile - (3 mazzi, 
+conta punti automatica)</property>
+                        <property name="width-request">180</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="halign">center</property>
+                        <property name="image-position">top</property>
+                        <property name="active">True</property>
+                        <property name="draw-indicator">True</property>
+                        <property name="group">rdDiffNormale</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page1</property>
+                    <property name="title" translatable="yes">page1</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="x">850</property>
@@ -273,6 +357,20 @@ vittoria: </property>
               <packing>
                 <property name="x">545</property>
                 <property name="y">540</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="pg1BtnOpzioni">
+                <property name="label" translatable="yes">Opzioni</property>
+                <property name="width-request">150</property>
+                <property name="height-request">40</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+              </object>
+              <packing>
+                <property name="x">545</property>
+                <property name="y">660</property>
               </packing>
             </child>
           </object>
@@ -760,6 +858,7 @@ vittoria: </property>
                   <object class="GtkImage" id="imgCartaGiocatore1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="valign">end</property>
                     <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
@@ -772,6 +871,7 @@ vittoria: </property>
                   <object class="GtkImage" id="imgCartaGiocatore2">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="valign">end</property>
                     <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
@@ -784,6 +884,7 @@ vittoria: </property>
                   <object class="GtkImage" id="imgCartaGiocatore3">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="valign">end</property>
                     <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
@@ -796,6 +897,7 @@ vittoria: </property>
                   <object class="GtkImage" id="imgCartaGiocatore4">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="valign">end</property>
                     <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
@@ -808,6 +910,7 @@ vittoria: </property>
                   <object class="GtkImage" id="imgCartaGiocatore5">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="valign">end</property>
                     <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
@@ -820,6 +923,7 @@ vittoria: </property>
                   <object class="GtkImage" id="imgCartaGiocatore6">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="valign">end</property>
                     <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
@@ -832,6 +936,7 @@ vittoria: </property>
                   <object class="GtkImage" id="imgCartaGiocatore7">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="valign">end</property>
                     <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
@@ -844,6 +949,7 @@ vittoria: </property>
                   <object class="GtkImage" id="imgCartaGiocatore8">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="valign">end</property>
                     <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
@@ -869,7 +975,7 @@ vittoria: </property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="valign">start</property>
-                    <property name="pixbuf">../../../testSpriteN.png</property>
+                    <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -882,7 +988,7 @@ vittoria: </property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="valign">start</property>
-                    <property name="pixbuf">../../../testSpriteNb.png</property>
+                    <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -895,7 +1001,7 @@ vittoria: </property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="valign">start</property>
-                    <property name="pixbuf">../../../testSpriteNr.png</property>
+                    <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -908,7 +1014,7 @@ vittoria: </property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="valign">start</property>
-                    <property name="pixbuf">../../../testSpriteN.png</property>
+                    <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -921,7 +1027,7 @@ vittoria: </property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="valign">start</property>
-                    <property name="pixbuf">../../../testSpriteNb.png</property>
+                    <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -934,7 +1040,7 @@ vittoria: </property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="valign">start</property>
-                    <property name="pixbuf">../../../testSpriteNr.png</property>
+                    <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -1203,7 +1309,7 @@ vittoria: </property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <signal name="clicked" handler="on_pg4BtnRimani_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_FinisciTurno_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1253,11 +1359,11 @@ vittoria: </property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkButton" id="pg4BtnPesca2">
-                        <property name="label" translatable="yes">button</property>
+                        <property name="label" translatable="yes">Pesca</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <signal name="clicked" handler="on_pg4BtnPesca_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_pg4BtnPesca2_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1290,8 +1396,8 @@ vittoria: </property>
                 </attributes>
               </object>
               <packing>
-                <property name="x">899</property>
-                <property name="y">423</property>
+                <property name="x">756</property>
+                <property name="y">419</property>
               </packing>
             </child>
             <child>
@@ -1339,7 +1445,7 @@ vittoria: </property>
                 </attributes>
               </object>
               <packing>
-                <property name="x">356</property>
+                <property name="x">302</property>
                 <property name="y">232</property>
               </packing>
             </child>
@@ -1356,8 +1462,36 @@ vittoria: </property>
                 </attributes>
               </object>
               <packing>
-                <property name="x">356</property>
-                <property name="y">232</property>
+                <property name="x">302</property>
+                <property name="y">234</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="pg4BtnFinisciTurno">
+                <property name="label" translatable="yes">Conferma Puntata</property>
+                <property name="width-request">120</property>
+                <property name="height-request">62</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+              </object>
+              <packing>
+                <property name="x">586</property>
+                <property name="y">517</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="pg4BtnEsci">
+                <property name="label" translatable="yes">Esci</property>
+                <property name="width-request">100</property>
+                <property name="height-request">60</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <signal name="clicked" handler="on_pg5BtnConferma1_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="x">532</property>
+                <property name="y">458</property>
               </packing>
             </child>
           </object>

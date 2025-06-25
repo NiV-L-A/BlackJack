@@ -6,7 +6,8 @@
 #include "main.h"
 
 char ControllaVittoria() {
-
+    LogicaAssi(ManoGiocatore, MAXcarteGiocatore);
+    LogicaAssi(ManoGiocatore, MAXcarteBanco);
     unsigned short TotGiocatore = CalcolaPunti(ManoGiocatore, MAXcarteGiocatore);
     unsigned short TotBanco = CalcolaPunti(ManoBanco, MAXcarteBanco);
 
@@ -14,11 +15,9 @@ char ControllaVittoria() {
 
     //Controllo condizioni di vittoria + gestione della puntata
     if (TotGiocatore > 21 && TotBanco <= 21) {//Se il giocatore sballa ma il banco no, SCONFITTA
-        UtenteLoggato->bilancio -= Puntata;
         return 'S';
     }
     if (TotBanco > TotGiocatore && TotGiocatore <= 21 && TotBanco <= 21) {//Se la mano del banco e` piu` grande di quella del giocatore e nessuno ha sballato SCONFITTA
-        UtenteLoggato->bilancio -= Puntata;
         return 'S';
     }
     if (ManoGiocatore[0] < 5 || (ManoGiocatore[0] / 10) >= 10 && ManoGiocatore[1] < 5 || (ManoGiocatore[1] / 10) >= 10 && ManoGiocatore[0] != ManoGiocatore[1]) {//Se il giocatore ha blackjack VITTORIA
@@ -58,12 +57,13 @@ int CalcolaPunti(unsigned short Mano[], unsigned short Dimensione) {
     for (short i = 0; i < Dimensione; i++){
         if (Mano[i] == SlotVuoto){
             IndiceVuoto = i;
+            break;
         }
     }
 
-    for (short i = IndiceVuoto - 1; i != 0; i--){
-        ValoreCartaAttuale = Mano[i] RimuoviSeme;
-        if (ValoreCartaAttuale > 10 %% ValoreCartaAttuale < 14) {
+    for (short i = IndiceVuoto; i != 0; i--){
+            ValoreCartaAttuale = Mano[i] RimuoviSeme;
+        if (ValoreCartaAttuale > 10 && ValoreCartaAttuale < 14) {
             TotalePunti += 10;
         }else if (ValoreCartaAttuale == 14) {
             TotalePunti += 11;
@@ -71,6 +71,21 @@ int CalcolaPunti(unsigned short Mano[], unsigned short Dimensione) {
         TotalePunti += ValoreCartaAttuale;
     }
     return TotalePunti;
+}
+
+void LogicaAssi(unsigned short Mano[], unsigned short Dimensione) {
+    unsigned short TotalePunti = CalcolaPunti(Mano, Dimensione);
+
+    for (short i = 0; i < Dimensione; i++){
+        if (Mano[i] RimuoviSeme == 1 && TotalePunti <= 10){
+            Mano[i] += 130;
+            break;
+        }
+        if (Mano[i] RimuoviSeme == 14 && TotalePunti > 10) {
+            Mano[i] -= 130;
+            break;
+        }
+    }
 }
 
 int PescaBanco(short CarteDaPescare) {
@@ -88,10 +103,6 @@ int PescaBanco(short CarteDaPescare) {
         if (IndiceSlotLibero == -1) {//Se non c'e` uno slot libero, non pescare
             return 0;
         }
-        //Se c'e` uno slot vuoto ma il totale dei punti e` gia` maggiore o uguale a 17, non pescare
-        if (CalcolaPunti(ManoBanco, MAXcarteBanco) >= 17) {
-            return 0;
-        }
 
         //Loop che prova a pescare una carta all'infinito
         short CartaPescata;
@@ -104,9 +115,11 @@ int PescaBanco(short CarteDaPescare) {
                 break;
             }
         }
-        //Se la carta e` un asso e con i punti attuali non andrebbe a sballare, assegnali il valore di 11
-        if (CartaPescata RimuoviSeme == 1 && CalcolaPunti(ManoBanco, MAXcarteBanco) <= 10) {
-            CartaPescata += 130;
+
+        LogicaAssi(ManoBanco, MAXcarteBanco);
+
+        if (CalcolaPunti(ManoBanco, MAXcarteBanco) >= 17) {
+            return 0;
         }
 
         //Pesca la carta

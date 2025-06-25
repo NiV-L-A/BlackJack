@@ -67,6 +67,8 @@ void ResettaValoriGlobali() {
     //Variabili
     Puntata = 0;
     NumeroRighi = 0;
+    SceltaUtente = -1;
+    Turno = -1;
     //Array
     memset(ManoGiocatore, 0, sizeof(ManoGiocatore));
     memset(ManoBanco, 0, sizeof(ManoBanco));
