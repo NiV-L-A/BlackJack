@@ -428,13 +428,13 @@ void on_pg3BtnRegistrati_clicked(GtkButton* b) {
         return;
     }
 
-    UtenteT *utente;
-    utente->id = rand() % 1000;
-    snprintf(utente->nome, sizeof(utente->nome), nomeUtente);
-    snprintf(utente->password, sizeof(utente->password), password);
-    utente->bilancio = 500;
-    utente->percentualeVittoria = 0;
-    utente->partiteGiocate = 0;
+    UtenteT utente;
+    utente.id = rand() % 1000;
+    snprintf(utente.nome, sizeof(utente.nome), nomeUtente);
+    snprintf(utente.password, sizeof(utente.password), password);
+    utente.bilancio = 500;
+    utente.percentualeVittoria = 0;
+    utente.partiteGiocate = 0;
 
     if (RegistraUtente(utente) == 0) {
         return;
