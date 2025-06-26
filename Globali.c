@@ -4,8 +4,6 @@
 //===================DEFINIZIONI VARIABILI GLOBALI===========================
 int Puntata = 0;
 int NumeroRighi = 0;
-short SceltaUtente = -1;
-short Turno = -1;
 short NumeroMazziGiocatore = 6;
 UtenteT* UtenteLoggato;
 

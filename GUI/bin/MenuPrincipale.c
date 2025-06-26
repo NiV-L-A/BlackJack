@@ -81,6 +81,7 @@ GtkWidget* BtnPausaConferma2;
 GtkWidget* BtnFinisciTurno;
 GtkWidget* BtnSecondaPesca;
 GtkWidget* BtnFinePartitaEsci;
+GtkWidget* BtnConfermaPuntata;
 //================================MISC============================
 GtkWidget* TxtStoricoPartite;
 GtkWidget* EntNomeUtente1;
@@ -181,6 +182,7 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     BtnSceltaRimani = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnRimani"));
     BtnFinisciTurno = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnFinisciTurno"));
     BtnFinePartitaEsci = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnEsci"));
+    BtnConfermaPuntata = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnConfermaPuntata"));
 //=====================IMMAGINI==================
     ImgCartaBanco1 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaBanco1"));
     ImgCartaBanco2 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaBanco2"));
@@ -232,22 +234,7 @@ void on_pg1TBtnStorico_toggled(GtkToggleButton* tb) {//Se L'utente e` loggato ed
     if (UtenteLoggato != NULL) {//Altrimenti, porta l'utente sulla pagina di registrazione/accesso
         if (gtk_toggle_button_get_active(tb)) {
             gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntStoricoPartite);
-            StoricoPartitaT* partite = PopolaStoricoPartiteDalFile();
-
-            StoricoPartitaT partita;
-            snprintf(partita.NomeUtente, sizeof(partita.NomeUtente), UtenteLoggato->nome);
-            char* Risultato = "P";
-            //snprintf(&partita.Risultato, sizeof(partita.Risultato), "%s", Risultato);
-            strcpy(&partita.Risultato, Risultato);
-            partita.BilancioDiUscita = 1000;
-            AggiungiPartitaAlFile(partita);
-            fprintf(stderr, "\n-----\n");
-            for (int i = 0; i < NumeroRighi; i++) {
-                fprintf(stderr, "%s", partite[i].NomeUtente);
-                fprintf(stderr, " %s", &partite[i].Risultato);
-                fprintf(stderr, " %d", partite[i].BilancioDiUscita);
-                fprintf(stderr, "\n");
-            }
+            //StoricoPartitaT* partite = PopolaStoricoPartiteDalFile();
         }
         else {
             gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntVuotoStoricoPartite);
@@ -372,11 +359,6 @@ void on_lblBilancio2_map(GtkLabel* lb){
     snprintf(temp, BufferSnprintf, "%d",UtenteLoggato->bilancio);
     gtk_label_set_text(lb, temp);
 }
-void on_lblBilancio3_map(GtkLabel* lb){
-    char temp[BufferSnprintf];
-    snprintf(temp, BufferSnprintf, "%d",UtenteLoggato->bilancio);
-    gtk_label_set_text(lb, temp);
-}
 void on_lblNomeUtente2_map(GtkLabel* lb){
     gtk_label_set_text(lb, UtenteLoggato->nome);
 }
@@ -446,13 +428,13 @@ void on_pg3BtnRegistrati_clicked(GtkButton* b) {
         return;
     }
 
-    UtenteT utente;
-    utente.id = rand() % 1000;
-    snprintf(utente.nome, sizeof(utente.nome), nomeUtente);
-    snprintf(utente.password, sizeof(utente.password), password);
-    utente.bilancio = 500;
-    utente.percentualeVittoria = 0;
-    utente.partiteGiocate = 0;
+    UtenteT *utente;
+    utente->id = rand() % 1000;
+    snprintf(utente->nome, sizeof(utente->nome), nomeUtente);
+    snprintf(utente->password, sizeof(utente->password), password);
+    utente->bilancio = 500;
+    utente->percentualeVittoria = 0;
+    utente->partiteGiocate = 0;
 
     if (RegistraUtente(utente) == 0) {
         return;
@@ -484,7 +466,7 @@ void AggiornaStatistichePartita() {
 
 void on_ConfermaScommessa_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(StkOpzioniPuntata), CntVuotoOpzioniPuntata);
-    gtk_widget_hide(BtnFinisciTurno);
+    gtk_widget_hide(BtnConfermaPuntata);
 
     PescaGiocatore(2);
     PescaBanco(2);
@@ -499,12 +481,13 @@ void on_pg1BtnGioca_clicked(GtkButton* b){//Se l'utente e` loggato, controlla se
         if (UtenteLoggato->bilancio >= 50){//Se non ha abbastanza crediti, viene portato sulla pagina di gestione del bilancio e promptato di aggiungerne un po'
             gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntTavoloDaGioco);
             gtk_stack_set_visible_child(GTK_STACK(StkOpzioniPuntata), CntBtnOpzioniPuntata);
-            gtk_widget_show(BtnFinisciTurno);
+            gtk_widget_show(BtnConfermaPuntata);
+            gtk_widget_show(BtnMenuPausa);
+            gtk_widget_hide(BtnFinisciTurno);
             ResettaValoriGlobali();
+            AggiornaStatistichePartita();
             InitArrImmagini(ImgCartaBanco1,ImgCartaBanco2,ImgCartaBanco3, ImgCartaBanco4, ImgCartaBanco5, ImgCartaBanco6, ImgCartaGiocatore1, ImgCartaGiocatore2, ImgCartaGiocatore3, ImgCartaGiocatore4, ImgCartaGiocatore5, ImgCartaGiocatore6, ImgCartaGiocatore7, ImgCartaGiocatore8);
             AggiornaAmbiMani();
-            gtk_button_set_label(GTK_BUTTON(BtnFinisciTurno), "Conferma Puntata");
-            g_signal_connect(BtnFinisciTurno, "clicked", G_CALLBACK(on_ConfermaScommessa_clicked), NULL);
             return;
         }
         gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntGestioneBilancio);
@@ -517,8 +500,18 @@ void on_pg1BtnGioca_clicked(GtkButton* b){//Se l'utente e` loggato, controlla se
 void TurnoBanco() {
     //scropricarta();
     gtk_stack_set_visible_child(GTK_STACK(StkOpzioniGiocatore), CntVuotoOpzioniGiocatore);
-    while (PescaBanco(1)) {
-       AggiornaManoBanco();
+
+    if (PescaBanco(1)){
+        AggiornaManoBanco();
+   }
+    if (PescaBanco(1)){
+        AggiornaManoBanco();
+    }
+    if (PescaBanco(1)){
+        AggiornaManoBanco();
+    }
+    if (PescaBanco(1)){
+        AggiornaManoBanco();
     }
 
     char StringaFormattata[BufferSnprintf];
@@ -544,9 +537,9 @@ void TurnoBanco() {
         break;
     }
     gtk_label_set_text(GTK_LABEL(LblErrorePartita), NULL);
+    gtk_widget_hide(BtnMenuPausa);
     gtk_widget_show(BtnFinePartitaEsci);
 }
-
 void on_FinisciTurno_clicked(GtkButton* b) {
     gtk_widget_hide(BtnFinisciTurno);
     LogicaAssi(ManoGiocatore, MAXcarteGiocatore);
@@ -565,13 +558,13 @@ void on_pg4BtnRaddoppia_clicked(GtkButton* b) {//Il giocatore ha deciso di raddo
 
 void on_pg4BtnPesca_clicked(GtkButton* b) {
     gtk_label_set_text(GTK_LABEL(LblErrorePartita), NULL);
+    gtk_widget_show(BtnFinisciTurno);
     PescaGiocatore(1);
     AggiornaManoGiocatore();
     AggiornaStatistichePartita();
     gtk_stack_set_visible_child(GTK_STACK(StkOpzioniGiocatore), CntSecondaPesca);
-    gtk_button_set_label(GTK_BUTTON(BtnFinisciTurno), "Finisci turno");
-    g_signal_connect(BtnFinisciTurno, "clicked", G_CALLBACK(on_FinisciTurno_clicked), NULL);
-    gtk_widget_show(BtnFinisciTurno);
+    //mostra bottone finisci turno
+
 }
 void on_pg4BtnPesca2_clicked(GtkButton* b) {
     if (PescaGiocatore(1)) {
@@ -623,6 +616,5 @@ void on_pg4BtnP500_clicked(GtkButton* b){
     }
     gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Non hai abbastanza crediti!");
 }
-
 
 

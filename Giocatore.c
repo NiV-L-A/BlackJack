@@ -27,9 +27,9 @@ void AggiornamentoStatistiche(StoricoPartitaT* ArrPartite) {
 //Funzione che gestisce la pesca per il giocatore
 int PescaGiocatore(unsigned short CarteDaPescare) {//Prende come argument il numero di carte da pescare
     unsigned short CartePescate = 0;//Ogni volta che pesca una carta con successo incrementa CartePescate fino a quando non equivale al numero richiesto
-
+    short IndiceSlotLibero = -1;
     while (CartePescate < CarteDaPescare) {
-        short IndiceSlotLibero = -1;//Scorre la mano fino a trovare uno slot libero, se ci riesce esce dal loop
+        //Scorre la mano fino a trovare uno slot libero, se ci riesce esce dal loop
         for (short i = 0; i < MAXcarteGiocatore; i++) {
             if (ManoGiocatore[i] == SlotVuoto) {
                 IndiceSlotLibero = i;

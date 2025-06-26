@@ -38,8 +38,6 @@ typedef struct {//Definisce il tipo StoricoPartita
 extern int Puntata;
 extern int NumeroRighi;
 extern short NumeroMazziGiocatore;
-extern short SceltaUtente;
-extern short Turno;
 extern UtenteT* UtenteLoggato;
 
 //===================ARRAY GLOBALI (DICHIARAZIONI)============================
@@ -74,16 +72,16 @@ void LogicaAssi(unsigned short Mano[], unsigned short Dimensione);
 char* RimuoviNewLine(char line[]);
 char* RimuoviSpazi(char* str);
 void PulisciStringa(char* str);
-void ScriviUtente(FILE* file, UtenteT utente);
-int RegistraUtente(UtenteT Utente);
-int ModificaUtenteAlFile(UtenteT utente);
+void ScriviUtente(FILE* file, UtenteT* utente);
+int RegistraUtente(UtenteT* Utente);
+int ModificaUtenteAlFile();
 UtenteT* GetUtentiDalFile(int* NumeroUtenti);
 int LoggaUtente(char Nome[], char Password[], UtenteT* UtentiFile, int Conta);
 int validaStringa(char* str);
 //===================GestioneStoricoPartite.c=====================================
 StoricoPartitaT* PopolaStoricoPartiteDalFile();
-void ScriviPartita(FILE* file, StoricoPartitaT partita);
-int AggiungiPartitaAlFile(StoricoPartitaT partita);
+void ScriviPartita(FILE* file, char Risultato, int BilancioInUscita);
+int AggiungiPartitaAlFile(char Risultato, int BilancioInUscita);
 void ResettaValoriGlobali();
 //===================GestioneGraficaPartita.c=====================================
 void RenderizzaCarta(GtkImage *immagine, unsigned short idCarta);

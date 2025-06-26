@@ -46,11 +46,11 @@ StoricoPartitaT* PopolaStoricoPartiteDalFile() {
     return Partite;
 }
 
-void ScriviPartita(FILE* file, StoricoPartitaT partita) {//Aggiunge una partita al file
-    fprintf(file, "%20s,%c,%10d\n", partita.NomeUtente, partita.Risultato, partita.BilancioDiUscita);
+void ScriviPartita(FILE* file, char Risultato, int BilancioInUscita) {//Aggiunge una partita al file
+    fprintf(file, "%20s,%c,%10d\n", UtenteLoggato->nome,Risultato, BilancioInUscita);
 }
 
-int AggiungiPartitaAlFile(StoricoPartitaT partita) {
+int AggiungiPartitaAlFile(char Risultato, int BilancioInUscita) {
     // "a" serve per appendere
     FILE* file = fopen(NomeFileStoricoPartite, "a");
     if (!file) {
@@ -58,7 +58,7 @@ int AggiungiPartitaAlFile(StoricoPartitaT partita) {
         return 0;
     }
 
-    ScriviPartita(file, partita);
+    ScriviPartita(file, Risultato, BilancioInUscita);
     fclose(file);
     return 1;
 }
@@ -67,8 +67,6 @@ void ResettaValoriGlobali() {
     //Variabili
     Puntata = 0;
     NumeroRighi = 0;
-    SceltaUtente = -1;
-    Turno = -1;
     //Array
     memset(ManoGiocatore, 0, sizeof(ManoGiocatore));
     memset(ManoBanco, 0, sizeof(ManoBanco));

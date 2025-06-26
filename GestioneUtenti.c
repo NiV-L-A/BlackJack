@@ -83,12 +83,12 @@ UtenteT* GetUtentiDalFile(int* NumeroUtenti) {//Legge il file e popola un array 
 }
 
 
-void ScriviUtente(FILE* file, UtenteT utente) {//Aggiunge un utente al file
-    fprintf(file, "%5d,%20s,%20s,%10d,%3.0f,%10d\n", utente.id, utente.nome, utente.password, utente.bilancio, utente.percentualeVittoria, utente.partiteGiocate);
+void ScriviUtente(FILE* file, UtenteT* utente) {//Aggiunge un utente al file
+    fprintf(file, "%5d,%20s,%20s,%10d,%3.0f,%10d\n", utente->id, utente->nome, utente->password, utente->bilancio, utente->percentualeVittoria, utente->partiteGiocate);
 }
 
 
-int ModificaUtenteAlFile(UtenteT utente) {//Modifica i dati di un utente nel file
+int ModificaUtenteAlFile() {//Modifica i dati di un utente nel file
     FILE* file = fopen(NomeFileUtenti, "r+");
     if (!file) {
         return -1;
@@ -100,9 +100,9 @@ int ModificaUtenteAlFile(UtenteT utente) {//Modifica i dati di un utente nel fil
         RimuoviNewLine(Riga);
         int ID = 0;
         sscanf(Riga, "%5d", &ID);
-        if (ID == utente.id) {
+        if (ID == UtenteLoggato->id) {
             fseek(file, Posizione, SEEK_SET);
-            ScriviUtente(file, utente);
+            ScriviUtente(file, UtenteLoggato);
             fclose(file);
             return 1;
         }
@@ -112,7 +112,7 @@ int ModificaUtenteAlFile(UtenteT utente) {//Modifica i dati di un utente nel fil
 }
 
 
-int RegistraUtente(UtenteT utente){//Appende un utente alla fine del file
+int RegistraUtente(UtenteT *utente){//Appende un utente alla fine del file
     FILE* file = fopen(NomeFileUtenti, "a");
     if (!file) {
         return 0;

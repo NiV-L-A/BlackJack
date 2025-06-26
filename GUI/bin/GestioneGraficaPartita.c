@@ -39,7 +39,7 @@ void RenderizzaCarta(GtkImage *immagine, unsigned short idCarta) {//Se lo slot n
     char PercorsoSprite[256];
     snprintf(PercorsoSprite, sizeof(PercorsoSprite), "GUI/SpriteCarte/%d.png", idCarta);
     gtk_image_set_from_file(immagine, PercorsoSprite);
-
+    PercorsoSprite[0] = '\0';
 }
 
 //Funzioni principali per aggiornare individualmente la mano del giocatore o del dealer
