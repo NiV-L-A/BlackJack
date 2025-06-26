@@ -1,6 +1,6 @@
 #include <gtk/gtk.h>
 #include <string.h>
-#include "main.h"
+#include "../../main.h"
 
 //Array di tipo GtkImage che conterranno le reference ai widget immagine usati per il display delle carte
 GtkImage* ArrImmaginiGiocatore[MAXcarteGiocatore];

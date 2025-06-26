@@ -3,7 +3,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
-#include "main.h"
+#include "../../main.h"
 
 //-----------------------------------------------SEZIONE PUNTATORI ELEMENTI---------------------------------------------
 //================================TOP LEVEL=======================
@@ -230,7 +230,28 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
 //Funzione che gestisce il caricamento a schermo dello storico partite
 void on_pg1TBtnStorico_toggled(GtkToggleButton* tb) {//Se L'utente e` loggato ed il bottone e` in stato "schiacciato", mostra lo storico partite
     if (UtenteLoggato != NULL) {//Altrimenti, porta l'utente sulla pagina di registrazione/accesso
-        gtk_toggle_button_get_active(tb) ? gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntStoricoPartite) : gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntVuotoStoricoPartite);
+        if (gtk_toggle_button_get_active(tb)) {
+            gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntStoricoPartite);
+            StoricoPartitaT* partite = PopolaStoricoPartiteDalFile();
+
+            StoricoPartitaT partita;
+            snprintf(partita.NomeUtente, sizeof(partita.NomeUtente), UtenteLoggato->nome);
+            char* Risultato = "P";
+            //snprintf(&partita.Risultato, sizeof(partita.Risultato), "%s", Risultato);
+            strcpy(&partita.Risultato, Risultato);
+            partita.BilancioDiUscita = 1000;
+            AggiungiPartitaAlFile(partita);
+            fprintf(stderr, "\n-----\n");
+            for (int i = 0; i < NumeroRighi; i++) {
+                fprintf(stderr, "%s", partite[i].NomeUtente);
+                fprintf(stderr, " %s", &partite[i].Risultato);
+                fprintf(stderr, " %d", partite[i].BilancioDiUscita);
+                fprintf(stderr, "\n");
+            }
+        }
+        else {
+            gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntVuotoStoricoPartite);
+        }
         return;
     }
     gtk_toggle_button_set_active(tb,0);
@@ -254,6 +275,7 @@ void on_pg2BtnEsci_clicked(GtkButton* b) {
 }
 //Funzione che gestisce il cambio scena facendo tornare indietro al menu principale dalla pagina di registrazione/accesso
 void on_pg3BtnEsci_clicked(GtkButton* b) {
+    gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), NULL);
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
 }
 
@@ -382,14 +404,6 @@ void on_entPassword2_changed(GtkEntry* e) {
 }
 
 void on_pg3BtnAccedi_clicked(GtkButton* b) {
-    int conta = 0;
-    UtenteT* utentiFile = GetUtentiDalFile(&conta);
-
-    // Se utentiFile è NULL e conta è 0, allora non siamo riusciti a leggere gli utenti
-    if (utentiFile == NULL && conta == 0) {
-        return;
-    }
-
     char* nomeUtente = gtk_entry_get_text(GTK_ENTRY(EntNomeUtente1));
     if (validaStringa(nomeUtente) == 0) {
         gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), "\tNome utente invalido!\n \t\t Riprovare");
@@ -402,12 +416,21 @@ void on_pg3BtnAccedi_clicked(GtkButton* b) {
         return;
     }
 
+    int conta = 0;
+    UtenteT* utentiFile = GetUtentiDalFile(&conta);
+    // Se utentiFile è NULL e conta è 0, allora non siamo riusciti a leggere gli utenti
+    if (utentiFile == NULL && conta == 0) {
+        gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), "\tUtente inesistente!\n \t\t Riprovare");
+        return;
+    }
+
     if (LoggaUtente(nomeUtente, password, utentiFile, conta) == 0) {
         gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), "\tUtente inesistente!\n \t\t Riprovare");
         return;
     }
 
     // Se siamo arrivati qui, l'utente è loggato
+    gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), "\tUtente autenticato");
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
 }
 

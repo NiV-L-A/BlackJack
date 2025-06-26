@@ -11,7 +11,7 @@ StoricoPartitaT* PopolaStoricoPartiteDalFile() {
         // Il file non esiste oppure non possiamo aprirlo.
 
         // Proviamo a creare il file
-        FILE *file = fopen(NomeFileStoricoPartite, "a");
+        file = fopen(NomeFileStoricoPartite, "a");
         if (!file) {
             // Non abbiamo i permessi
             fprintf(stderr, "Impossibile aprire file\n");
@@ -34,7 +34,7 @@ StoricoPartitaT* PopolaStoricoPartiteDalFile() {
         }
 
         Partite = partita;
-        sscanf(line, "%20[^,],%1[^,],%10d", &Partite[i].NomeUtente, Partite[i].Risultato, &Partite[i].BilancioDiUscita);
+        sscanf(line, "%20[^,],%1[^,],%10d", &Partite[i].NomeUtente, &Partite[i].Risultato, &Partite[i].BilancioDiUscita);
         PulisciStringa(Partite[i].NomeUtente);
         if (strcmp(Partite[i].NomeUtente, UtenteLoggato->nome) == 0) {
             i++;

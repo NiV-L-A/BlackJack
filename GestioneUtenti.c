@@ -13,9 +13,15 @@ int validaStringa(char* str) {
 
 char* RimuoviNewLine(char line[]) {//Rimuove il newline character dalla fine di una riga
     size_t lunghezza = strlen(line);
-    if (line[lunghezza - 1] == '\n') {
-        line[lunghezza - 1] = '\0';
+    if (lunghezza > 2) {
+        if (line[lunghezza - 1] == '\n') {
+            line[lunghezza - 1] = '\0';
+        }
+        if (line[lunghezza - 2] == '\r') {
+            line[lunghezza - 2] = '\0';
+        }
     }
+
     return line;
 }
 
@@ -40,7 +46,7 @@ UtenteT* GetUtentiDalFile(int* NumeroUtenti) {//Legge il file e popola un array 
     if (!file) {
         // Il file non esiste oppure non possiamo aprirlo.
         // Proviamo a creare il file
-        FILE *file = fopen(NomeFileUtenti, "a");
+        file = fopen(NomeFileUtenti, "a");
         if (!file) {
             // Non abbiamo i permessi
 #ifdef DEBUG
