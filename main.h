@@ -15,6 +15,7 @@
 #define LunghezzaMassimaStringa 21
 #define LunghezzaMassimaRiga 256
 #define BufferSnprintf 200
+#define CartaCoperta "GUI/SpriteCarte/coperta.png"
 #define NomeFileStoricoPartite "File/StoricoPartite"
 #define NomeFileUtenti "File/Utenti"
 
@@ -37,6 +38,7 @@ typedef struct {//Definisce il tipo StoricoPartita
 //===================VARIABILI GLOBALI (DICHIARAZIONI)========================
 extern int Puntata;
 extern int NumeroRighi;
+extern int* PuntatoreMemoriaAllocata;
 extern short NumeroMazziGiocatore;
 extern UtenteT* UtenteLoggato;
 
@@ -53,19 +55,18 @@ extern unsigned short ManoBanco[MAXcarteBanco];
 //Accanto ad ogni funzione vi e` una spiegazione rapida del suo funzionamento. Usando il "jump-to" dell'IDE potete
 //              andare direttamente dove e` stata dichiarata, trovando una spiegazione piu` estesa.
 //----------------------------------------------------------------------------------------------------------------------
-//===================Funzioni grafiche============================================
+//===================InterfacciaGrafica.c=========================================
 int InitProgramma(int argc, char *argv[]);
-void AvvioPartita(GtkWidget* StkOpzioniPuntata,GtkWidget* CntBtnOpzioniPuntata, GtkWidget* StkOpzioniGiocatore, GtkWidget* CntBtnOpzioniGiocatore, GtkWidget* CntVuotoOpzioniGiocatore, GtkWidget* CntSecondaPesca, GtkWidget* LblNotifica, GtkWidget* LblPartitaVinta, GtkWidget* LblPartitaPersa, GtkWidget* CntVuotoOpzioniPuntata,GtkWidget* ControlloScena, GtkWidget* CntMenuPrincipale, GtkWidget* CntTavoloDaGioco);
 void InitArrImmagini(GtkImage* ImgCartaBanco1,GtkImage* ImgCartaBanco2,GtkImage* ImgCartaBanco3,GtkImage* ImgCartaBanco4,GtkImage* ImgCartaBanco5,GtkImage* ImgCartaBanco6,GtkImage* ImgCartaGiocatore1,GtkImage* ImgCartaGiocatore2,GtkImage* ImgCartaGiocatore3,GtkImage* ImgCartaGiocatore4,GtkImage* ImgCartaGiocatore5,GtkImage* ImgCartaGiocatore6,GtkImage* ImgCartaGiocatore7,GtkImage* ImgCartaGiocatore8);
 void AggiornaStatistichePartita();
 //===================Banco.c======================================================
-void RandInit();//Funzione che seedda rand
+void InitRand();//Funzione che seedda rand
 char ControllaVittoria();//Funzione controllo vittoria
 int CalcolaPunti(unsigned short Mano[], unsigned short Dimensione);
 int PescaBanco(short CarteDaPescare);
 void BancoPescaRipetuta();
 //===================Giocatore.c==================================================
-void AggiornamentoStatistiche(StoricoPartitaT* ArrPartite);//Funzione per aggiornare le statistiche dell'utente
+void CalcolaTassoVittoria();//Funzione per aggiornare le statistiche dell'utente
 int PescaGiocatore(unsigned short CarteDaPescare);
 int Raddoppia();
 void LogicaAssi(unsigned short Mano[], unsigned short Dimensione);
@@ -85,11 +86,10 @@ void ScriviPartita(FILE* file, char Risultato, int BilancioInUscita);
 int AggiungiPartitaAlFile(char Risultato, int BilancioInUscita);
 void ResettaValoriGlobali();
 //===================GestioneGraficaPartita.c=====================================
-void RenderizzaCarta(GtkImage *immagine, unsigned short idCarta);
 void AggiornaManoGiocatore();
 void AggiornaManoBanco();
 void AggiornaAmbiMani();
-void InitRenderingCarte(GtkBuilder *Builder);
+void LogicaCartaCoperta();
 
 
 

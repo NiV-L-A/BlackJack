@@ -143,7 +143,7 @@
                         <property name="active">True</property>
                         <property name="draw-indicator">True</property>
                         <property name="group">rdDiffNormale</property>
-                        <signal name="clicked" handler="on_rdDiffDifficile_toggled" swapped="no"/>
+                        <signal name="clicked" handler="on_rdDiffDifficile_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -161,7 +161,7 @@
                         <property name="halign">center</property>
                         <property name="active">True</property>
                         <property name="draw-indicator">True</property>
-                        <signal name="clicked" handler="on_rdDiffNormale_toggled" swapped="no"/>
+                        <signal name="clicked" handler="on_rdDiffNormale_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -182,7 +182,7 @@ conta punti automatica)</property>
                         <property name="active">True</property>
                         <property name="draw-indicator">True</property>
                         <property name="group">rdDiffNormale</property>
-                        <signal name="clicked" handler="on_rdDiffFacile_toggled" swapped="no"/>
+                        <signal name="clicked" handler="on_rdDiffFacile_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -307,7 +307,6 @@ vittoria: </property>
                   <attribute name="font-desc" value="Sans Bold 16"/>
                   <attribute name="foreground" value="#e0e01b1b2424"/>
                 </attributes>
-                <signal name="map" handler="on_lblPartiteGiocate_map" swapped="no"/>
               </object>
               <packing>
                 <property name="x">293</property>
@@ -324,7 +323,6 @@ vittoria: </property>
                   <attribute name="font-desc" value="Sans Bold 16"/>
                   <attribute name="foreground" value="#e0e01b1b2424"/>
                 </attributes>
-                <signal name="map" handler="on_lblTassoVittoria_map" swapped="no"/>
               </object>
               <packing>
                 <property name="x">293</property>
@@ -341,7 +339,6 @@ vittoria: </property>
                   <attribute name="font-desc" value="Sans Bold 16"/>
                   <attribute name="foreground" value="#e0e01b1b2424"/>
                 </attributes>
-                <signal name="map" handler="on_lblBilancio_map" swapped="no"/>
               </object>
               <packing>
                 <property name="x">293</property>
@@ -445,7 +442,6 @@ vittoria: </property>
                   <attribute name="font-desc" value="Sans Bold 20"/>
                   <attribute name="foreground" value="#e0e01b1b2424"/>
                 </attributes>
-                <signal name="map" handler="on_lblBilancio2_map" swapped="no"/>
               </object>
               <packing>
                 <property name="x">708</property>
@@ -1414,6 +1410,7 @@ vittoria: </property>
                   <attribute name="font-desc" value="Sans Bold 14"/>
                   <attribute name="foreground" value="#ffff78780000"/>
                 </attributes>
+                <signal name="map" handler="on_lblValoreManoGiocatore_map" swapped="no"/>
               </object>
               <packing>
                 <property name="x">313</property>

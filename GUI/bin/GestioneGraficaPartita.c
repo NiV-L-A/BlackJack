@@ -26,13 +26,25 @@ void InitArrImmagini(GtkImage* ImgCartaBanco1,GtkImage* ImgCartaBanco2,GtkImage*
     ArrImmaginiBanco[5] = ImgCartaBanco6;
 }
 
+gchar* PrendiNomeTextureDaImmagine(GtkImage* immagine){
+    GValue ValoreTemp = G_VALUE_INIT;
+
+    g_object_get_property(G_OBJECT(immagine), "file", &ValoreTemp);
+    gchar* ControllaTexture = g_value_get_string(&ValoreTemp);
+
+    return ControllaTexture;
+}
+
 //Funzione generica che si occupa di fare il draw di una singola immagine
-void RenderizzaCarta(GtkImage *immagine, unsigned short idCarta) {//Se lo slot nell'array mano e` vuoto, rimuove la sprite da quello slot nel programma
+void RenderizzaCarta(GtkImage *immagine, unsigned short idCarta, unsigned short SaltaControllo) {//Se lo slot nell'array mano e` vuoto, rimuove la sprite da quello slot nel programma
     if (idCarta > 134){
         idCarta -= 130;
     }
     if (idCarta == SlotVuoto) {
         gtk_image_set_from_file(immagine, "GUI/SpriteMenu/ImmagineVuota.png");
+        return;
+    }
+    if (strcmp(PrendiNomeTextureDaImmagine(immagine), CartaCoperta) == 0 && SaltaControllo == 0) {
         return;
     }
     //Setta il la sprite con il percorso in cui trovarla
@@ -45,12 +57,12 @@ void RenderizzaCarta(GtkImage *immagine, unsigned short idCarta) {//Se lo slot n
 //Funzioni principali per aggiornare individualmente la mano del giocatore o del dealer
 void AggiornaManoGiocatore() {
     for (int i = 0; i < MAXcarteGiocatore; i++) {
-        RenderizzaCarta(ArrImmaginiGiocatore[i], ManoGiocatore[i]);
+        RenderizzaCarta(ArrImmaginiGiocatore[i], ManoGiocatore[i],0);
     }
 }
 void AggiornaManoBanco() {
     for (int i = 0; i < MAXcarteBanco; i++) {
-        RenderizzaCarta(ArrImmaginiBanco[i], ManoBanco[i]);
+        RenderizzaCarta(ArrImmaginiBanco[i], ManoBanco[i],0);
     }
 }
 //Funzione aggiuntiva per aggiornarle entrambe
@@ -71,5 +83,13 @@ void InitRenderingCarte(GtkBuilder *Builder) {
     for (int i = 0; i < MAXcarteBanco; i++) {//Sezione che prende quelle del banco
         snprintf(NomeWidget, sizeof(NomeWidget), "imgCartaBanco%d", i + 1);
         ArrImmaginiBanco[i] = GTK_IMAGE(gtk_builder_get_object(Builder, NomeWidget));
+    }
+}
+
+void LogicaCartaCoperta() {
+    if (strcmp(PrendiNomeTextureDaImmagine(ArrImmaginiBanco[1]), CartaCoperta) == 0){
+        RenderizzaCarta(ArrImmaginiBanco[1], ManoBanco[1],1);
+    }else{
+        gtk_image_set_from_file(ArrImmaginiBanco[1], CartaCoperta);
     }
 }

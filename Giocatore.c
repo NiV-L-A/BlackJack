@@ -5,7 +5,9 @@
 #include "main.h"
 
 //Calcola il tasso di vittoria dell'utente
-void AggiornamentoStatistiche(StoricoPartitaT* ArrPartite) {
+void CalcolaTassoVittoria() {
+    StoricoPartitaT* ArrPartite = PopolaStoricoPartiteDalFile();
+    malloc(sizeof(*ArrPartite));
     float Vittorie = 0;
     float Sconfitte = 0;
 
@@ -22,7 +24,10 @@ void AggiornamentoStatistiche(StoricoPartitaT* ArrPartite) {
             break;
         }
     }
+
+    if (Vittorie != 0 || Sconfitte != 0){
     UtenteLoggato->percentualeVittoria = (Vittorie / (Vittorie + Sconfitte)) * 100;
+    }
 }
 //Funzione che gestisce la pesca per il giocatore
 int PescaGiocatore(unsigned short CarteDaPescare) {//Prende come argument il numero di carte da pescare

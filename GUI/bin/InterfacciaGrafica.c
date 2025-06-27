@@ -206,7 +206,6 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     ImgCartaGiocatore6 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaGiocatore6"));
     ImgCartaGiocatore7 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaGiocatore7"));
     ImgCartaGiocatore8 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaGiocatore8"));
-
 //=====================MISC======================
     TxtStoricoPartite = GTK_WIDGET(gtk_builder_get_object(Builder, "txtStoricoPartite"));
     EntNomeUtente1 = GTK_WIDGET(gtk_builder_get_object(Builder, "entNomeUtente1"));
@@ -236,72 +235,240 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     return EXIT_SUCCESS;//Condizione di uscita necessaria per chiudere il programma una volta chiusa l'ui
 
 }
+//---------------------------------------------FUNZIONI GENERICHE-------------------------------------------------------
+//Qui ci sono funzioni di utilizzo generale che non potevano esse spostate in un altro file in quanto manipolino oggetti
+//                                       e segnali presenti in questo.
+//----------------------------------------------------------------------------------------------------------------------
+
+//Funzione generale che aggiorna le statistiche visibili durante la partita
+void AggiornaStatistichePartita() {//Si occupa di modificare i valori riportati nei vari label presenti durante la partita
+    char StringaFormattata[BufferSnprintf];
+    //Bilancio e puntata
+    snprintf(StringaFormattata, BufferSnprintf, "%d",UtenteLoggato->bilancio);
+    gtk_label_set_text(GTK_LABEL(LblBilancioPartita), StringaFormattata);
+    StringaFormattata[0] = '\0';//Svuoto la variabile per poterla riutilizzare
+    snprintf(StringaFormattata, BufferSnprintf, "%d", Puntata);
+    gtk_label_set_text(GTK_LABEL(LblPuntata), StringaFormattata);
+    StringaFormattata[0] = '\0';
+
+    //Controllo per accertare che la difficolta' sia impostata su "facile"
+    if (NumeroMazziGiocatore == 3) {//Se si, aggiorna anche i label che tengono conto del valore delle mani
+
+        //Chiamo la logica assi per assicurarmi che il punteggio sia attendibile
+        LogicaAssi(ManoGiocatore, MAXcarteGiocatore);
+        LogicaAssi(ManoBanco, MAXcarteBanco);
+
+        //Sistemati gli assi, Chiamo CalcolaPunti per entrambe le mani e metto il risultato a schermo
+        snprintf(StringaFormattata, BufferSnprintf, "Valore mano: %d",CalcolaPunti(ManoGiocatore, MAXcarteGiocatore));
+        gtk_label_set_text(GTK_LABEL(LblValoreManoGiocatore), StringaFormattata);
+        StringaFormattata[0] = '\0';
+        snprintf(StringaFormattata, BufferSnprintf, "Valore mano: %d",CalcolaPunti(ManoBanco, MAXcarteBanco));
+        gtk_label_set_text(GTK_LABEL(LblValoreManoBanco), StringaFormattata);
+    }
+}
+
+
+
+
 //---------------------------------------------FUNZIONI CALLBACK--------------------------------------------------------
-//Qui vengono gestiti i segnali di ogni widget e vi si assegna un metodo.
-//===================BOTTONI===================
-//Funzione che gestisce il caricamento a schermo dello storico partite
-void on_pg1TBtnStorico_toggled(GtkToggleButton* tb) {//Se L'utente e` loggato ed il bottone e` in stato "schiacciato", mostra lo storico partite
+//                    Qui vengono gestiti i segnali di ogni widget e vi si assegna un metodo.
+//----------------------------------------------------------------------------------------------------------------------
+//######################################################################################################################
+//##############################################SCHERMATA MENU PRINCIPALE###############################################
+//######################################################################################################################
+//=====================================================BOTTONI==========================================================
+
+
+//Segnale che viene triggerato quando viene cliccato il bottone "Storico Partite" sul menu` principale avendo uno stato
+//"attivo" e "disattivo"
+void on_pg1TBtnStorico_toggled(GtkToggleButton* tb) {//Se l'utente e` loggato ed il bottone e` stato schiacciato, mostra a schermo lo storico partite
     if (UtenteLoggato != NULL) {//Altrimenti, porta l'utente sulla pagina di registrazione/accesso
-        if (gtk_toggle_button_get_active(tb)) {
+
+        //Controllo lo stato del bottone switchando da uno stato all'altro
+        if (gtk_toggle_button_get_active(tb)) {//Se stato = attivo, mostra lo storico partite
+            //La logica della popolazione dello storico e` gestita dal segnale "Map" per assicurarsi che venga eseguita
+            //Solo quando e` visibile a schermo, non quando viene cliccato il bottone (in quanto potrebbe farlo un
+            //utente non loggato occupando memoria senza avere la possibilita` di liberarla)
             gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntStoricoPartite);
         }
-        else {
+        else {//Altrimenti (se e` disattivo), fai scomparire lo storico partite e libera la memoria ad esso allocata
             gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntVuotoStoricoPartite);
+            free(PuntatoreMemoriaAllocata);
+            PuntatoreMemoriaAllocata = NULL;
         }
         return;
     }
+    //Questa sezione resetta lo stato del bottone ad essere disattivo se un'utente non loggato lo avesse cliccato per
+    //poi portarlo alla schermata di registrazione/accesso
     gtk_toggle_button_set_active(tb,0);
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
 }
-//Funzione che gestisce il cambio scena alla pagina di "top-up" del bilancio cliccato il tasto sul menu principale
-void on_pg1BtnBilancio_clicked(GtkButton* b) {//Se l'utente e` loggato, cambia scena alla pagina di gestione del bilancio
+
+
+//Segnale che viene triggerato quando viene cliccato il bottone "Bilancio" sul menu` principale
+void on_pg1BtnBilancio_clicked(GtkButton* b) {//Se l'utente e` loggato, passa alla schermata di gestione del bilancio
     if (UtenteLoggato != NULL) {//Altrimenti, porta l'utente sulla pagina di registrazione/accesso
         gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntGestioneBilancio);
         return;
     }
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
 }
-//Funzione che gestisce il cambio scena alla pagina di registrazione/accesso premuto il bottone "accedi" nel menu principale
-void on_pg1BtnAccedi_clicked(GtkButton* b) {
+
+
+//Segnale che viene triggerato cliccando il bottone "Accedi/Registrati" sul menu` principale
+void on_pg1BtnAccedi_clicked(GtkButton* b) {//Cambia schermata a quella di registrazione/accesso
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuAccesso);
 }
+
+
+//Segnale che viene triggerato quando viene cliccato il bottone "Opzioni" sul menu` principale avendo uno stato "attivo" e "disattivo"
+void on_pg1BtnOpzioni_toggled(GtkToggleButton* tb) {
+    //Se attivo, mostra le opzioni;
+    //Se disattivo, nascondile
+    gtk_toggle_button_get_active(tb) ? gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntOpzioniDifficolta) : gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntVuotoStoricoPartite);
+}
+
+//=====================================================LABEL============================================================
+
+//Segnale che viene attivato appena compare a schermo il label del nome utente nel menu` principale
+void on_lblNomeUtente1_map(GtkLabel* lb) {//Aggiorna le statistiche di esso e degli altri label che lo necessitano
+    if (UtenteLoggato != NULL) {//Prima di farlo controlla se l'utente sia loggato o meno in maniera tale da lasciare i valori default
+        char StringaFormattata[BufferSnprintf];
+        //Popola il nome utente
+        gtk_label_set_text(lb, UtenteLoggato->nome);
+        //Popola le partite giocate
+        snprintf(StringaFormattata, BufferSnprintf,"%d", UtenteLoggato->partiteGiocate);
+        gtk_label_set_text(GTK_LABEL(LblPartiteGiocate), StringaFormattata);
+        StringaFormattata[0] = '\0';//Svuoto il contenuto della variabile per poterla riutilizzare
+        //Popola la percentuale di vittoria
+        CalcolaTassoVittoria();
+        snprintf(StringaFormattata, BufferSnprintf, "%.2f%%", UtenteLoggato->percentualeVittoria);
+        gtk_label_set_text(GTK_LABEL(LblTassoVittoria), StringaFormattata);
+        free (PuntatoreMemoriaAllocata);
+        PuntatoreMemoriaAllocata = NULL;
+        StringaFormattata[0] = '\0';
+        //Popola il bilancio
+        snprintf(StringaFormattata, BufferSnprintf,"%d", UtenteLoggato->bilancio);
+        gtk_label_set_text(GTK_LABEL(LblBilancioMenuPrincipale), StringaFormattata);
+    }
+}
+
+//=====================================================MISC=============================================================
+
+//Questi sono i bottoni che permettono di cambiare la difficolta'
+void on_rdDiffNormale_clicked(GtkButton* b) {//Essa e` direttamente collegata al numero di mazzi dal quale pesca l'utente
+    NumeroMazziGiocatore = 6;//Il dealer pesca sempre da 6 mazzi
+}
+void on_rdDiffFacile_clicked(GtkButton* b) {
+    NumeroMazziGiocatore = 3;
+}
+void on_rdDiffDifficile_clicked(GtkButton* b) {
+    NumeroMazziGiocatore = 9;
+}
+//Questo segnale viene triggerato quando appare a schermo la text entry dello storico partite
+void on_txtStoricoPartite_map(GtkTextView* tw) {//Popola un array interno con solo le partite fatte dallo stesso utente loggato presenti nel file StoricoPartite
+
+    //Sezione di inizializzazione
+    StoricoPartitaT* StructArrayPartite = PopolaStoricoPartiteDalFile();//Crea la struct che conterra` i dati
+    PuntatoreMemoriaAllocata = malloc(sizeof(*StructArrayPartite)*NumeroRighi);//Alloca la memoria in base alla dimensione dello struct (ovvero in base al numero di partite che ha estratto dal file)
+    //Per poter manipolare le text entry in gtk serve creare un buffer di tipo GtkTextBuffer
+    GtkTextBuffer* Buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tw));
+    gtk_text_buffer_set_text(Buffer, "", -1);//Inizializza il buffer svuotandolo
+    //Sempre per via di gtk va creato un "iteratore" per manipolare il testo. Esso e` come un cursore che scorre per il file
+    GtkTextIter Iteratore;
+    gtk_text_buffer_get_end_iter(Buffer, &Iteratore);//Bisogna comunicare al buffer da dove estrarre i dati letti
+
+    //Qui imposto del testo per creare delle tab informative in cima all'entry
+    gtk_text_buffer_insert(Buffer, &Iteratore, "Nome Utente ┃ Risultato Partita ┃ Crediti +/-\n", -1);
+    gtk_text_buffer_insert(Buffer, &Iteratore, "\n", -1);
+
+    //Infine scorro per il numero di righi presenti nel file, estraggo i contenuti in essi e li formatto in una stringa da poter poi far apparire a schermo
+    for (int i = 0; i < NumeroRighi; i++) {
+        char StringaFormattata[BufferSnprintf];
+        //Estrazione e formattazione degli elementi
+        snprintf(StringaFormattata, BufferSnprintf, "%s\t\t,\t%c\t,\t%d\n",StructArrayPartite[i].NomeUtente,StructArrayPartite[i].Risultato,StructArrayPartite[i].BilancioDiUscita);
+        //Printa la stringa e va accapo
+        gtk_text_buffer_insert(Buffer, &Iteratore, StringaFormattata, -1);
+    }
+}
+//######################################################################################################################
+//#############################################SCHERMATA GESTIONE BILANCIO##############################################
+//######################################################################################################################
+//=====================================================BOTTONI==========================================================
+
 //Funzine che gestisce il cambio scena facendo tornare indietro al menu principale dalla pagina di gestione bilancio
 void on_pg2BtnEsci_clicked(GtkButton* b) {
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
 }
-//Funzione che gestisce il cambio scena facendo tornare indietro al menu principale dalla pagina di registrazione/accesso
-void on_pg3BtnEsci_clicked(GtkButton* b) {
-    gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), NULL);
-    gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
+//Questi segnali vengono triggerati quando l'utente clicca sui rispettivi bottoni per aggiungere crediti al proprio bilancio
+void on_pg2BtnAgg100_clicked(GtkButton* b) {//Aggiunge direttamente la rispettiva quantita` di crediti al bilancio
+    UtenteLoggato->bilancio += 100;//In seguito aggiorna il label per mostrarla in tempo reale
+    char StringaConvertita[BufferSnprintf];
+    snprintf(StringaConvertita, BufferSnprintf, "%d", UtenteLoggato->bilancio);
+    gtk_label_set_text(GTK_LABEL(LblBilancioGestioneBilancio), StringaConvertita);
 }
-void on_pg1BtnOpzioni_toggled(GtkToggleButton* tb){
-    gtk_toggle_button_get_active(tb) ? gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntOpzioniDifficolta) : gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntVuotoStoricoPartite);
+void on_pg2BtnAgg200_clicked(GtkButton* b) {
+    UtenteLoggato->bilancio += 200;
+    char StringaConvertita[BufferSnprintf];
+    snprintf(StringaConvertita, BufferSnprintf, "%d", UtenteLoggato->bilancio);
+    gtk_label_set_text(GTK_LABEL(LblBilancioGestioneBilancio), StringaConvertita);
 }
-//Funzione che gestisce il cambio scena al menu di pausa durante una partita
+void on_pg2BtnAgg500_clicked(GtkButton* b) {
+    UtenteLoggato->bilancio += 500;
+    char StringaConvertita[BufferSnprintf];
+    snprintf(StringaConvertita, BufferSnprintf, "%d", UtenteLoggato->bilancio);
+    gtk_label_set_text(GTK_LABEL(LblBilancioGestioneBilancio), StringaConvertita);
+}
+void on_pg2BtnAgg1000_clicked(GtkButton* b) {
+    UtenteLoggato->bilancio += 1000;
+    char StringaConvertita[BufferSnprintf];
+    snprintf(StringaConvertita, BufferSnprintf, "%d", UtenteLoggato->bilancio);
+    gtk_label_set_text(GTK_LABEL(LblBilancioGestioneBilancio), StringaConvertita);
+}
+
+//=====================================================LABEL============================================================
+
+//Questa segue la stessa e identica logica ma per i label nella schermata di gestione del bilancio
+void on_lblNomeUtente2_map(GtkLabel* lb) {//Solo che non controlla se l'utente sia loggato o meno in quanto sia impossibile accedere alla schermata se non lo e`
+    char StringaFormattata[BufferSnprintf];
+    //Popola il nome utente
+    gtk_label_set_text(lb, UtenteLoggato->nome);
+    //Popola il contatore del bilancio
+    snprintf(StringaFormattata, BufferSnprintf, "%d",UtenteLoggato->bilancio);
+    gtk_label_set_text(lb, StringaFormattata);
+}
+
+//######################################################################################################################
+//##############################################SCHERMATA MENU` PAUSA###################################################
+//######################################################################################################################
+//=====================================================BOTTONI==========================================================
+
 void on_pg4BtnPausa_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPausa);
 }
-//Funzione che gestisce l'opzione "Riprendi" del menu pausa, facendo ritornare il giocatore alla partita
+
+
 void on_pg5BtnRiprendi_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntTavoloDaGioco);
 }
-//Funzione che gestisce l'opzione "Torna al menu", cambiando la finestra delle opzioni del menu pausa con una di conferma, informando l'utente che non sia possibile riprendere una partita abbandonata
+
 void on_pg5BtnTornaAlMenu_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntMenuConfermaHome);
 }
-//Funzione che gestisce l'opzione "No" nella finestra di conferma per tornare al menu principale
-void on_pg5BtnAnnulla1_clicked(GtkButton* b){//In caso venga scelta, riporta l'utente al menu pausa
+
+void on_pg5BtnAnnulla1_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntOpzioniPausa);
 }
-//Funzione che gestisce l'opzione "Si" nella finestra di conferma per tornare al menu principale
-void on_pg5BtnConferma1_clicked(GtkButton* b){//In caso venga scelta, riporta l'utente all menu principale, liberando la memoria occupata da quella partita
+
+void on_pg5BtnConferma1_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
+    gtk_stack_set_visible_child(GTK_STACK(StkOpzioniGiocatore), CntVuotoOpzioniGiocatore);
     gtk_widget_hide(BtnFinePartitaEsci);
     gtk_label_set_text(GTK_LABEL(LblPartitaPersa), NULL);
     gtk_label_set_text(GTK_LABEL(LblPartitaVinta), NULL);
 }
-//Funzione che gestisce l'opzione "Chiudi il gioco" del menu di pausa, cambiando la finestra delle opzioni del menu pausa con una di conferma, informando l'utente che non sia possibile riprendere una partita abbandonata.
-void on_pg5BtnChiudiGioco_clicked(GtkButton* b){//In caso venga scelta, libera la memoria occupata da quella partita, aggiorna le statistiche contenute nel
+
+void on_pg5BtnChiudiGioco_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(StkMenuPausa), CntMenuConfermaQuit);
 }
 void on_pg5BtnAnnulla2_clicked(GtkButton* b){
@@ -310,129 +477,37 @@ void on_pg5BtnAnnulla2_clicked(GtkButton* b){
 void on_pg5BtnConferma2_clicked(GtkButton* b){
     gtk_main_quit();
 }
-void on_pg2BtnAgg100_clicked(GtkButton* b){
-    UtenteLoggato->bilancio += 100;
-    char temp[BufferSnprintf];
-    snprintf(temp, BufferSnprintf, "%d", UtenteLoggato->bilancio);
-    gtk_label_set_text(GTK_LABEL(LblBilancioGestioneBilancio), temp);
-}
-void on_pg2BtnAgg200_clicked(GtkButton* b){
-    UtenteLoggato->bilancio += 200;
-    char temp[BufferSnprintf];
-    snprintf(temp, BufferSnprintf, "%d", UtenteLoggato->bilancio);
-    gtk_label_set_text(GTK_LABEL(LblBilancioGestioneBilancio), temp);
-}
-void on_pg2BtnAgg500_clicked(GtkButton* b){
-    UtenteLoggato->bilancio += 500;
-    char temp[BufferSnprintf];
-    snprintf(temp, BufferSnprintf, "%d", UtenteLoggato->bilancio);
-    gtk_label_set_text(GTK_LABEL(LblBilancioGestioneBilancio), temp);
-}
-void on_pg2BtnAgg1000_clicked(GtkButton* b){
-    UtenteLoggato->bilancio += 1000;
-    char temp[BufferSnprintf];
-    snprintf(temp, BufferSnprintf, "%d", UtenteLoggato->bilancio);
-    gtk_label_set_text(GTK_LABEL(LblBilancioGestioneBilancio), temp);
+//######################################################################################################################
+//##############################################SCHERMATA DI GIOCO######################################################
+//######################################################################################################################
+//=====================================================LABEL============================================================
+
+//Questa invece inizializza i label per il contatore del valore della mano
+void on_lblValoreManoGiocatore_map(GtkLabel* lb) {//Controlla se la difficolta` sia impostata su facile
+    if (NumeroMazziGiocatore == 3) {//Se si`, inizializza i label
+        gtk_label_set_text(lb, "Valore: 0");
+        gtk_label_set_text(GTK_LABEL(LblValoreManoBanco), "Valore: 0");
+    }else{//Altrimenti li svuota (serve in caso si faccia una partita con una difficolta` diversa dopo aver giocato in facile)
+        gtk_label_set_text(lb, NULL);
+        gtk_label_set_text(GTK_LABEL(LblValoreManoBanco), NULL);
+    }
 }
 
-//===================LABEL=====================
-void on_lblNomeUtente1_map(GtkLabel* lb){
-    if (UtenteLoggato != NULL){
-        gtk_label_set_text(lb, UtenteLoggato->nome);
-    }
-}
-void on_lblPartiteGiocate_map(GtkLabel* lb){
-    if (UtenteLoggato != NULL){
-        char temp[BufferSnprintf];
-        snprintf(temp, BufferSnprintf,"%d", UtenteLoggato->partiteGiocate);
-        gtk_label_set_text(lb, temp);
-    }
-}
-void on_lblTassoVittoria_map(GtkLabel* lb){
-    if (UtenteLoggato != NULL){
-        char temp[BufferSnprintf];
-        snprintf(temp, BufferSnprintf, "%.2f%%", UtenteLoggato->percentualeVittoria);
-        gtk_label_set_text(lb, temp);
-    }
-}
-void on_lblBilancio_map(GtkLabel* lb){
-    if (UtenteLoggato != NULL){
-        char temp[BufferSnprintf];
-        snprintf(temp, BufferSnprintf,"%d", UtenteLoggato->bilancio);
-        gtk_label_set_text(lb, temp);
-    }
-}
-void on_lblBilancio2_map(GtkLabel* lb){
-    char temp[BufferSnprintf];
-    snprintf(temp, BufferSnprintf, "%d",UtenteLoggato->bilancio);
-    gtk_label_set_text(lb, temp);
-}
-void on_lblNomeUtente2_map(GtkLabel* lb){
-    gtk_label_set_text(lb, UtenteLoggato->nome);
-}
+//Questa popola solo il nome utente sulla schermata di gioco in quanto sia l'unico label a necessitarlo
 void on_lblNomeUtente3_map(GtkLabel* lb){
     gtk_label_set_text(lb, UtenteLoggato->nome);
 }
-//===================MISC======================
-void on_rdDiffNormale_toggled(GtkToggleButton* rb){
-        NumeroMazziGiocatore = 6;
-    printf("%d", NumeroMazziGiocatore);
+//######################################################################################################################
+//##############################################SCHERMATA DI ACCESSO####################################################
+//######################################################################################################################
+//=====================================================BOTTONI==========================================================
 
+//Funzione che gestisce il cambio scena facendo tornare indietro al menu principale dalla pagina di registrazione/accesso
+void on_pg3BtnEsci_clicked(GtkButton* b) {
+    gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), NULL);
+    gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
 }
-void on_rdDiffFacile_toggled(GtkButton* rb){
-        NumeroMazziGiocatore = 3;
-    printf("%d", NumeroMazziGiocatore);
-}
-void on_rdDiffDifficile_toggled(GtkToggleButton* rb){
-        NumeroMazziGiocatore = 9;
-    printf("%d", NumeroMazziGiocatore);
 
-}
-void on_txtStoricoPartite_map(GtkTextView* tw){
-    StoricoPartitaT* StructArrayPartite = PopolaStoricoPartiteDalFile();
-    char ArrayPartitePopolato[BufferSnprintf];
-
-    for (int i = 0; i < NumeroRighi; i++){
-        char temp[BufferSnprintf];
-        snprintf(temp, BufferSnprintf, "%s\t,%c\t,%d", StructArrayPartite[i].NomeUtente, StructArrayPartite[i].Risultato, StructArrayPartite[i].BilancioDiUscita);
-        ArrayPartitePopolato[i] = temp[0];
-        temp[0] = '\0';
-    }
-
-    GtkTextBuffer* Buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tw));
-
-    gtk_text_buffer_set_text(Buffer, "", -1);
-
-    GtkTextIter Iteratore;
-    gtk_text_buffer_get_end_iter(Buffer, &Iteratore);
-
-    gtk_text_buffer_insert(Buffer, &Iteratore, "Nome Utente | Risultato Partita | Guadagnato/Perso", -1);
-    gtk_text_buffer_insert(Buffer, &Iteratore, "\n", -1);
-
-    for (int i = 0; ArrayPartitePopolato[i] != EOF; i++) {
-
-        gtk_text_buffer_insert(Buffer, &Iteratore, &ArrayPartitePopolato[i], -1);
-
-        gtk_text_buffer_insert(Buffer, &Iteratore, "\n", -1);
-    }
-}
-//-------------------------------------------------SEZIONE GESTIONE ACCESSO---------------------------------------------
-void MemorizzaDatiAccesso(GtkEntry *e){
-    char Buffer[21];
-    sprintf(Buffer, "%s\0", gtk_entry_get_text(e));
-}
-void on_entNomeUtente1_changed(GtkEntry* e) {
-    MemorizzaDatiAccesso(e);
-}
-void on_entPassword1_changed(GtkEntry* e) {
-    MemorizzaDatiAccesso(e);
-}
-void on_entNomeUtente2_changed(GtkEntry* e) {
-    MemorizzaDatiAccesso(e);
-}
-void on_entPassword2_changed(GtkEntry* e) {
-    MemorizzaDatiAccesso(e);
-}
 
 void on_pg3BtnAccedi_clicked(GtkButton* b) {
     char* nomeUtente = gtk_entry_get_text(GTK_ENTRY(EntNomeUtente1));
@@ -465,6 +540,7 @@ void on_pg3BtnAccedi_clicked(GtkButton* b) {
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
 }
 
+
 void on_pg3BtnRegistrati_clicked(GtkButton* b) {
     char* nomeUtente = gtk_entry_get_text(GTK_ENTRY(EntNomeUtente2));
     if (validaStringa(nomeUtente) == 0) {
@@ -494,31 +570,44 @@ void on_pg3BtnRegistrati_clicked(GtkButton* b) {
     gtk_stack_set_visible_child(GTK_STACK(StkOpzioniAccesso), CntAccesso);
 
 }
-//Funzione generale che aggiorna le statistiche visibili durante la partita
-void AggiornaStatistichePartita() {
-    char Temp[BufferSnprintf];
-    //Bilancio e puntata
-    snprintf(Temp, BufferSnprintf, "%d",UtenteLoggato->bilancio);
-    gtk_label_set_text(GTK_LABEL(LblBilancioPartita), Temp);
-    Temp[0] = '\0';
-    snprintf(Temp, BufferSnprintf, "%d", Puntata);
-    gtk_label_set_text(GTK_LABEL(LblPuntata), Temp);
-    Temp[0] = '\0';
 
-    if (NumeroMazziGiocatore == 3) {//Controllo per accertare che la difficolta' sia impostata su "facile"
-        snprintf(Temp, BufferSnprintf, "Valore mano: %d",CalcolaPunti(ManoGiocatore, MAXcarteGiocatore));
-        Temp[0] = '\0';
-        snprintf(Temp, BufferSnprintf, "Valore mano: %d",CalcolaPunti(ManoBanco, MAXcarteBanco));
-    }
+//=====================================================MISC=============================================================
+
+
+void MemorizzaDatiAccesso(GtkEntry *e) {
+    char Buffer[21];
+    sprintf(Buffer, "%s\0", gtk_entry_get_text(e));
 }
-//-------------------------------------------------SEZIONE GESTIONE PARTITA---------------------------------------------
+void on_entNomeUtente1_changed(GtkEntry* e) {
+    MemorizzaDatiAccesso(e);
+}
+void on_entPassword1_changed(GtkEntry* e) {
+    MemorizzaDatiAccesso(e);
+}
+void on_entNomeUtente2_changed(GtkEntry* e) {
+    MemorizzaDatiAccesso(e);
+}
+void on_entPassword2_changed(GtkEntry* e) {
+    MemorizzaDatiAccesso(e);
+}
+
+
+//######################################################################################################################
+//##############################################GESTIONE COMPLETA PARTITA###############################################
+//######################################################################################################################
 
 void on_ConfermaScommessa_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(StkOpzioniPuntata), CntVuotoOpzioniPuntata);
     gtk_widget_hide(BtnConfermaPuntata);
 
+    InitRand();
     PescaGiocatore(2);
     PescaBanco(2);
+
+    if (NumeroMazziGiocatore > 3){
+        LogicaCartaCoperta();
+    }
+
     AggiornaAmbiMani();
     AggiornaStatistichePartita();
 
@@ -547,10 +636,15 @@ void on_pg1BtnGioca_clicked(GtkButton* b){//Se l'utente e` loggato, controlla se
 }
 
 void TurnoBanco() {
-    //scropricarta();
     gtk_stack_set_visible_child(GTK_STACK(StkOpzioniGiocatore), CntVuotoOpzioniGiocatore);
 
+    if (NumeroMazziGiocatore > 3){
+        LogicaCartaCoperta();
+    }
+
     BancoPescaRipetuta();
+
+    AggiornaStatistichePartita();
 
     char StringaFormattata[BufferSnprintf];
     switch (ControllaVittoria()) {

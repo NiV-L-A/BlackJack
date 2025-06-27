@@ -51,7 +51,7 @@ char ControllaVittoria() {
     return Risultato;//qui solo per zittire il compilatore
 }
 
-void RandInit() {//seed della funzione rand
+void InitRand() {//seed della funzione rand
     srand(time(NULL));
 }
 
@@ -88,7 +88,7 @@ void LogicaAssi(unsigned short Mano[], unsigned short Dimensione) {
             Mano[i] += 130;
             break;
         }
-        if (Mano[i] RimuoviSeme == 14 && TotalePunti + 11 > 21) {
+        if (Mano[i] RimuoviSeme == 14 && TotalePunti != 21 && TotalePunti + 11 > 21) {
             Mano[i] -= 130;
             break;
         }
