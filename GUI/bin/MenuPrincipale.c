@@ -32,6 +32,7 @@ GtkWidget* CntOpzioniPausa;
 GtkWidget* CntMenuConfermaHome;
 GtkWidget* CntMenuConfermaQuit;
 GtkWidget* CntSecondaPesca;
+GtkWidget* CntOpzioniDifficolta;
 //================================LABEL===========================
 GtkWidget* LblNomeUtenteMenuPrincipale;
 GtkWidget* LblPartiteGiocate;
@@ -82,12 +83,17 @@ GtkWidget* BtnFinisciTurno;
 GtkWidget* BtnSecondaPesca;
 GtkWidget* BtnFinePartitaEsci;
 GtkWidget* BtnConfermaPuntata;
+GtkWidget* BtnOpzioni;
 //================================MISC============================
 GtkWidget* TxtStoricoPartite;
 GtkWidget* EntNomeUtente1;
 GtkWidget* EntPassword1;
 GtkWidget* EntNomeUtente2;
 GtkWidget* EntPassword2;
+GtkWidget* RdioDiffNormale;
+GtkWidget* RdioDiffFacile;
+GtkWidget* RdioDiffDifficile;
+GtkWidget* TxtStoricoPartite;
 //================================IMMAGINI========================
 GtkImage* ImgCartaBanco1, *ImgCartaBanco2, *ImgCartaBanco3, *ImgCartaBanco4, *ImgCartaBanco5, *ImgCartaBanco6;
 GtkImage* ImgCartaGiocatore1, *ImgCartaGiocatore2, *ImgCartaGiocatore3, *ImgCartaGiocatore4, *ImgCartaGiocatore5, *ImgCartaGiocatore6, *ImgCartaGiocatore7, *ImgCartaGiocatore8;
@@ -133,6 +139,7 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     StkOpzioniAccesso = GTK_WIDGET(gtk_builder_get_object(Builder, "stkOpzioniAccesso"));
     CntAccesso = GTK_WIDGET(gtk_builder_get_object(Builder, "cntAccesso"));
     CntSecondaPesca = GTK_WIDGET(gtk_builder_get_object(Builder, "cntSecondaPesca"));
+    CntOpzioniDifficolta = GTK_WIDGET(gtk_builder_get_object(Builder, "cntOpzioniDiff"));
 //=====================LABEL=====================
     LblNomeUtenteMenuPrincipale = GTK_WIDGET(gtk_builder_get_object(Builder, "lblNomeUtente1"));
     LblPartiteGiocate = GTK_WIDGET(gtk_builder_get_object(Builder, "lblPartiteGiocate"));
@@ -183,6 +190,7 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     BtnFinisciTurno = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnFinisciTurno"));
     BtnFinePartitaEsci = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnEsci"));
     BtnConfermaPuntata = GTK_WIDGET(gtk_builder_get_object(Builder, "pg4BtnConfermaPuntata"));
+    BtnOpzioni = GTK_WIDGET(gtk_builder_get_object(Builder, "pg1BtnOpzioni"));
 //=====================IMMAGINI==================
     ImgCartaBanco1 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaBanco1"));
     ImgCartaBanco2 = GTK_IMAGE(gtk_builder_get_object(Builder, "imgCartaBanco2"));
@@ -205,8 +213,10 @@ int InitProgramma(int argc, char *argv[]){//funzione principale che gestisce la 
     EntNomeUtente2 = GTK_WIDGET(gtk_builder_get_object(Builder, "entNomeUtente2"));
     EntPassword1 = GTK_WIDGET(gtk_builder_get_object(Builder, "entPassword1"));
     EntPassword2 = GTK_WIDGET(gtk_builder_get_object(Builder, "entPassword2"));
-
-
+    RdioDiffNormale = GTK_WIDGET(gtk_builder_get_object(Builder, "rdDiffNormale"));
+    RdioDiffDifficile = GTK_WIDGET(gtk_builder_get_object(Builder, "rdDiffDifficile"));
+    RdioDiffFacile = GTK_WIDGET(gtk_builder_get_object(Builder, "rdDiffFacile"));
+    TxtStoricoPartite = GTK_WIDGET(gtk_builder_get_object(Builder, "txtStoricoPartite"));
 
 //---------------------------------------------MANIPOLAZIONE E GESTIONE FINESTRA----------------------------------------
 //===================COLORE====================
@@ -234,7 +244,6 @@ void on_pg1TBtnStorico_toggled(GtkToggleButton* tb) {//Se L'utente e` loggato ed
     if (UtenteLoggato != NULL) {//Altrimenti, porta l'utente sulla pagina di registrazione/accesso
         if (gtk_toggle_button_get_active(tb)) {
             gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntStoricoPartite);
-            //StoricoPartitaT* partite = PopolaStoricoPartiteDalFile();
         }
         else {
             gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntVuotoStoricoPartite);
@@ -265,7 +274,9 @@ void on_pg3BtnEsci_clicked(GtkButton* b) {
     gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), NULL);
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
 }
-
+void on_pg1BtnOpzioni_toggled(GtkToggleButton* tb){
+    gtk_toggle_button_get_active(tb) ? gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntOpzioniDifficolta) : gtk_stack_set_visible_child(GTK_STACK(StkStoricoPartite), CntVuotoStoricoPartite);
+}
 //Funzione che gestisce il cambio scena al menu di pausa durante una partita
 void on_pg4BtnPausa_clicked(GtkButton* b){
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPausa);
@@ -324,9 +335,6 @@ void on_pg2BtnAgg1000_clicked(GtkButton* b){
     gtk_label_set_text(GTK_LABEL(LblBilancioGestioneBilancio), temp);
 }
 
-//Le seguenti funzioni gestiscono cio` che accade quando il giocatore fa una scelta
-
-
 //===================LABEL=====================
 void on_lblNomeUtente1_map(GtkLabel* lb){
     if (UtenteLoggato != NULL){
@@ -365,12 +373,53 @@ void on_lblNomeUtente2_map(GtkLabel* lb){
 void on_lblNomeUtente3_map(GtkLabel* lb){
     gtk_label_set_text(lb, UtenteLoggato->nome);
 }
-
 //===================MISC======================
+void on_rdDiffNormale_toggled(GtkToggleButton* rb){
+        NumeroMazziGiocatore = 6;
+    printf("%d", NumeroMazziGiocatore);
+
+}
+void on_rdDiffFacile_toggled(GtkButton* rb){
+        NumeroMazziGiocatore = 3;
+    printf("%d", NumeroMazziGiocatore);
+}
+void on_rdDiffDifficile_toggled(GtkToggleButton* rb){
+        NumeroMazziGiocatore = 9;
+    printf("%d", NumeroMazziGiocatore);
+
+}
+void on_txtStoricoPartite_map(GtkTextView* tw){
+    StoricoPartitaT* StructArrayPartite = PopolaStoricoPartiteDalFile();
+    char ArrayPartitePopolato[BufferSnprintf];
+
+    for (int i = 0; i < NumeroRighi; i++){
+        char temp[BufferSnprintf];
+        snprintf(temp, BufferSnprintf, "%s\t,%c\t,%d", StructArrayPartite[i].NomeUtente, StructArrayPartite[i].Risultato, StructArrayPartite[i].BilancioDiUscita);
+        ArrayPartitePopolato[i] = temp[0];
+        temp[0] = '\0';
+    }
+
+    GtkTextBuffer* Buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tw));
+
+    gtk_text_buffer_set_text(Buffer, "", -1);
+
+    GtkTextIter Iteratore;
+    gtk_text_buffer_get_end_iter(Buffer, &Iteratore);
+
+    gtk_text_buffer_insert(Buffer, &Iteratore, "Nome Utente | Risultato Partita | Guadagnato/Perso", -1);
+    gtk_text_buffer_insert(Buffer, &Iteratore, "\n", -1);
+
+    for (int i = 0; ArrayPartitePopolato[i] != EOF; i++) {
+
+        gtk_text_buffer_insert(Buffer, &Iteratore, &ArrayPartitePopolato[i], -1);
+
+        gtk_text_buffer_insert(Buffer, &Iteratore, "\n", -1);
+    }
+}
+//-------------------------------------------------SEZIONE GESTIONE ACCESSO---------------------------------------------
 void MemorizzaDatiAccesso(GtkEntry *e){
     char Buffer[21];
     sprintf(Buffer, "%s\0", gtk_entry_get_text(e));
-
 }
 void on_entNomeUtente1_changed(GtkEntry* e) {
     MemorizzaDatiAccesso(e);
@@ -501,18 +550,7 @@ void TurnoBanco() {
     //scropricarta();
     gtk_stack_set_visible_child(GTK_STACK(StkOpzioniGiocatore), CntVuotoOpzioniGiocatore);
 
-    if (PescaBanco(1)){
-        AggiornaManoBanco();
-   }
-    if (PescaBanco(1)){
-        AggiornaManoBanco();
-    }
-    if (PescaBanco(1)){
-        AggiornaManoBanco();
-    }
-    if (PescaBanco(1)){
-        AggiornaManoBanco();
-    }
+    BancoPescaRipetuta();
 
     char StringaFormattata[BufferSnprintf];
     switch (ControllaVittoria()) {

@@ -63,6 +63,7 @@ void RandInit();//Funzione che seedda rand
 char ControllaVittoria();//Funzione controllo vittoria
 int CalcolaPunti(unsigned short Mano[], unsigned short Dimensione);
 int PescaBanco(short CarteDaPescare);
+void BancoPescaRipetuta();
 //===================Giocatore.c==================================================
 void AggiornamentoStatistiche(StoricoPartitaT* ArrPartite);//Funzione per aggiornare le statistiche dell'utente
 int PescaGiocatore(unsigned short CarteDaPescare);

@@ -135,3 +135,19 @@ int PescaBanco(short CarteDaPescare) {
     }
     return 1;
 }
+
+void BancoPescaRipetuta() {
+    if (PescaBanco(1)){
+        AggiornaManoBanco();
+    }
+    if (PescaBanco(1)){
+        AggiornaManoBanco();
+    }
+    if (PescaBanco(1)){
+        AggiornaManoBanco();
+    }
+    if (PescaBanco(1)){
+        AggiornaManoBanco();
+    }
+
+}
