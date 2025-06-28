@@ -6,7 +6,7 @@
 #include <gtk/gtk.h>
 
 //===================DEFINIZIONI==================================================
-#define MAXcarteGiocatore 8 //valore massimo di carte che il gicatore puo` avere in mano
+#define MAXcarteGiocatore 8 //valore massimo di carte che il giocatore puo` avere in mano
 #define MAXcarteBanco 6
 #define MAXmazziBanco 6
 #define SlotVuoto 0
