@@ -563,7 +563,7 @@ void on_pg3BtnAccedi_clicked(GtkButton* b) {
 
     //Se sia nome che password sono validi, creiamo un array di tipo UtenteT e lo popoliamo con tutti gli utenti nel file
     UtenteT* UtentiNelFile = GetUtentiDalFile(&Conta);
-    // Se UtentiNelFIle e` NULL e Conta e` 0, allora non siamo riusciti a leggere gli utenti
+    //Se UtentiNelFile e` NULL e Conta e` 0, allora non siamo riusciti a leggere gli utenti
     if (UtentiNelFile == NULL && Conta == 0) {//Quindi mettiamo a schermo l'errore
         gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), "\tUtente inesistente!\n \t\t Riprovare");
         return;
