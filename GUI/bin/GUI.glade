@@ -256,8 +256,7 @@ conta punti automatica)</property>
                 <property name="width-request">100</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Percentuale 
-vittoria: </property>
+                <property name="label" translatable="yes">Tasso VIttoria:</property>
                 <attributes>
                   <attribute name="font-desc" value="Sans Bold 16"/>
                   <attribute name="foreground" value="#ffffffffffff"/>
@@ -265,7 +264,7 @@ vittoria: </property>
               </object>
               <packing>
                 <property name="x">70</property>
-                <property name="y">475</property>
+                <property name="y">530</property>
               </packing>
             </child>
             <child>
@@ -281,7 +280,7 @@ vittoria: </property>
               </object>
               <packing>
                 <property name="x">68</property>
-                <property name="y">553</property>
+                <property name="y">580</property>
               </packing>
             </child>
             <child>
@@ -326,7 +325,7 @@ vittoria: </property>
               </object>
               <packing>
                 <property name="x">293</property>
-                <property name="y">493</property>
+                <property name="y">532</property>
               </packing>
             </child>
             <child>
@@ -342,7 +341,7 @@ vittoria: </property>
               </object>
               <packing>
                 <property name="x">293</property>
-                <property name="y">552</property>
+                <property name="y">582</property>
               </packing>
             </child>
             <child>
@@ -373,6 +372,39 @@ vittoria: </property>
               <packing>
                 <property name="x">545</property>
                 <property name="y">660</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblTestoStatico21">
+                <property name="width-request">88</property>
+                <property name="height-request">30</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Vittorie:</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Bold 16"/>
+                  <attribute name="foreground" value="#ffffffffffff"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="x">70</property>
+                <property name="y">480</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblNumeroVittorie">
+                <property name="width-request">100</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">0</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Bold 16"/>
+                  <attribute name="foreground" value="#e0e01b1b2424"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="x">293</property>
+                <property name="y">482</property>
               </packing>
             </child>
           </object>

@@ -5,51 +5,74 @@
 
 //Legge il file e popola un array della classe StoricoPartite in base all'utente loggato e restituisce il Numero di partite
 StoricoPartitaT* PopolaStoricoPartiteDalFile() {
-
-    FILE *file = fopen(NomeFileStoricoPartite, "r");
-    if (!file) {
-        // Il file non esiste oppure non possiamo aprirlo.
-
-        // Proviamo a creare il file
-        file = fopen(NomeFileStoricoPartite, "a");
-        if (!file) {
-            // Non abbiamo i permessi
-            fprintf(stderr, "Impossibile aprire file\n");
+    //Prova per aprire il file e/o crearlo
+    FILE *File = fopen(NomeFileStoricoPartite, "r");
+    if (!File) {
+        File = fopen(NomeFileStoricoPartite, "a");
+        if (!File) {
+            fprintf(stderr, "Impossibile aprire file!");
             return NULL;
         }
     }
 
-    // Il file esiste, andiamo quindi a leggere ogni riga
+    //Creazione del puntatore di tipo StoricoPartitaT
     StoricoPartitaT* Partite = NULL;
-    int i = 0;
-    char line[LunghezzaMassimaRiga];
-    while (fgets(line, sizeof(line), file)) {
-        RimuoviNewLine(line);
-        StoricoPartitaT* partita = realloc(Partite, (i + 1) * sizeof(StoricoPartitaT));
-        if (!partita) {
-            // Allocazione memoria non riuscita
-            free(Partite);
-            fclose(file);
-            return NULL;
-        }
+    int CapacitaCorrente = 0;
+    int ContaRighi = 0;
+    char Riga[LunghezzaMassimaRiga];
 
-        Partite = partita;
-        sscanf(line, "%20[^,],%1[^,],%10d", &Partite[i].NomeUtente, &Partite[i].Risultato, &Partite[i].BilancioDiUscita);
-        PulisciStringa(Partite[i].NomeUtente);
-        if (strcmp(Partite[i].NomeUtente, UtenteLoggato->nome) == 0) {
-            i++;
+    while (fgets(Riga, sizeof(Riga), File)) {//Scansione di tutte le righe del file
+        RimuoviNewLine(Riga);
+
+        StoricoPartitaT tempPartita;
+        sscanf(Riga, "%20[^,],%1[^,],%10d", tempPartita.NomeUtente, &tempPartita.Risultato, &tempPartita.BilancioDiUscita);
+        PulisciStringa(tempPartita.NomeUtente);
+
+        //Controllo per estrarre solo le partite dell'utente loggato e riallocazione della memoria
+        if (strcmp(tempPartita.NomeUtente, UtenteLoggato->nome) == 0) {
+            if (ContaRighi >= CapacitaCorrente) {
+                CapacitaCorrente = (CapacitaCorrente == 0) ? 5 : CapacitaCorrente * 2;
+                StoricoPartitaT* ptrTemp = realloc(Partite, CapacitaCorrente * sizeof(StoricoPartitaT));
+                if (!ptrTemp) {
+                    free(Partite);
+                    fclose(File);
+                    fprintf(stderr, "Errore di riallocazione memoria!\n");
+                    return NULL;
+                }
+                Partite = ptrTemp;
+            }
+            Partite[ContaRighi] = tempPartita;
+            ContaRighi++;
         }
     }
 
-    fclose(file);
-    NumeroRighi = i;
+    fclose(File);
+
+    //Controllo per ridurre la dimensione di memoria allocata aggiustandola solo alla quantita` di partite giocate
+    //dall'utente loggato
+    if (ContaRighi > 0) {
+        StoricoPartitaT* ptrFinale = realloc(Partite, ContaRighi * sizeof(StoricoPartitaT));
+        if (ptrFinale) {
+            Partite = ptrFinale;
+        }
+
+    } else {
+        free(Partite);
+        Partite = NULL;
+    }
+
+    NumeroRighi = ContaRighi;
     return Partite;
 }
 
-void ScriviPartita(FILE* file, char Risultato, int BilancioInUscita) {//Aggiunge una partita al file
+
+//Funzione generica per aggiungere una partita al file
+void ScriviPartita(FILE* file, char Risultato, int BilancioInUscita) {
     fprintf(file, "%20s,%c,%10d\n", UtenteLoggato->nome,Risultato, BilancioInUscita);
 }
 
+
+//Funzione che si posiziona al byte giusto e chiamata ScriviPartita
 int AggiungiPartitaAlFile(char Risultato, int BilancioInUscita) {
     // "a" serve per appendere
     FILE* file = fopen(NomeFileStoricoPartite, "a");
@@ -62,6 +85,8 @@ int AggiungiPartitaAlFile(char Risultato, int BilancioInUscita) {
     fclose(file);
     return 1;
 }
+
+
 //Funzione generale per resettare i valori delle variabili globali alla fine di una partita
 void ResettaValoriGlobali() {
     //Variabili

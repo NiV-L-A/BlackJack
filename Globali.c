@@ -4,7 +4,6 @@
 //===================DEFINIZIONI VARIABILI GLOBALI===========================
 int Puntata = 0;
 int NumeroRighi = 0;
-int* PuntatoreMemoriaAllocata = NULL;
 short NumeroMazziGiocatore = 6;
 UtenteT* UtenteLoggato;
 

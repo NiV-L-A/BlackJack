@@ -38,7 +38,6 @@ typedef struct {//Definisce il tipo StoricoPartita
 //===================VARIABILI GLOBALI (DICHIARAZIONI)========================
 extern int Puntata;
 extern int NumeroRighi;
-extern int* PuntatoreMemoriaAllocata;
 extern short NumeroMazziGiocatore;
 extern UtenteT* UtenteLoggato;
 
@@ -79,7 +78,7 @@ int RegistraUtente(UtenteT Utente);
 int ModificaUtenteAlFile();
 UtenteT* GetUtentiDalFile(int* NumeroUtenti);
 int LoggaUtente(char Nome[], char Password[], UtenteT* UtentiFile, int Conta);
-int validaStringa(char* str);
+int ValidaStringa(char* str);
 //===================GestioneStoricoPartite.c=====================================
 StoricoPartitaT* PopolaStoricoPartiteDalFile();
 void ScriviPartita(FILE* file, char Risultato, int BilancioInUscita);

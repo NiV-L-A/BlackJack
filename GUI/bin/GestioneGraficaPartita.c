@@ -26,33 +26,45 @@ void InitArrImmagini(GtkImage* ImgCartaBanco1,GtkImage* ImgCartaBanco2,GtkImage*
     ArrImmaginiBanco[5] = ImgCartaBanco6;
 }
 
-gchar* PrendiNomeTextureDaImmagine(GtkImage* immagine){
-    GValue ValoreTemp = G_VALUE_INIT;
 
+//Funzione che estrae i dati del widget immagine che gli viene passato per poter validare la texture in esso contenuta
+gchar* PrendiNomeTextureDaImmagine(GtkImage* immagine) {
+    GValue ValoreTemp = G_VALUE_INIT;//In primis va creata una variabile contenitore per i dati GOobject del widget
+
+    //Poi da quel widget vado a prendere la proprieta` file, la formatto in una stringa e la ritorno
     g_object_get_property(G_OBJECT(immagine), "file", &ValoreTemp);
     gchar* ControllaTexture = g_value_get_string(&ValoreTemp);
 
     return ControllaTexture;
 }
 
-//Funzione generica che si occupa di fare il draw di una singola immagine
+
+//Funzione generica che si occupa di fare il draw di una singola immagine sullo schermo
 void RenderizzaCarta(GtkImage *immagine, unsigned short idCarta, unsigned short SaltaControllo) {//Se lo slot nell'array mano e` vuoto, rimuove la sprite da quello slot nel programma
-    if (idCarta > 134){
+    //Controllo se la carta abbia l'id di un asso speciale dal valore 11
+    if (idCarta > 134) {//Se si, tolgo 130 da quel valore per farlo tornare un asso normale ai fini di prendere la giusta texture
         idCarta -= 130;
     }
-    if (idCarta == SlotVuoto) {
+    //Controllo se lo slot nell'array mano sia vuoto
+    if (idCarta == SlotVuoto) {//Se lo e`, inseriamo una texture vuota per non avere le icone default missingImage di glade al loro posto.
         gtk_image_set_from_file(immagine, "GUI/SpriteMenu/ImmagineVuota.png");
         return;
     }
+    //Questo controllo e` per la carta coperta
+    //Se il filename della texture della carta attuale e` quella della carta coperta e SaltaControllo e` uguale a 0, la lascia cosi` com'e`
     if (strcmp(PrendiNomeTextureDaImmagine(immagine), CartaCoperta) == 0 && SaltaControllo == 0) {
+        //Altrimenti se SaltaControllo ha un qualsiasi altro valore, salta questa sezione e sostituisce la
+        //texture coperta con quella effettiva della carta
         return;
     }
-    //Setta il la sprite con il percorso in cui trovarla
+
+    //Setta la sprite con il percorso in cui trovarla
     char PercorsoSprite[256];
     snprintf(PercorsoSprite, sizeof(PercorsoSprite), "GUI/SpriteCarte/%d.png", idCarta);
     gtk_image_set_from_file(immagine, PercorsoSprite);
-    PercorsoSprite[0] = '\0';
+    PercorsoSprite[0] = '\0';//Una volta fatto svuoto la variabile temporanea per evitare problemi con caratteri rimasti
 }
+
 
 //Funzioni principali per aggiornare individualmente la mano del giocatore o del dealer
 void AggiornaManoGiocatore() {
@@ -65,15 +77,17 @@ void AggiornaManoBanco() {
         RenderizzaCarta(ArrImmaginiBanco[i], ManoBanco[i],0);
     }
 }
+
 //Funzione aggiuntiva per aggiornarle entrambe
 void AggiornaAmbiMani() {
     AggiornaManoGiocatore();
     AggiornaManoBanco();
 }
 
+
 //Funzione che inizializza il processo di rendering prendendo le reference dai widget immagini
 void InitRenderingCarte(GtkBuilder *Builder) {
-    char NomeWidget[32];
+    char NomeWidget[BufferSnprintf];
     for (int i = 0; i < MAXcarteGiocatore; i++) {//Sezione che prende quelle del giocatore
         snprintf(NomeWidget, sizeof(NomeWidget), "imgCartaGiocatore%d", i + 1);
         ArrImmaginiGiocatore[i] = GTK_IMAGE(gtk_builder_get_object(Builder, NomeWidget));
@@ -86,10 +100,14 @@ void InitRenderingCarte(GtkBuilder *Builder) {
     }
 }
 
+
+//Funzione che copre e scopre la seconda carta del dealer
 void LogicaCartaCoperta() {
-    if (strcmp(PrendiNomeTextureDaImmagine(ArrImmaginiBanco[1]), CartaCoperta) == 0){
+    //Se la texture presente nel secondo slot dell'array e` gia` quella della carta coperta
+    if (strcmp(PrendiNomeTextureDaImmagine(ArrImmaginiBanco[1]), CartaCoperta) == 0) {
+        //Chiama la funzione RenderizzaCarta e passa il valore di 1 a SaltaControllo, scoprendola
         RenderizzaCarta(ArrImmaginiBanco[1], ManoBanco[1],1);
-    }else{
+    }else {//Altrimenti, coprila
         gtk_image_set_from_file(ArrImmaginiBanco[1], CartaCoperta);
     }
 }
