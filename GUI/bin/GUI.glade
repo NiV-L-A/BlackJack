@@ -256,7 +256,7 @@ conta punti automatica)</property>
                 <property name="width-request">100</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Tasso VIttoria:</property>
+                <property name="label" translatable="yes">Tasso Vittoria:</property>
                 <attributes>
                   <attribute name="font-desc" value="Sans Bold 16"/>
                   <attribute name="foreground" value="#ffffffffffff"/>
