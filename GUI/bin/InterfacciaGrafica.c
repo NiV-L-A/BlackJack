@@ -227,7 +227,7 @@ int InitProgramma(int argc, char *argv[]) {//funzione principale che gestisce la
 //-------------------------------------------MANIPOLAZIONE E GESTIONE FINESTRA------------------------------------------
 //=========================================================COLORE=======================================================
     //Comincio col creare una variabile di tipo GdkRGBA per poi assegnarle dei valori
-    GdkRGBA ColoreBG;//per convertire un valore da RGBA a GDKRGBA basta divide quelli rgb per 255.
+    GdkRGBA ColoreBG;//per convertire un valore da RGBA a GDKRGBA basta dividere quelli rgb per 255.
     ColoreBG.red = 0.0;
     ColoreBG.green = 0.50196;
     ColoreBG.blue = 0.16471;
