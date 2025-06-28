@@ -3,7 +3,7 @@
 <interface>
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkWindow" id="finestra">
-    <property name="width-request">1201</property>
+    <property name="width-request">1200</property>
     <property name="height-request">800</property>
     <property name="can-focus">False</property>
     <property name="resizable">False</property>
@@ -443,7 +443,7 @@ conta punti automatica)</property>
                 <signal name="map" handler="on_lblNomeUtente2_map" swapped="no"/>
               </object>
               <packing>
-                <property name="x">500</property>
+                <property name="x">509</property>
                 <property name="y">280</property>
               </packing>
             </child>
@@ -553,7 +553,7 @@ conta punti automatica)</property>
                 </attributes>
               </object>
               <packing>
-                <property name="x">480</property>
+                <property name="x">512</property>
                 <property name="y">440</property>
               </packing>
             </child>
@@ -584,7 +584,7 @@ conta punti automatica)</property>
                 </attributes>
               </object>
               <packing>
-                <property name="x">352</property>
+                <property name="x">402</property>
                 <property name="y">56</property>
               </packing>
             </child>
@@ -866,7 +866,7 @@ conta punti automatica)</property>
                 </attributes>
               </object>
               <packing>
-                <property name="x">374</property>
+                <property name="x">455</property>
                 <property name="y">114</property>
               </packing>
             </child>
@@ -1122,7 +1122,7 @@ conta punti automatica)</property>
             </child>
             <child>
               <object class="GtkLabel" id="lblNomeUtente3">
-                <property name="width-request">69</property>
+                <property name="width-request">150</property>
                 <property name="height-request">34</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
@@ -1134,7 +1134,7 @@ conta punti automatica)</property>
                 <signal name="map" handler="on_lblNomeUtente3_map" swapped="no"/>
               </object>
               <packing>
-                <property name="x">110</property>
+                <property name="x">69</property>
                 <property name="y">550</property>
               </packing>
             </child>
@@ -1172,6 +1172,7 @@ conta punti automatica)</property>
             </child>
             <child>
               <object class="GtkLabel" id="lblBilancio3">
+                <property name="width-request">130</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">200</property>
@@ -1181,12 +1182,13 @@ conta punti automatica)</property>
                 </attributes>
               </object>
               <packing>
-                <property name="x">190</property>
+                <property name="x">130</property>
                 <property name="y">605</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="lblPuntata">
+                <property name="width-request">130</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">0</property>
@@ -1196,7 +1198,7 @@ conta punti automatica)</property>
                 </attributes>
               </object>
               <packing>
-                <property name="x">190</property>
+                <property name="x">130</property>
                 <property name="y">656</property>
               </packing>
             </child>
@@ -1306,7 +1308,7 @@ conta punti automatica)</property>
                 </attributes>
               </object>
               <packing>
-                <property name="x">109</property>
+                <property name="x">119</property>
                 <property name="y">708</property>
               </packing>
             </child>
@@ -1445,8 +1447,8 @@ conta punti automatica)</property>
                 <signal name="map" handler="on_lblValoreManoGiocatore_map" swapped="no"/>
               </object>
               <packing>
-                <property name="x">313</property>
-                <property name="y">511</property>
+                <property name="x">289</property>
+                <property name="y">590</property>
               </packing>
             </child>
             <child>
@@ -1461,8 +1463,7 @@ conta punti automatica)</property>
                 </attributes>
               </object>
               <packing>
-                <property name="x">20</property>
-                <property name="y">16</property>
+                <property name="x">126</property>
               </packing>
             </child>
             <child>
@@ -1478,8 +1479,8 @@ conta punti automatica)</property>
                 </attributes>
               </object>
               <packing>
-                <property name="x">302</property>
-                <property name="y">232</property>
+                <property name="x">355</property>
+                <property name="y">204</property>
               </packing>
             </child>
             <child>
@@ -1495,8 +1496,8 @@ conta punti automatica)</property>
                 </attributes>
               </object>
               <packing>
-                <property name="x">302</property>
-                <property name="y">234</property>
+                <property name="x">355</property>
+                <property name="y">204</property>
               </packing>
             </child>
             <child>
@@ -1524,8 +1525,8 @@ conta punti automatica)</property>
                 <signal name="clicked" handler="on_pg5BtnConferma1_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="x">532</property>
-                <property name="y">458</property>
+                <property name="x">558</property>
+                <property name="y">418</property>
               </packing>
             </child>
             <child>
@@ -1649,7 +1650,7 @@ conta punti automatica)</property>
                     <child>
                       <object class="GtkLabel" id="lblTestoStatico16">
                         <property name="width-request">351</property>
-                        <property name="height-request">30</property>
+                        <property name="height-request">60</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Non potrai riprendere
@@ -1660,8 +1661,8 @@ conta punti automatica)</property>
                         </attributes>
                       </object>
                       <packing>
-                        <property name="x">25</property>
-                        <property name="y">120</property>
+                        <property name="x">28</property>
+                        <property name="y">134</property>
                       </packing>
                     </child>
                     <child>
@@ -1737,8 +1738,8 @@ conta punti automatica)</property>
                         </attributes>
                       </object>
                       <packing>
-                        <property name="x">25</property>
-                        <property name="y">120</property>
+                        <property name="x">28</property>
+                        <property name="y">134</property>
                       </packing>
                     </child>
                     <child>
@@ -1786,7 +1787,7 @@ conta punti automatica)</property>
             </child>
             <child>
               <object class="GtkLabel" id="lblTestoStatico14">
-                <property name="width-request">207</property>
+                <property name="width-request">220</property>
                 <property name="height-request">51</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
