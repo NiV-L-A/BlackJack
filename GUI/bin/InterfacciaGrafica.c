@@ -527,7 +527,7 @@ void on_lblNomeUtente3_map(GtkLabel* lb) {
     gtk_label_set_text(lb, UtenteLoggato->nome);
 }
 
-
+//----------------------------------------------------------------------------------------------------------------------
 //┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 //┃                                             SCHERMATA DI ACCESSO                                                   ┃
 //┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
@@ -795,7 +795,7 @@ void on_pg4BtnPesca2_clicked(GtkButton* b) {
     if (PescaGiocatore(1)) {//Se si, aggiorna la sua mano e le statistiche partita
         AggiornaManoGiocatore();
         AggiornaStatistichePartita();
-    } else {//Altrimenti informa il giocatore di non poter piu` pescare per poi nascondere il bottone finisci turno e passarlo al banco
+    } else {//Altrimenti informa il giocatore di non poter piu` pescare per poi nascondere il bottone finisci turno e passa a quello del banco
         gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Hai raggiunto il limite di carte!");
         gtk_widget_hide(BtnFinisciTurno);
         TurnoBanco();
