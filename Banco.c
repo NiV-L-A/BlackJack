@@ -185,7 +185,7 @@ int PescaBanco(short CarteDaPescare) {
 }
 
 void BancoPescaRipetuta() {
-    //Ho bisogno di fare questa cosa orrenda perche` utilizzare qualsiasi loop con una condizzione di uscita
+    //Ho bisogno di fare questa cosa orrenda perche` utilizzare qualsiasi loop con una condizione di uscita
     //andrebbe a bloccare il thread dell'interfaccia, briccando l'intero programma!
     if (PescaBanco(1)){
         AggiornaManoBanco();
