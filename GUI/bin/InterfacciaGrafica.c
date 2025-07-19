@@ -9,6 +9,9 @@
 //        GTK necessita la creazione di dei puntatori globali ai quali piu` avanti verranno associati gli elementi
 //                                 dell'interfaccia per tutto cio` che si vuole manipolare.
 //----------------------------------------------------------------------------------------------------------------------
+//====================================================INIT RISORSE======================================================
+extern void g_resource_register(GResource *resource);
+extern GResource *risorse_get_resource(void);
 //======================================================TOP LEVEL=======================================================
 GtkWidget* Finestra;
 GtkWidget* ControlloScena;
@@ -108,7 +111,8 @@ int InitProgramma(int argc, char *argv[]) {//funzione principale che gestisce la
 
     gtk_init(&argc, &argv); //Funzione che inizializza tutta la parte dell'ui
 
-    Builder = gtk_builder_new_from_file("GUI/bin/GUI.glade");//Dico al builder dove trovare il file GLADE per leggere gli elementi
+    g_resources_register(risorse_get_resource());//Init risorse
+    Builder = gtk_builder_new_from_resource("/r/bin/GUI.glade");//Dico al builder dove trovare il file GLADE per leggere gli elementi
     //Estraggo dal builder in maniera separata la finestra in quanto sia importante associarle da subito il segnale quit.
     Finestra = GTK_WIDGET(gtk_builder_get_object(Builder, "finestra"));
     g_signal_connect(Finestra, "destroy", G_CALLBACK(gtk_main_quit), NULL);//Associazione del segnale menzionata prima
@@ -619,28 +623,6 @@ void on_pg3BtnRegistrati_clicked(GtkButton* b) {
     gtk_label_set_text(GTK_LABEL(LblNotificaErroreAccesso), "\tUtente registrato! \n\t\t Accedere");
     gtk_stack_set_visible_child(GTK_STACK(StkOpzioniAccesso), CntAccesso);
 }
-
-//=====================================================MISC=============================================================
-
-//Le funzioni qua sotto servono ad estrapolare il testo contenuto nelle text entry e a formattarlo, imponendo un limite
-//di caratteri
-void MemorizzaDatiAccesso(GtkEntry *e) {
-    char Buffer[21];
-    sprintf(Buffer, "%s\0", gtk_entry_get_text(e));
-}
-void on_entNomeUtente1_changed(GtkEntry* e) {
-    MemorizzaDatiAccesso(e);
-}
-void on_entPassword1_changed(GtkEntry* e) {
-    MemorizzaDatiAccesso(e);
-}
-void on_entNomeUtente2_changed(GtkEntry* e) {
-    MemorizzaDatiAccesso(e);
-}
-void on_entPassword2_changed(GtkEntry* e) {
-    MemorizzaDatiAccesso(e);
-}
-
 
 //----------------------------------------------------------------------------------------------------------------------
 //┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓

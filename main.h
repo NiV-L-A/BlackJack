@@ -15,7 +15,8 @@
 #define LunghezzaMassimaStringa 21
 #define LunghezzaMassimaRiga 256
 #define BufferSnprintf 200
-#define CartaCoperta "GUI/SpriteCarte/coperta.png"
+#define CartaCoperta "/r/SpriteCarte/coperta.png"
+//da rendere variabili globali
 #define NomeFileStoricoPartite "File/StoricoPartite"
 #define NomeFileUtenti "File/Utenti"
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/r">
+        <file preprocess="xml-stripblanks">bin/GUI.glade</file>
+        <file>SpriteCarte/coperta.png</file>
+        <file>SpriteCarte/11.png</file>
+        <file>SpriteCarte/12.png</file>
+        <file>SpriteCarte/13.png</file>
+        <file>SpriteCarte/14.png</file>
+        <file>SpriteCarte/21.png</file>
+        <file>SpriteCarte/22.png</file>
+        <file>SpriteCarte/23.png</file>
+        <file>SpriteCarte/24.png</file>
+        <file>SpriteCarte/31.png</file>
+        <file>SpriteCarte/32.png</file>
+        <file>SpriteCarte/33.png</file>
+        <file>SpriteCarte/34.png</file>
+        <file>SpriteCarte/41.png</file>
+        <file>SpriteCarte/42.png</file>
+        <file>SpriteCarte/43.png</file>
+        <file>SpriteCarte/44.png</file>
+        <file>SpriteCarte/51.png</file>
+        <file>SpriteCarte/52.png</file>
+        <file>SpriteCarte/53.png</file>
+        <file>SpriteCarte/54.png</file>
+        <file>SpriteCarte/61.png</file>
+        <file>SpriteCarte/62.png</file>
+        <file>SpriteCarte/63.png</file>
+        <file>SpriteCarte/64.png</file>
+        <file>SpriteCarte/71.png</file>
+        <file>SpriteCarte/72.png</file>
+        <file>SpriteCarte/73.png</file>
+        <file>SpriteCarte/74.png</file>
+        <file>SpriteCarte/81.png</file>
+        <file>SpriteCarte/82.png</file>
+        <file>SpriteCarte/83.png</file>
+        <file>SpriteCarte/84.png</file>
+        <file>SpriteCarte/91.png</file>
+        <file>SpriteCarte/92.png</file>
+        <file>SpriteCarte/93.png</file>
+        <file>SpriteCarte/94.png</file>
+        <file>SpriteCarte/101.png</file>
+        <file>SpriteCarte/102.png</file>
+        <file>SpriteCarte/103.png</file>
+        <file>SpriteCarte/104.png</file>
+        <file>SpriteCarte/111.png</file>
+        <file>SpriteCarte/112.png</file>
+        <file>SpriteCarte/113.png</file>
+        <file>SpriteCarte/114.png</file>
+        <file>SpriteCarte/121.png</file>
+        <file>SpriteCarte/122.png</file>
+        <file>SpriteCarte/123.png</file>
+        <file>SpriteCarte/124.png</file>
+        <file>SpriteCarte/131.png</file>
+        <file>SpriteCarte/132.png</file>
+        <file>SpriteCarte/133.png</file>
+        <file>SpriteCarte/134.png</file>
+        <file>SpriteMenu/Avatar.png</file>
+        <file>SpriteMenu/ImmagineVuota.png</file>
+        <file>SpriteMenu/LogoMenuPrincipale.png</file>
+    </gresource>
+</gresources>

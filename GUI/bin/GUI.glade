@@ -209,7 +209,7 @@ conta punti automatica)</property>
                 <property name="height-request">120</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">../SpriteMenu/Avatar.png</property>
+                <property name="resource">/r/SpriteMenu/Avatar.png</property>
               </object>
               <packing>
                 <property name="x">128</property>
@@ -289,7 +289,7 @@ conta punti automatica)</property>
                 <property name="height-request">350</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">../SpriteMenu/LogoMenuPrincipale.png</property>
+                <property name="resource">/r/SpriteMenu/LogoMenuPrincipale.png</property>
               </object>
               <packing>
                 <property name="x">374</property>
@@ -423,7 +423,7 @@ conta punti automatica)</property>
                 <property name="height-request">120</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">../SpriteMenu/Avatar.png</property>
+                <property name="resource">/r/SpriteMenu/Avatar.png</property>
               </object>
               <packing>
                 <property name="x">550</property>
@@ -1113,7 +1113,7 @@ conta punti automatica)</property>
                 <property name="height-request">120</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">../SpriteMenu/Avatar.png</property>
+                <property name="resource">/r/SpriteMenu/Avatar.png</property>
               </object>
               <packing>
                 <property name="x">89</property>

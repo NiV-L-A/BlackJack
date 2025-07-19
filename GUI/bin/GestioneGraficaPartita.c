@@ -29,40 +29,41 @@ void InitArrImmagini(GtkImage* ImgCartaBanco1,GtkImage* ImgCartaBanco2,GtkImage*
 
 //Funzione che estrae i dati del widget immagine che gli viene passato per poter validare la texture in esso contenuta
 gchar* PrendiNomeTextureDaImmagine(GtkImage* immagine) {
-    GValue ValoreTemp = G_VALUE_INIT;//In primis va creata una variabile contenitore per i dati GOobject del widget
-
-    //Poi da quel widget vado a prendere la proprieta` file, la formatto in una stringa e la ritorno
-    g_object_get_property(G_OBJECT(immagine), "file", &ValoreTemp);
-    gchar* ControllaTexture = g_value_get_string(&ValoreTemp);
+    //Con gresources dobbiamo recuperare il percorso che abbiamo memorizzato manualmente
+    gchar* ControllaTexture = (gchar*)g_object_get_data(G_OBJECT(immagine), "resource-path");
 
     return ControllaTexture;
 }
 
 
 //Funzione generica che si occupa di fare il draw di una singola immagine sullo schermo
-void RenderizzaCarta(GtkImage *immagine, unsigned short idCarta, unsigned short SaltaControllo) {//Se lo slot nell'array mano e` vuoto, rimuove la sprite da quello slot nel programma
+void RenderizzaCarta(GtkImage *immagine, unsigned short idCarta, unsigned short SaltaControllo) {
     //Controllo se la carta abbia l'id di un asso speciale dal valore 11
-    if (idCarta > 134) {//Se si, tolgo 130 da quel valore per farlo tornare un asso normale ai fini di prendere la giusta texture
+    if (idCarta > 134) {
         idCarta -= 130;
     }
     //Controllo se lo slot nell'array mano sia vuoto
-    if (idCarta == SlotVuoto) {//Se lo e`, inseriamo una texture vuota per non avere le icone default missingImage di glade al loro posto.
-        gtk_image_set_from_file(immagine, "GUI/SpriteMenu/ImmagineVuota.png");
+    if (idCarta == SlotVuoto) {
+        const char* percorsoVuoto = "/r/SpriteMenu/ImmagineVuota.png";
+        gtk_image_set_from_resource(immagine, percorsoVuoto);
+        //Memorizzo il percorso della risorsa nel widget per recuperarlo successivamente
+        g_object_set_data(G_OBJECT(immagine), "resource-path", (gpointer)percorsoVuoto);
         return;
     }
     //Questo controllo e` per la carta coperta
-    //Se il filename della texture della carta attuale e` quella della carta coperta e SaltaControllo e` uguale a 0, la lascia cosi` com'e`
-    if (strcmp(PrendiNomeTextureDaImmagine(immagine), CartaCoperta) == 0 && SaltaControllo == 0) {
-        //Altrimenti se SaltaControllo ha un qualsiasi altro valore, salta questa sezione e sostituisce la
-        //texture coperta con quella effettiva della carta
+    const char* percorsoCartaCoperta = "/r/SpriteCarte/coperta.png";
+    gchar* percorsoCorrente = PrendiNomeTextureDaImmagine(immagine);
+    if (percorsoCorrente != NULL && strcmp(percorsoCorrente, percorsoCartaCoperta) == 0 && SaltaControllo == 0) {
         return;
     }
 
     //Setta la sprite con il percorso in cui trovarla
     char PercorsoSprite[256];
-    snprintf(PercorsoSprite, sizeof(PercorsoSprite), "GUI/SpriteCarte/%d.png", idCarta);
-    gtk_image_set_from_file(immagine, PercorsoSprite);
-    PercorsoSprite[0] = '\0';//Una volta fatto svuoto la variabile temporanea per evitare problemi con caratteri rimasti
+    snprintf(PercorsoSprite, sizeof(PercorsoSprite), "/r/SpriteCarte/%d.png", idCarta);
+    gtk_image_set_from_resource(immagine, PercorsoSprite);
+    //Memorizzo il percorso della risorsa nel widget per recuperarlo successivamente
+    g_object_set_data_full(G_OBJECT(immagine), "resource-path", g_strdup(PercorsoSprite), g_free);
+    PercorsoSprite[0] = '\0';
 }
 
 
@@ -108,6 +109,8 @@ void LogicaCartaCoperta() {
         //Chiama la funzione RenderizzaCarta e passa il valore di 1 a SaltaControllo, scoprendola
         RenderizzaCarta(ArrImmaginiBanco[1], ManoBanco[1],1);
     }else {//Altrimenti, coprila
-        gtk_image_set_from_file(ArrImmaginiBanco[1], CartaCoperta);
+        gtk_image_set_from_resource(ArrImmaginiBanco[1], CartaCoperta);
+        //Memorizzo il percorso della risorsa nel widget per recuperarlo successivamente
+        g_object_set_data(G_OBJECT(ArrImmaginiBanco[1]), "resource-path", (gpointer)CartaCoperta);
     }
 }
