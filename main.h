@@ -16,9 +16,7 @@
 #define LunghezzaMassimaRiga 256
 #define BufferSnprintf 200
 #define CartaCoperta "/r/SpriteCarte/coperta.png"
-//da rendere variabili globali
-#define NomeFileStoricoPartite "File/StoricoPartite"
-#define NomeFileUtenti "File/Utenti"
+
 
 //===================TYPEDEF======================================================
 typedef struct {//Definisce il tipo Utente
@@ -49,6 +47,8 @@ extern const unsigned short Mazzo[DimensioneMazzo];
 extern unsigned short ControlloRipetizioni[DimensioneMazzo];
 extern unsigned short ManoGiocatore[MAXcarteGiocatore];
 extern unsigned short ManoBanco[MAXcarteBanco];
+extern char LocationfileStoricoPartite[BufferSnprintf];
+extern char LocationFileUtenti[BufferSnprintf];
 
 
 //-------------------------------------------------DICHIARAZIONE FUNZIONI-----------------------------------------------
@@ -80,6 +80,7 @@ int ModificaUtenteAlFile();
 UtenteT* GetUtentiDalFile(int* NumeroUtenti);
 int LoggaUtente(char Nome[], char Password[], UtenteT* UtentiFile, int Conta);
 int ValidaStringa(char* str);
+void InitFileLocation();
 //===================GestioneStoricoPartite.c=====================================
 StoricoPartitaT* PopolaStoricoPartiteDalFile();
 void ScriviPartita(FILE* file, char Risultato, int BilancioInUscita);

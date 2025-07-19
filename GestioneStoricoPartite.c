@@ -6,10 +6,10 @@
 //Legge il file e popola un array della classe StoricoPartite in base all'utente loggato e restituisce il Numero di partite
 StoricoPartitaT* PopolaStoricoPartiteDalFile() {
     //Cerchiamo di aprire il file
-    FILE *File = fopen(NomeFileStoricoPartite, "r");
+    FILE *File = fopen(LocationfileStoricoPartite, "r");
     if (!File) {
         //Il file non esiste oppure non possiamo aprirlo. Proviamo a creare il file
-        File = fopen(NomeFileStoricoPartite, "a");
+        File = fopen(LocationfileStoricoPartite, "a");
         if (!File) {
             //Non abbiamo i permessi
             fprintf(stderr, "Errore apertura file!");
@@ -77,7 +77,7 @@ void ScriviPartita(FILE* file, char Risultato, int BilancioInUscita) {
 //Funzione che si posiziona al byte giusto e chiamata ScriviPartita
 int AggiungiPartitaAlFile(char Risultato, int BilancioInUscita) {
     //Apriamo il file e posizioniamoci alla fine (pronto per aggiungere una nuova riga)
-    FILE* File = fopen(NomeFileStoricoPartite, "a");
+    FILE* File = fopen(LocationfileStoricoPartite, "a");
     if (!File) {//Non siamo riusciti ad aprire il file
         fprintf(stderr, "Errore apertura file\n");
         return 0;

@@ -18,3 +18,6 @@ const unsigned short Mazzo[DimensioneMazzo] = {
 unsigned short ControlloRipetizioni[DimensioneMazzo];
 unsigned short ManoGiocatore[MAXcarteGiocatore];
 unsigned short ManoBanco[MAXcarteBanco];
+
+char LocationfileStoricoPartite[BufferSnprintf];
+char LocationFileUtenti[BufferSnprintf];

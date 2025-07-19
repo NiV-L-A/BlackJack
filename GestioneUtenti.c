@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include <locale.h>
 #include "main.h"
 
@@ -51,10 +52,10 @@ UtenteT* GetUtentiDalFile(int* NumeroUtenti) {
     //Necessario per considerare il simbolo "." come separatore decimale invece che ","
     setlocale(LC_ALL,"C");
     //Cerchiamo di aprire il file
-    FILE *File = fopen(NomeFileUtenti, "r");
+    FILE *File = fopen(LocationFileUtenti, "r");
     if (!File) {
         //Il file non esiste oppure non possiamo aprirlo. Proviamo a creare il file
-        File = fopen(NomeFileUtenti, "a");
+        File = fopen(LocationFileUtenti, "a");
         if (!File) {
             //Non abbiamo i permessi
             fprintf(stderr, "Errore apertura file!");
@@ -98,7 +99,7 @@ void ScriviUtente(FILE* file, UtenteT utente) {//Aggiunge un utente al file
 
 //Funzione per modificare i dati dell'utente loggato nel file
 int ModificaUtenteAlFile() {
-    FILE* File = fopen(NomeFileUtenti, "r+");
+    FILE* File = fopen(LocationFileUtenti, "r+");
     if (!File) {
         //Non siamo riusciti ad aprire il file
         return -1;
@@ -130,7 +131,7 @@ int ModificaUtenteAlFile() {
 //Aggiunge un utente al file registrandolo
 int RegistraUtente(UtenteT utente) {
     //Apriamo il file e posizioniamoci alla fine (pronto per aggiungere una nuova riga)
-    FILE* File = fopen(NomeFileUtenti, "a");
+    FILE* File = fopen(LocationFileUtenti, "a");
     if (!File) {//Non siamo riusciti ad aprire il file
         fprintf(stderr, "Errore apertura file\n");
         return 0;
@@ -152,4 +153,15 @@ int LoggaUtente(char Nome[], char Password[], UtenteT* UtentiFile, int Conta) {
     return 0;
 }
 
+//Funzione che prende l'home directory dell'utente attualmente loggato e imposta i filepath dove salvare i file
+void InitFileLocation() {
+    char* HomeDir = getenv("HOME");
+    char PathDaCreare[BufferSnprintf];
+    snprintf(PathDaCreare, BufferSnprintf, "%s/Documents/BlackJack", HomeDir);
+
+    mkdir(PathDaCreare, 0755);
+
+    snprintf(LocationFileUtenti, BufferSnprintf, "%s/Documents/BlackJack/Utenti.txt", HomeDir);
+    snprintf(LocationfileStoricoPartite, BufferSnprintf, "%s/Documents/BlackJack/Partite.txt", HomeDir);
+}
 

@@ -639,7 +639,6 @@ conta punti automatica)</property>
                         <property name="halign">center</property>
                         <property name="max-length">20</property>
                         <property name="placeholder-text" translatable="yes">Massimo 20 caratteri...</property>
-                        <signal name="changed" handler="on_entNomeUtente1_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -675,7 +674,6 @@ conta punti automatica)</property>
                         <property name="halign">center</property>
                         <property name="max-length">20</property>
                         <property name="placeholder-text" translatable="yes">Massimo 20 caratteri...</property>
-                        <signal name="changed" handler="on_entPassword1_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -740,7 +738,6 @@ conta punti automatica)</property>
                         <property name="max-length">20</property>
                         <property name="placeholder-text" translatable="yes">Massimo 20 caratteri...</property>
                         <property name="input-purpose">name</property>
-                        <signal name="changed" handler="on_entNomeUtente2_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -775,7 +772,6 @@ conta punti automatica)</property>
                         <property name="halign">center</property>
                         <property name="max-length">20</property>
                         <property name="placeholder-text" translatable="yes">Massimo 20 caratteri...</property>
-                        <signal name="changed" handler="on_entPassword2_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
