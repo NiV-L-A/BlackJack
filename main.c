@@ -2,8 +2,6 @@
 
 int main(int argc, char *argv[]) {
 
-//TODO: implementare un sistema stay logged in
-
     InitFileLocation();
     InitRand();
     AutoLogin();
