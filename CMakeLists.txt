@@ -13,10 +13,8 @@ include_directories(${GTK3_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 link_directories(${GTK3_LIBRARY_DIRS})
 
-# Find glib-compile-resources
 find_program(GLIB_COMPILE_RESOURCES glib-compile-resources REQUIRED)
 
-# Generate C source from GResource XML
 add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/risorse.c
         COMMAND ${GLIB_COMPILE_RESOURCES}
@@ -28,10 +26,8 @@ add_custom_command(
         ${CMAKE_CURRENT_SOURCE_DIR}/GUI/bin/risorse.xml
         ${CMAKE_CURRENT_SOURCE_DIR}/GUI/bin/GUI.glade
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/GUI/bin
-        COMMENT "Compiling GResources"
 )
 
-# Create a custom target for the generated resource file
 add_custom_target(resources DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/risorse.c)
 
 add_executable(BlackJack
@@ -45,7 +41,6 @@ add_executable(BlackJack
         GUI/bin/GestioneGraficaPartita.c
         ${CMAKE_CURRENT_BINARY_DIR}/risorse.c)
 
-# Make sure resources are built before the executable
 add_dependencies(BlackJack resources)
 
 target_link_libraries(BlackJack ${GTK3_LIBRARIES})

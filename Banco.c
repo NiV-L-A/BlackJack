@@ -43,7 +43,7 @@ char ControllaVittoria() {
         NotificaSconfitta();
 
     //Se il giocatore ha blackjack, VITTORIA
-    }else if ((ManoGiocatore[0] > 140 || ManoGiocatore[0] > 100 && ManoGiocatore[0] < 140) && (ManoGiocatore[1] > 140 || ManoGiocatore[1] > 100 && ManoGiocatore[1] < 140 ) && ManoGiocatore[0] RimuoviSeme != ManoGiocatore[1] RimuoviSeme) {
+    }else if ((ManoGiocatore[0] > 140 || ManoGiocatore[0] > 100 && ManoGiocatore[0] < 140) && (ManoGiocatore[1] > 140 || ManoGiocatore[1] > 100 && ManoGiocatore[1] < 140 ) && (ManoGiocatore[0] RimuoviSeme) != (ManoGiocatore[1] RimuoviSeme)) {
         UtenteLoggato->bilancio += Puntata * 2.5;
         Risultato = 'B';
         NotificaBlackjack();
