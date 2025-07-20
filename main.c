@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[]) {
 
-//TODO: implementare multithreading e sleep sul rendering delle carte
+//TODO: implementare un sistema stay logged in
 
     InitFileLocation();
     InitRand();

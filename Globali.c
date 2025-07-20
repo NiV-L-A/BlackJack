@@ -4,7 +4,7 @@
 //===================DEFINIZIONI VARIABILI GLOBALI===========================
 int Puntata = 0;
 int NumeroRighi = 0;
-short NumeroMazziGiocatore = 6;
+short DifficoltaGioco = Normale;
 UtenteT* UtenteLoggato;
 
 //===================DEFINIZIONE ARRAY========================================
@@ -21,3 +21,5 @@ unsigned short ManoBanco[MAXcarteBanco];
 
 char LocationfileStoricoPartite[BufferSnprintf];
 char LocationFileUtenti[BufferSnprintf];
+
+char StringaFormattata[BufferSnprintf];

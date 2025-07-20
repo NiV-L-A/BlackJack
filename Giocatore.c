@@ -58,7 +58,7 @@ int PescaGiocatore(unsigned short CarteDaPescare) {//Prende come argument il num
         while (1) {
             unsigned short IndiceMazzo = rand() % DimensioneMazzo;
 
-            if (ControlloRipetizioni[IndiceMazzo] < NumeroMazziGiocatore) {//Controllo ripetizioni nonche' impostazione della difficolta`
+            if (ControlloRipetizioni[IndiceMazzo] < DifficoltaGioco) {//Controllo ripetizioni nonche' impostazione della difficolta`
                 ControlloRipetizioni[IndiceMazzo]++;
                 CartaPescata = Mazzo[IndiceMazzo];
                 break;
@@ -71,6 +71,7 @@ int PescaGiocatore(unsigned short CarteDaPescare) {//Prende come argument il num
         //Pesca la carta
         ManoGiocatore[IndiceSlotLibero] = CartaPescata;
         CartePescate++;
+        AggiornaManoGiocatore();
     }
     return 1;
 }

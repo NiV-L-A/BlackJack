@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include <sys/types.h>
+#include <pthread.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
@@ -253,7 +254,7 @@ int InitProgramma(int argc, char *argv[]) {//funzione principale che gestisce la
 
 //Funzione generale che aggiorna le statistiche visibili durante la partita
 void AggiornaStatistichePartita() {//Si occupa di modificare i valori riportati nei vari label presenti durante la partita
-    char StringaFormattata[BufferSnprintf];
+    StringaFormattata[0] = '\0';
     //Bilancio e puntata
     snprintf(StringaFormattata, BufferSnprintf, "%d",UtenteLoggato->bilancio);
     gtk_label_set_text(GTK_LABEL(LblBilancioPartita), StringaFormattata);
@@ -263,7 +264,7 @@ void AggiornaStatistichePartita() {//Si occupa di modificare i valori riportati 
     StringaFormattata[0] = '\0';
 
     //Controllo per accertare che la difficolta' sia impostata su "facile"
-    if (NumeroMazziGiocatore == 3) {//Se si, aggiorna anche i label che tengono conto del valore delle mani
+    if (DifficoltaGioco == Facile) {//Se si, aggiorna anche i label che tengono conto del valore delle mani
 
         //Chiamo la logica assi per assicurarmi che il punteggio sia attendibile
         LogicaAssi(ManoGiocatore, MAXcarteGiocatore);
@@ -277,8 +278,42 @@ void AggiornaStatistichePartita() {//Si occupa di modificare i valori riportati 
         gtk_label_set_text(GTK_LABEL(LblValoreManoBanco), StringaFormattata);
     }
 }
+void* NotificaSconfitta() {
+    StringaFormattata[0] = '\0';
+    snprintf(StringaFormattata, BufferSnprintf, "Hai perso la partita rimettendoci \n\t\t %d crediti!", Puntata);
+    gtk_label_set_text(GTK_LABEL(LblPartitaPersa), StringaFormattata);
+    return NULL;
+}
 
+void* NotificaPareggio() {
+    gtk_label_set_text(GTK_LABEL(LblPartitaVinta), "Hai pareggiato la partita! \n\t Non ci sono conseguenze!");
+    return NULL;
+}
 
+void* NotificaVittoria() {
+    StringaFormattata[0] = '\0';
+    snprintf(StringaFormattata, BufferSnprintf, "Hai vinto la partita guadagnando \n\t\t %d crediti!", Puntata*2);
+    gtk_label_set_text(GTK_LABEL(LblPartitaVinta), StringaFormattata);
+    return NULL;
+}
+
+void* NotificaBlackjack() {
+    StringaFormattata[0] = '\0';
+    snprintf(StringaFormattata, BufferSnprintf, "Hai vinto la partita con un BlackJack \n\t guadagnando  %.0f crediti!", Puntata * 2.5);
+    gtk_label_set_text(GTK_LABEL(LblPartitaVinta), StringaFormattata);
+}
+
+void LogicaFinePartita() {
+    gtk_label_set_text(GTK_LABEL(LblErrorePartita), NULL);
+    gtk_widget_hide(BtnMenuPausa);
+    gtk_widget_show(BtnFinePartitaEsci);
+}
+
+void LogicaFinePuntata() {
+    //Aggiorna le statistiche della partita e mostra le opzioni giocatore
+    AggiornaStatistichePartita();
+    gtk_stack_set_visible_child(GTK_STACK(StkOpzioniGiocatore), CntBtnOpzioniGiocatore);
+}
 //----------------------------------------------FUNZIONI CALLBACK-------------------------------------------------------
 //                      Qui vengono gestiti i segnali di ogni widget e vi si assegna un metodo.
 //----------------------------------------------------------------------------------------------------------------------
@@ -340,7 +375,7 @@ void on_pg1BtnOpzioni_toggled(GtkToggleButton* tb) {
 //Segnale che viene attivato appena compare a schermo il label del nome utente nel menu` principale
 void on_lblNomeUtente1_map(GtkLabel* lb) {//Aggiorna le statistiche di esso e degli altri label che lo necessitano
     if (UtenteLoggato != NULL) {//Prima di farlo controlla se l'utente sia loggato o meno in maniera tale da lasciare i valori default
-        char StringaFormattata[BufferSnprintf];
+        StringaFormattata[0] = '\0';
         //Popola il nome utente
         gtk_label_set_text(lb, UtenteLoggato->nome);
         //Popola le partite giocate
@@ -369,13 +404,13 @@ void on_lblNomeUtente1_map(GtkLabel* lb) {//Aggiorna le statistiche di esso e de
 
 //Questi sono i bottoni che permettono di cambiare la difficolta'
 void on_rdDiffNormale_clicked(GtkButton* b) {//Essa e` direttamente collegata al numero di mazzi dal quale pesca l'utente
-    NumeroMazziGiocatore = 6;//Il dealer pesca sempre da 6 mazzi
+    DifficoltaGioco = Normale;//Il dealer pesca sempre da 6 mazzi
 }
 void on_rdDiffFacile_clicked(GtkButton* b) {
-    NumeroMazziGiocatore = 3;
+    DifficoltaGioco = Facile;
 }
 void on_rdDiffDifficile_clicked(GtkButton* b) {
-    NumeroMazziGiocatore = 9;
+    DifficoltaGioco = Difficile;
 }
 //Questo segnale viene triggerato quando appare a schermo la text entry dello storico partite
 void on_txtStoricoPartite_map(GtkTextView* tw) {//Popola un array interno con solo le partite fatte dallo stesso utente loggato presenti nel file StoricoPartite
@@ -395,7 +430,7 @@ void on_txtStoricoPartite_map(GtkTextView* tw) {//Popola un array interno con so
 
     //Infine scorro per il numero di righi presenti nel file, estraggo i contenuti in essi e li formatto in una stringa da poter poi far apparire a schermo
     for (int i = 0; i < NumeroRighi; i++) {
-        char StringaFormattata[BufferSnprintf];
+        StringaFormattata[0] = '\0';
         //Estrazione e formattazione degli elementi
         snprintf(StringaFormattata, BufferSnprintf, "%s\t\t,\t%c\t,\t%d\n",StructArrayPartite[i].NomeUtente,StructArrayPartite[i].Risultato,StructArrayPartite[i].BilancioDiUscita);
         //Printa la stringa e va accapo
@@ -447,7 +482,7 @@ void on_pg2BtnAgg1000_clicked(GtkButton* b) {
 
 //Questa segue la stessa e identica logica ma per i label nella schermata di gestione del bilancio
 void on_lblNomeUtente2_map(GtkLabel* lb) {//Solo che non controlla se l'utente sia loggato o meno in quanto sia impossibile accedere alla schermata se non lo e`
-    char StringaFormattata[BufferSnprintf];
+    StringaFormattata[0] = '\0';
     //Popola il nome utente
     gtk_label_set_text(lb, UtenteLoggato->nome);
     //Popola il contatore del bilancio
@@ -517,7 +552,7 @@ void on_pg5BtnConferma2_clicked(GtkButton* b) {//Solo che questa invoca gtk_main
 
 //Questa invece inizializza i label per il contatore del valore della mano
 void on_lblValoreManoGiocatore_map(GtkLabel* lb) {//Controlla se la difficolta` sia impostata su facile
-    if (NumeroMazziGiocatore == 3) {//Se si`, inizializza i label
+    if (DifficoltaGioco == Facile) {//Se si`, inizializza i label
         gtk_label_set_text(lb, "Valore: 0");
         gtk_label_set_text(GTK_LABEL(LblValoreManoBanco), "Valore: 0");
     }else{//Altrimenti li svuota (serve in caso si faccia una partita con una difficolta` diversa dopo aver giocato in facile)
@@ -641,23 +676,13 @@ void on_ConfermaScommessa_clicked(GtkButton* b) {//Agisce come un modo di passar
         gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Devi ancora puntare!");
         return;
     }
-
     //Tolte le opzioni per puntare seeddiamo rand e peschiamo le prime due carte per entrambi
     InitRand();
-    PescaGiocatore(2);
-    PescaBanco(2);
-    //In seguito controlliamo la difficolta`
-    if (NumeroMazziGiocatore > 3) {//Se e` impostata su normale o difficile, nascondiamo la seconda carta del dealer
-        LogicaCartaCoperta();
-    }//Altrimenti se e` impostata su facile la lasciamo scoperta
+    //Creazione deel thread distaccato che andra` a pescare entrambe le carte
+    pthread_t ThreadPesca;
+    pthread_create(&ThreadPesca, NULL, PescaIniziale, NULL);
+    pthread_detach(ThreadPesca);
 
-    //Dopo aver pescato aggiorniamo entrambe le mani sullo schermo facendo comparire le loro carte
-    //ed aggiorniamo le statistiche a schermo
-    AggiornaAmbiMani();
-    AggiornaStatistichePartita();
-
-    //Ed in fine diamo la possibilita` al giocatore di scegliere un'opzione
-    gtk_stack_set_visible_child(GTK_STACK(StkOpzioniGiocatore), CntBtnOpzioniGiocatore);
 }
 
 
@@ -694,42 +719,19 @@ void on_pg1BtnGioca_clicked(GtkButton* b) {//Se l'utente e` loggato, controlla s
 
 //Funzione generica che viene chiamata in seguito alle decisioni del giocatore, passando il turno al banco e terminando la partita
 void TurnoBanco() {
+    //Creazione della variabile thread e della variabile costante carte da pescare
     //Come prima cosa nascondiamo le opzioni del giocatore
     gtk_stack_set_visible_child(GTK_STACK(StkOpzioniGiocatore), CntVuotoOpzioniGiocatore);
 
     //Poi chiamiamo la funzione LogicaCartaCoperta per scoprire la seconda
-    if (NumeroMazziGiocatore > 3) {//Tranne nel caso in cui la difficolta` sia impostata su facile in quanto non ce ne sia bisogno
+    if (DifficoltaGioco != Facile) {//Tranne nel caso in cui la difficolta` sia impostata su facile in quanto non ce ne sia bisogno
         LogicaCartaCoperta();
     }
-    //Poi triggeriamo la pesca multipla del banco per poi aggiornare le statistiche della partita
-    BancoPescaRipetuta();
-    AggiornaStatistichePartita();
+    //Poi creiamo un thread distaccato che provera` a pescare quante piu` carte possibili
+    pthread_t ThreadBanco;
+    pthread_create(&ThreadBanco, NULL, TerminaPartita, NULL);
+    pthread_detach(ThreadBanco);
 
-
-    //Ed una volta fatto, chiamiamo ControllaVittoria e verifichiamo il risultato della partita
-    char StringaFormattata[BufferSnprintf];
-    switch (ControllaVittoria()) {
-    case 'B'://Blackjack
-        snprintf(StringaFormattata, BufferSnprintf, "Hai vinto la partita con un BlackJack \n\t guadagnando  %.0f crediti!", Puntata * 2.5);
-        gtk_label_set_text(GTK_LABEL(LblPartitaVinta), StringaFormattata);
-        break;
-    case 'V'://Vittoria semplice
-        snprintf(StringaFormattata, BufferSnprintf, "Hai vinto la partita guadagnando \n\t\t %d crediti!", Puntata*2);
-        gtk_label_set_text(GTK_LABEL(LblPartitaVinta), StringaFormattata);
-        break;
-    case 'P'://Pareggio
-        gtk_label_set_text(GTK_LABEL(LblPartitaVinta), "Hai pareggiato la partita! \n\t Non ci sono conseguenze!");
-        break;
-    case 'S'://Sconfitta
-        snprintf(StringaFormattata, BufferSnprintf, "Hai perso la partita rimettendoci \n\t\t %d crediti!", Puntata);
-        gtk_label_set_text(GTK_LABEL(LblPartitaPersa), StringaFormattata);
-        break;
-    }
-    //Una volta terminata la partita ripuliamo qualsiasi eventuale errore rimasto a schermo,
-    //nascondiamo il bottone per mettere in pausa e mostriamo quello per uscire dalla partita
-    gtk_label_set_text(GTK_LABEL(LblErrorePartita), NULL);
-    gtk_widget_hide(BtnMenuPausa);
-    gtk_widget_show(BtnFinePartitaEsci);
 }
 
 
@@ -763,8 +765,8 @@ void on_pg4BtnPesca_clicked(GtkButton* b) {
     gtk_label_set_text(GTK_LABEL(LblErrorePartita), NULL);
     //Per poi mostrare il bottone per finire il turno,
     gtk_widget_show(BtnFinisciTurno);
-    PescaGiocatore(1);//Pescare una carta al giocatore,
-    AggiornaManoGiocatore();//Aggiornare la sua mano,
+    PescaGiocatore(1);//Pescare una carta al giocatore
+
     AggiornaStatistichePartita();//Aggiornare le statistiche partita
     //e in fine mostrare il bottone per la seconda pesca (togliendo la possibilita` di fare altre azioni)
     gtk_stack_set_visible_child(GTK_STACK(StkOpzioniGiocatore), CntSecondaPesca);
@@ -774,8 +776,7 @@ void on_pg4BtnPesca_clicked(GtkButton* b) {
 //Segnale del secondo bottone della pesca
 void on_pg4BtnPesca2_clicked(GtkButton* b) {
     //Controlla se il giocatore possa ancora pescare
-    if (PescaGiocatore(1)) {//Se si, aggiorna la sua mano e le statistiche partita
-        AggiornaManoGiocatore();
+    if (PescaGiocatore(1)) {//Se si, aggiorna le statistiche partita
         AggiornaStatistichePartita();
     } else {//Altrimenti informa il giocatore di non poter piu` pescare per poi nascondere il bottone finisci turno e passa a quello del banco
         gtk_label_set_text(GTK_LABEL(LblErrorePartita), "Hai raggiunto il limite di carte!");

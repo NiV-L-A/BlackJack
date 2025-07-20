@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
 #include <time.h>
 #include <gtk/gtk.h>
-
 #include "main.h"
 
 //Funzione che si occupa di validare lo stato finale della partita
@@ -29,39 +30,47 @@ char ControllaVittoria() {
     //Se il giocatore sballa ma il banco no, SCONFITTA
     if (TotGiocatore > 21 && TotBanco <= 21) {
         Risultato = 'S';
+        NotificaSconfitta();
 
     //Se la mano del banco e` piu` grande di quella del giocatore e nessuno ha sballato, SCONFITTA
     }else if (TotBanco > TotGiocatore && TotBanco <= 21) {
         Risultato = 'S';
+        NotificaSconfitta();
 
     //Se il banco ha Blackjack, SCONFITTA (il controllo nel caso lo abbiano entrambi avviene piu` avanti)
     }else if ((ManoBanco[0] > 140 || ManoBanco[0] > 100 && ManoBanco[0] < 140) && (ManoBanco[1] > 140 || ManoBanco[1] > 100 && ManoBanco[1] < 140 ) && ManoBanco[0] RimuoviSeme != ManoBanco[1] RimuoviSeme) {
         Risultato = 'S';
+        NotificaSconfitta();
 
     //Se il giocatore ha blackjack, VITTORIA
     }else if ((ManoGiocatore[0] > 140 || ManoGiocatore[0] > 100 && ManoGiocatore[0] < 140) && (ManoGiocatore[1] > 140 || ManoGiocatore[1] > 100 && ManoGiocatore[1] < 140 ) && ManoGiocatore[0] RimuoviSeme != ManoGiocatore[1] RimuoviSeme) {
         UtenteLoggato->bilancio += Puntata * 2.5;
         Risultato = 'B';
+        NotificaBlackjack();
 
     //Se il banco sballa ma il giocatore no, VITTORIA
     }else if (TotBanco > 21 && TotGiocatore <= 21) {
         UtenteLoggato->bilancio += Puntata * 2;
         Risultato = 'V';
+        NotificaVittoria();
 
     //Se la mano del giocatore e` piu` grande di quella del banco e nessuno sballa, VITTORIA
     }else if (TotGiocatore > TotBanco && TotGiocatore <= 21 && TotBanco <= 21) {
         UtenteLoggato->bilancio += Puntata * 2;
         Risultato = 'V';
+        NotificaVittoria();
 
     //Se entrambi sballano, PAREGGIO
     }else if (TotBanco > 21 && TotGiocatore > 21) {
         UtenteLoggato->bilancio += Puntata;
         Risultato = 'P';
+        NotificaPareggio();
 
     //Se la mano di entrambi ha lo stesso valore, PAREGGIO (controlla anche il caso in cui entrambi abbiano un BlackJack)
     }else if (TotGiocatore == TotBanco) {
         UtenteLoggato->bilancio += Puntata;
         Risultato = 'P';
+        NotificaPareggio();
     }
 
     //Valutato il risultato della partita viene fatta la somma algebrica per stabilire quanti crediti il giocatore abbia
@@ -81,7 +90,6 @@ char ControllaVittoria() {
 void InitRand() {
     srand(time(NULL));
 }
-
 
 
 //Funzione generica per calcolare il valore totale di una mano
@@ -142,7 +150,10 @@ void LogicaAssi(unsigned short Mano[], unsigned short Dimensione) {
     }
 }
 
-int PescaBanco(short CarteDaPescare) {
+//Funzione che si occupa di pescare per il banco applicando la sua logica
+void* PescaBanco(void* ArgDaConvertire) {
+    //Cast di carte da pescare per convertire a short
+    short CarteDaPescare = *(short*)ArgDaConvertire;
     short CartePescate = 0;//Ogni volta che pesca una carta con successo incrementa CartePescate fino a quando non equivale al numero richiesto
     short IndiceSlotLibero = -1;
     while (CartePescate < CarteDaPescare) {
@@ -155,7 +166,7 @@ int PescaBanco(short CarteDaPescare) {
         }
 
         if (IndiceSlotLibero == -1) {//Se non c'e` uno slot libero, non pescare
-            return 0;
+            return NULL;
         }
 
         //Loop che prova a pescare una carta all'infinito
@@ -174,30 +185,51 @@ int PescaBanco(short CarteDaPescare) {
 
         //In fine controllo se il totale dei punti e` maggiore di 16
         if (CalcolaPunti(ManoBanco, MAXcarteBanco) > 16) {
-            return 0;//Se si non puo` pescare
+            return NULL;//Se si non puo` pescare
         }
 
-        //Altrimenti pesca la carta
+        //Altrimenti pesca la carta, aggiorna le statistiche ed aggiorna la mano aspettando 1 secondo
+        //per seguire con la prossima iterazione
+        if (DifficoltaGioco != Facile && IndiceSlotLibero == 1) {
+            LogicaCartaCoperta();
+        }
         ManoBanco[IndiceSlotLibero] = CartaPescata;
         CartePescate++;
+        AggiornaManoBanco();
+        AggiornaStatistichePartita();
+
+        usleep(Mezzosecondo);
     }
-    return 1;
+    return NULL;
 }
 
-void BancoPescaRipetuta() {
-    //Ho bisogno di fare questa cosa orrenda perche` utilizzare qualsiasi loop con una condizione di uscita
-    //andrebbe a bloccare il thread dell'interfaccia, briccando l'intero programma!
-    if (PescaBanco(1)){
-        AggiornaManoBanco();
-    }
-    if (PescaBanco(1)){
-        AggiornaManoBanco();
-    }
-    if (PescaBanco(1)){
-        AggiornaManoBanco();
-    }
-    if (PescaBanco(1)){
-        AggiornaManoBanco();
-    }
+//Funzione che esegue in maniera threaded le ultime fasi della partita, usufruendo di sleep per dei timer
+void* TerminaPartita() {
+    const short CarteDaPescare = 5;
+    pthread_t Thread;
+    pthread_create(&Thread, NULL, PescaBanco, (void*)&CarteDaPescare);
+    pthread_join(Thread, NULL);
 
+    sleep(1);
+
+    ControllaVittoria();
+    LogicaFinePartita();
+    return NULL;
+}
+
+//Funzione che pesca le due carte iniziali
+void* PescaIniziale() {
+    const short CarteDaPescare = 2;
+    //Crea un sottothread per pescare le carte del banco e lo riunisce a questo
+    pthread_t ThreadBanco;
+    pthread_create(&ThreadBanco, NULL, PescaBanco, (void*)&CarteDaPescare);
+    pthread_join(ThreadBanco, NULL);
+    //Riunito il thread pesca le carte del giocatore e passa il suo turno
+    PescaGiocatore(1);
+    usleep(Mezzosecondo);
+    PescaGiocatore(1);
+    usleep(Mezzosecondo);
+
+    LogicaFinePuntata();
+    return NULL;
 }

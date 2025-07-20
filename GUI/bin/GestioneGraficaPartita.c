@@ -44,16 +44,13 @@ void RenderizzaCarta(GtkImage *immagine, unsigned short idCarta, unsigned short 
     }
     //Controllo se lo slot nell'array mano sia vuoto
     if (idCarta == SlotVuoto) {
-        const char* percorsoVuoto = "/r/SpriteMenu/ImmagineVuota.png";
-        gtk_image_set_from_resource(immagine, percorsoVuoto);
+        gtk_image_set_from_resource(immagine, ImmagineVuota);
         //Memorizzo il percorso della risorsa nel widget per recuperarlo successivamente
-        g_object_set_data(G_OBJECT(immagine), "resource-path", (gpointer)percorsoVuoto);
+        g_object_set_data(G_OBJECT(immagine), "resource-path", (gpointer)ImmagineVuota);
         return;
     }
-    //Questo controllo e` per la carta coperta
-    const char* percorsoCartaCoperta = "/r/SpriteCarte/coperta.png";
-    gchar* percorsoCorrente = PrendiNomeTextureDaImmagine(immagine);
-    if (percorsoCorrente != NULL && strcmp(percorsoCorrente, percorsoCartaCoperta) == 0 && SaltaControllo == 0) {
+    //Controllo per la presenza della carta coperta
+    if (strcmp(PrendiNomeTextureDaImmagine(immagine), CartaCoperta) == 0 && SaltaControllo == 0) {
         return;
     }
 
@@ -84,7 +81,6 @@ void AggiornaAmbiMani() {
     AggiornaManoGiocatore();
     AggiornaManoBanco();
 }
-
 
 //Funzione che inizializza il processo di rendering prendendo le reference dai widget immagini
 void InitRenderingCarte(GtkBuilder *Builder) {

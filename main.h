@@ -15,7 +15,12 @@
 #define LunghezzaMassimaStringa 21
 #define LunghezzaMassimaRiga 256
 #define BufferSnprintf 200
+#define Mezzosecondo 500000
+#define Facile 3
+#define Normale 6
+#define Difficile 9
 #define CartaCoperta "/r/SpriteCarte/coperta.png"
+#define ImmagineVuota "/r/SpriteMenu/ImmagineVuota.png"
 
 
 //===================TYPEDEF======================================================
@@ -37,7 +42,7 @@ typedef struct {//Definisce il tipo StoricoPartita
 //===================VARIABILI GLOBALI (DICHIARAZIONI)========================
 extern int Puntata;
 extern int NumeroRighi;
-extern short NumeroMazziGiocatore;
+extern short DifficoltaGioco;
 extern UtenteT* UtenteLoggato;
 
 //===================ARRAY GLOBALI (DICHIARAZIONI)============================
@@ -49,7 +54,7 @@ extern unsigned short ManoGiocatore[MAXcarteGiocatore];
 extern unsigned short ManoBanco[MAXcarteBanco];
 extern char LocationfileStoricoPartite[BufferSnprintf];
 extern char LocationFileUtenti[BufferSnprintf];
-
+extern char StringaFormattata[BufferSnprintf];
 
 //-------------------------------------------------DICHIARAZIONE FUNZIONI-----------------------------------------------
 //Accanto ad ogni funzione vi e` una spiegazione rapida del suo funzionamento. Usando il "jump-to" dell'IDE potete
@@ -59,12 +64,19 @@ extern char LocationFileUtenti[BufferSnprintf];
 int InitProgramma(int argc, char *argv[]);
 void InitArrImmagini(GtkImage* ImgCartaBanco1,GtkImage* ImgCartaBanco2,GtkImage* ImgCartaBanco3,GtkImage* ImgCartaBanco4,GtkImage* ImgCartaBanco5,GtkImage* ImgCartaBanco6,GtkImage* ImgCartaGiocatore1,GtkImage* ImgCartaGiocatore2,GtkImage* ImgCartaGiocatore3,GtkImage* ImgCartaGiocatore4,GtkImage* ImgCartaGiocatore5,GtkImage* ImgCartaGiocatore6,GtkImage* ImgCartaGiocatore7,GtkImage* ImgCartaGiocatore8);
 void AggiornaStatistichePartita();
+void* NotificaBlackjack();
+void* NotificaVittoria();
+void* NotificaPareggio();
+void* NotificaSconfitta();
+void LogicaFinePartita();
+void LogicaFinePuntata();
 //===================Banco.c======================================================
 void InitRand();//Funzione che seedda rand
 char ControllaVittoria();//Funzione controllo vittoria
 int CalcolaPunti(unsigned short Mano[], unsigned short Dimensione);
-int PescaBanco(short CarteDaPescare);
-void BancoPescaRipetuta();
+void* PescaBanco(void* ArgDaConvertire);
+void* TerminaPartita();
+void* PescaIniziale();
 //===================Giocatore.c==================================================
 void CalcolaTassoVittoria();//Funzione per aggiornare le statistiche dell'utente
 int PescaGiocatore(unsigned short CarteDaPescare);
