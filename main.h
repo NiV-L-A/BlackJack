@@ -33,6 +33,11 @@ typedef struct {//Definisce il tipo Utente
     int partiteGiocate;
 } UtenteT;
 
+typedef struct {
+    int IDUtente;
+    char NomeUtente[LunghezzaMassimaStringa];
+}UltimoLoggatoT;
+
 typedef struct {//Definisce il tipo StoricoPartita
     char NomeUtente[LunghezzaMassimaStringa];
     char Risultato; // S = Sconfitta, P = Pareggio, V = Vittoria, B = Vittoria con Blackjack
@@ -52,8 +57,9 @@ extern const unsigned short Mazzo[DimensioneMazzo];
 extern unsigned short ControlloRipetizioni[DimensioneMazzo];
 extern unsigned short ManoGiocatore[MAXcarteGiocatore];
 extern unsigned short ManoBanco[MAXcarteBanco];
-extern char LocationfileStoricoPartite[BufferSnprintf];
+extern char LocationFileStoricoPartite[BufferSnprintf];
 extern char LocationFileUtenti[BufferSnprintf];
+extern char LocationFileUltimoLogin[BufferSnprintf];
 extern char StringaFormattata[BufferSnprintf];
 
 //-------------------------------------------------DICHIARAZIONE FUNZIONI-----------------------------------------------
@@ -93,6 +99,11 @@ UtenteT* GetUtentiDalFile(int* NumeroUtenti);
 int LoggaUtente(char Nome[], char Password[], UtenteT* UtentiFile, int Conta);
 int ValidaStringa(char* str);
 void InitFileLocation();
+int CaricaUltimoLogin(void);
+void FreeUtenteLoggato(void);
+void RimuoviUltimoLogin(void);
+int AutoLogin(void);
+void SloggaUtente();
 //===================GestioneStoricoPartite.c=====================================
 StoricoPartitaT* PopolaStoricoPartiteDalFile();
 void ScriviPartita(FILE* file, char Risultato, int BilancioInUscita);

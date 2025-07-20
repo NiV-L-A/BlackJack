@@ -244,6 +244,7 @@ int InitProgramma(int argc, char *argv[]) {//funzione principale che gestisce la
 
     gtk_main();//Avvia il processo main che rimarra` nel background a controllare gli input ricevuti
 
+    FreeUtenteLoggato();
     return EXIT_SUCCESS;//Condizione di uscita necessaria per chiudere il programma una volta chiusa l'ui
 
 }
@@ -600,7 +601,9 @@ void on_pg3BtnAccedi_clicked(GtkButton* b) {
         return;
     }
 
-    //Se sia nome che password sono validi, creiamo un array di tipo UtenteT e lo popoliamo con tutti gli utenti nel file
+    //Se sia nome che password sono validi, slogghiamo l'utente precedente e
+    //creiamo un array di tipo UtenteT e lo popoliamo con tutti gli utenti nel file
+    SloggaUtente();
     UtenteT* UtentiNelFile = GetUtentiDalFile(&Conta);
     //Se UtentiNelFile e` NULL e Conta e` 0, allora non siamo riusciti a leggere gli utenti
     if (UtentiNelFile == NULL && Conta == 0) {//Quindi mettiamo a schermo l'errore
@@ -615,8 +618,7 @@ void on_pg3BtnAccedi_clicked(GtkButton* b) {
         return;
     }
 
-    //Se siamo arrivati qui, l'utente è loggato
-    //Quindi riportiamo l'utente al menu` principale
+    //Se siamo arrivati qui, l'utente è loggato, quindi riportiamo al menu principale
     gtk_stack_set_visible_child(GTK_STACK(ControlloScena), CntMenuPrincipale);
 }
 
@@ -670,6 +672,7 @@ void on_pg3BtnRegistrati_clicked(GtkButton* b) {
 void on_ConfermaScommessa_clicked(GtkButton* b) {//Agisce come un modo di passare il turno ed inizializza la partita
     //Per prima cosa nasconde le opzioni di puntata solo se essa e` stata gia` fatta
     if (Puntata != 0) {
+        gtk_label_set_text(GTK_LABEL(LblErrorePartita), NULL);
         gtk_stack_set_visible_child(GTK_STACK(StkOpzioniPuntata), CntVuotoOpzioniPuntata);
         gtk_widget_hide(BtnConfermaPuntata);
     }else {//Altrimenti informa l'utente che debba ancora
@@ -684,7 +687,6 @@ void on_ConfermaScommessa_clicked(GtkButton* b) {//Agisce come un modo di passar
     pthread_detach(ThreadPesca);
 
 }
-
 
 //Segnale triggerato quando viene premuto il bottone "Gioca" nella schermata principale
 void on_pg1BtnGioca_clicked(GtkButton* b) {//Se l'utente e` loggato, controlla se abbia abbastanza crediti per fare almeno una puntata minima

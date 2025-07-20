@@ -19,7 +19,8 @@ unsigned short ControlloRipetizioni[DimensioneMazzo];
 unsigned short ManoGiocatore[MAXcarteGiocatore];
 unsigned short ManoBanco[MAXcarteBanco];
 
-char LocationfileStoricoPartite[BufferSnprintf];
+char LocationFileStoricoPartite[BufferSnprintf];
 char LocationFileUtenti[BufferSnprintf];
+char LocationFileUltimoLogin[BufferSnprintf];
 
 char StringaFormattata[BufferSnprintf];
